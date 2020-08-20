@@ -23,7 +23,7 @@ npm run dev
 # Correr En Ambiente "Production"
 
 ### para generar los archivos estaticos optimizados del proyecto:
-``` 
+```
 npm run build
 ```
 
@@ -37,6 +37,9 @@ npm run start
 ```
 http://localhost:5000
 ```
+# Circle CI
+
+[![CircleCI](https://circleci.com/gh/Ron-404/UniWheels-Frontend.svg?style=svg)](https://circleci.com/gh/Ron-404/UniWheels-Frontend)
 
 # Equipo
 
