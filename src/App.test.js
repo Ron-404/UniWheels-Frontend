@@ -1,9 +1,18 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import App from './App';
+import Home from './components/home/Home';
+import DashBoardPasajero from './components/dashboard_pasajero/DashBoardPasajero';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
+// Prueba Render Home
+test('render Home', () => {
+  const { getByText } = render(<Home />);
   const linkElement = getByText(/proyecto base uniWheels/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+// Prueba Render DashBoard Pasajero
+test('renders Dashboard Pasajero', () => {
+  const { getByText } = render(<DashBoardPasajero />);
+  const linkElement = getByText(/BIENVENIDO PASAJERO/i);
   expect(linkElement).toBeInTheDocument();
 });
