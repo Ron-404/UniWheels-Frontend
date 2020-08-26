@@ -16,7 +16,8 @@ import {
     IconButton,
     ListItem,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    Box
 } from '@material-ui/core/';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -36,10 +37,10 @@ class DashBoardPasajero extends Component {
         super(props);
         this.state = {
 
-            anchorEl : null,
-            mobileMoreAnchorEl : null,
-            isMenuOpen : false,
-            isMobileMenuOpen : false,
+            anchorEl: null,
+            mobileMoreAnchorEl: null,
+            isMenuOpen: false,
+            isMobileMenuOpen: false,
 
             selectedIndex: false,
             vista1: false,
@@ -59,27 +60,27 @@ class DashBoardPasajero extends Component {
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     }
 
-    handleProfileMenuOpen(event){
-        this.setState({anchorEl : event.currentTarget, isMenuOpen : true });
+    handleProfileMenuOpen(event) {
+        this.setState({ anchorEl: event.currentTarget, isMenuOpen: true });
         this.handleMobileMenuClose();
     };
-    
-    handleMobileMenuClose(){
-        this.setState({mobileMoreAnchorEl : null, isMobileMenuOpen : false});
+
+    handleMobileMenuClose() {
+        this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
     };
-    
-    handleMenuClose(){
-        this.setState({anchorEl : null, isMenuOpen : false});
+
+    handleMenuClose() {
+        this.setState({ anchorEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
     };
-    
-    handleMobileMenuOpen(event){
-        this.setState({mobileMoreAnchorEl : event.currentTarget, isMobileMenuOpen : true});
+
+    handleMobileMenuOpen(event) {
+        this.setState({ mobileMoreAnchorEl: event.currentTarget, isMobileMenuOpen: true });
     };
 
     handleListItemClick(index) {
-        this.setState({selectedIndex : index})
-        if(index === 0){
+        this.setState({ selectedIndex: index })
+        if (index === 0) {
             this.setState({
                 vista1: !this.state.vista1,
                 vista2: false,
@@ -87,7 +88,7 @@ class DashBoardPasajero extends Component {
                 vista4: false,
             });
         }
-        else if(index === 1){
+        else if (index === 1) {
             this.setState({
                 vista2: !this.state.vista2,
                 vista1: false,
@@ -95,21 +96,21 @@ class DashBoardPasajero extends Component {
                 vista4: false,
             });
         }
-        else if(index === 2){
+        else if (index === 2) {
             this.setState({
                 vista3: !this.state.vista3,
                 vista1: false,
                 vista2: false,
                 vista4: false,
-            });            
+            });
         }
-        else if(index === 3){
+        else if (index === 3) {
             this.setState({
                 vista4: !this.state.vista4,
                 vista1: false,
                 vista2: false,
                 vista3: false,
-            });           
+            });
         }
         this.handleDrawerClose();
 
@@ -147,24 +148,24 @@ class DashBoardPasajero extends Component {
                             <MenuIcon />
                         </IconButton>
                         <div>
-                            <img src={logo} width="40px" height="40px" margin="auto" alt="Logo"/>
+                            <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
                         </div>
                         <div className={classes.menuTitle}>
-                            <Typography variant="h6" noWrap>
+                            <Typography variant="h6">
                                 UNIWHEELS
                             </Typography>
                         </div>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={'primary-search-account-menu'}
-                            aria-haspopup="true"
-                            onClick={this.handleProfileMenuOpen}
-                            color="inherit"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={'primary-search-account-menu'}
+                                aria-haspopup="true"
+                                onClick={this.handleProfileMenuOpen}
+                                color="inherit"
                             >
-                            <AccountCircle />
+                                <AccountCircle />
                             </IconButton>
                             <Menu
                                 anchorEl={this.state.anchorEl}
@@ -181,13 +182,13 @@ class DashBoardPasajero extends Component {
                         </div>
                         <div className={classes.sectionMobile}>
                             <IconButton
-                            aria-label="show more"
-                            aria-controls={'primary-search-account-menu-mobile'}
-                            aria-haspopup="true"
-                            onClick={this.handleMobileMenuOpen}
-                            color="inherit"
+                                aria-label="show more"
+                                aria-controls={'primary-search-account-menu-mobile'}
+                                aria-haspopup="true"
+                                onClick={this.handleMobileMenuOpen}
+                                color="inherit"
                             >
-                            <MoreIcon />
+                                <MoreIcon />
                             </IconButton>
                             <Menu
                                 anchorEl={this.state.mobileMoreAnchorEl}
@@ -200,15 +201,15 @@ class DashBoardPasajero extends Component {
                             >
                                 <MenuItem onClick={this.handleProfileMenuOpen}>
 
-                                        <IconButton
-                                            aria-label="account of current user"
-                                            aria-controls="primary-search-account-menu"
-                                            aria-haspopup="true"
-                                            color="inherit"
-                                        >
-                                            <AccountCircle />
-                                        </IconButton>
-                                        <p>Perfil</p>
+                                    <IconButton
+                                        aria-label="account of current user"
+                                        aria-controls="primary-search-account-menu"
+                                        aria-haspopup="true"
+                                        color="inherit"
+                                    >
+                                        <AccountCircle />
+                                    </IconButton>
+                                    <p>Perfil</p>
 
                                 </MenuItem>
                             </Menu>
@@ -237,7 +238,7 @@ class DashBoardPasajero extends Component {
                     <List>
                         {['vista 1', 'vista 2', 'vista 3', 'vista 4'].map((text, index) => (
                             <ListItem
-                            
+
                                 button key={text}
                                 selected={this.state.selectedIndex === index}
                                 onClick={this.handleListItemClick.bind(this, index)}
@@ -250,42 +251,44 @@ class DashBoardPasajero extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <div>
-                        {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
+                    <Box>
                         <div>
-                            <Typography variant="h3" noWrap>
-                                BIENVENIDO PASAJERO
+                            {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
+                                <div>
+                                    <Typography variant="h3">
+                                        BIENVENIDO PASAJERO
                             </Typography>
-                        </div>}
-                        <div>
-                            {this.state.vista1 &&
-                                <Typography variant="h6" noWrap>
-                                    Vista 1
+                                </div>}
+                            <div>
+                                {this.state.vista1 &&
+                                    <Typography variant="h6">
+                                        Vista 1
                                 </Typography>
-                            }
-                        </div>
-                        <div>
-                            {this.state.vista2 &&
-                                <Typography variant="h6" noWrap>
-                                    Vista 2
+                                }
+                            </div>
+                            <div>
+                                {this.state.vista2 &&
+                                    <Typography variant="h6">
+                                        Vista 2
                                 </Typography>
-                            }
-                        </div>
-                        <div>
-                            {this.state.vista3 &&
-                                <Typography variant="h6" noWrap>
-                                    Vista 3
+                                }
+                            </div>
+                            <div>
+                                {this.state.vista3 &&
+                                    <Typography variant="h6">
+                                        Vista 3
                                 </Typography>
-                            }
-                        </div>
-                        <div>
-                            {this.state.vista4 &&
-                                <Typography variant="h6" noWrap>
-                                    Vista 4
+                                }
+                            </div>
+                            <div>
+                                {this.state.vista4 &&
+                                    <Typography variant="h6" noWrap>
+                                        Vista 4
                                 </Typography>
-                            }
+                                }
+                            </div>
                         </div>
-                    </div>
+                    </Box>
                 </main>
             </div>
 
@@ -306,13 +309,13 @@ const styles = theme => ({
     sectionDesktop: {
         display: 'none',
         [theme.breakpoints.up('md')]: {
-          display: 'flex',
+            display: 'flex',
         },
     },
     sectionMobile: {
         display: 'flex',
         [theme.breakpoints.up('md')]: {
-          display: 'none',
+            display: 'none',
         },
     },
     appBar: {
