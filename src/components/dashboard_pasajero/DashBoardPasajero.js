@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import { withStyles } from "@material-ui/core/styles";
 
 import {
+    Menu,
+    MenuItem,
     Drawer,
     AppBar,
     Toolbar,
@@ -23,6 +25,9 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MoreIcon from '@material-ui/icons/MoreVert';
+
 import logo from '../../logo.png';
 
 class DashBoardPasajero extends Component {
@@ -30,6 +35,12 @@ class DashBoardPasajero extends Component {
     constructor(props) {
         super(props);
         this.state = {
+
+            anchorEl : null,
+            mobileMoreAnchorEl : null,
+            isMenuOpen : false,
+            isMobileMenuOpen : false,
+
             selectedIndex: false,
             vista1: false,
             vista2: false,
@@ -41,11 +52,30 @@ class DashBoardPasajero extends Component {
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
         this.handleDrawerClose = this.handleDrawerClose.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+
+        this.handleProfileMenuOpen = this.handleProfileMenuOpen.bind(this);
+        this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
+        this.handleMenuClose = this.handleMenuClose.bind(this);
+        this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
     }
 
-    async componentDidMount() {
-
-    }
+    handleProfileMenuOpen(event){
+        this.setState({anchorEl : event.currentTarget, isMenuOpen : true });
+        this.handleMobileMenuClose();
+    };
+    
+    handleMobileMenuClose(){
+        this.setState({mobileMoreAnchorEl : null, isMobileMenuOpen : false});
+    };
+    
+    handleMenuClose(){
+        this.setState({anchorEl : null, isMenuOpen : false});
+        this.handleMobileMenuClose();
+    };
+    
+    handleMobileMenuOpen(event){
+        this.setState({mobileMoreAnchorEl : event.currentTarget, isMobileMenuOpen : true});
+    };
 
     handleListItemClick(index) {
         this.setState({selectedIndex : index})
@@ -81,6 +111,7 @@ class DashBoardPasajero extends Component {
                 vista3: false,
             });           
         }
+        this.handleDrawerClose();
 
     };
 
@@ -91,8 +122,6 @@ class DashBoardPasajero extends Component {
     handleDrawerClose() {
         this.setState({ open: false });
     };
-
-
 
     render() {
         const { classes } = this.props;
@@ -125,7 +154,65 @@ class DashBoardPasajero extends Component {
                                 UNIWHEELS
                             </Typography>
                         </div>
+                        <div className={classes.grow} />
+                        <div className={classes.sectionDesktop}>
+                            <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={'primary-search-account-menu'}
+                            aria-haspopup="true"
+                            onClick={this.handleProfileMenuOpen}
+                            color="inherit"
+                            >
+                            <AccountCircle />
+                            </IconButton>
+                            <Menu
+                                anchorEl={this.state.anchorEl}
+                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                id={'primary - search - account - menu'}
+                                keepMounted
+                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                open={this.state.isMenuOpen}
+                                onClose={this.handleMenuClose}
+                            >
+                                <MenuItem onClick={this.handleMenuClose}>Perfil</MenuItem>
+                                <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
+                            </Menu>
+                        </div>
+                        <div className={classes.sectionMobile}>
+                            <IconButton
+                            aria-label="show more"
+                            aria-controls={'primary-search-account-menu-mobile'}
+                            aria-haspopup="true"
+                            onClick={this.handleMobileMenuOpen}
+                            color="inherit"
+                            >
+                            <MoreIcon />
+                            </IconButton>
+                            <Menu
+                                anchorEl={this.state.mobileMoreAnchorEl}
+                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                id={'primary - search - account - menu - mobile'}
+                                keepMounted
+                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                open={this.state.isMobileMenuOpen}
+                                onClose={this.handleMobileMenuClose}
+                            >
+                                <MenuItem onClick={this.handleProfileMenuOpen}>
 
+                                        <IconButton
+                                            aria-label="account of current user"
+                                            aria-controls="primary-search-account-menu"
+                                            aria-haspopup="true"
+                                            color="inherit"
+                                        >
+                                            <AccountCircle />
+                                        </IconButton>
+                                        <p>Perfil</p>
+
+                                </MenuItem>
+                            </Menu>
+                        </div>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -164,22 +251,39 @@ class DashBoardPasajero extends Component {
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     <div>
+                        {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
                         <div>
                             <Typography variant="h3" noWrap>
                                 BIENVENIDO PASAJERO
                             </Typography>
+                        </div>}
+                        <div>
+                            {this.state.vista1 &&
+                                <Typography variant="h6" noWrap>
+                                    Vista 1
+                                </Typography>
+                            }
                         </div>
                         <div>
-                            {this.state.vista1 && "vista 1"}
+                            {this.state.vista2 &&
+                                <Typography variant="h6" noWrap>
+                                    Vista 2
+                                </Typography>
+                            }
                         </div>
                         <div>
-                            {this.state.vista2 && "vista 2"}
+                            {this.state.vista3 &&
+                                <Typography variant="h6" noWrap>
+                                    Vista 3
+                                </Typography>
+                            }
                         </div>
                         <div>
-                            {this.state.vista3 && "vista 3"}
-                        </div>
-                        <div>
-                            {this.state.vista4 && "vista 4"}
+                            {this.state.vista4 &&
+                                <Typography variant="h6" noWrap>
+                                    Vista 4
+                                </Typography>
+                            }
                         </div>
                     </div>
                 </main>
@@ -195,6 +299,21 @@ const drawerWidth = 240;
 const styles = theme => ({
     root: {
         display: 'flex',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+          display: 'flex',
+        },
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+          display: 'none',
+        },
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
