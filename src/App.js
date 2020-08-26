@@ -13,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path='/' component={Home} exact ></Route>
+          <Route path='/home' component={Home} exact ></Route>
           <Route path='/dashboardPasajero' component={DashBoardPasajero} exact ></Route>
           <Route path='/dashboardConductor' component={DashBoardConductor} exact ></Route>
         </Switch>

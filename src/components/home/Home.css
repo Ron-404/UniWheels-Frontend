@@ -1,0 +1,72 @@
+header *{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px 20px;
+}
+h1{
+  font-size: 70px;
+
+}
+header{
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+header a:hover {
+  background-color: #ddd;
+
+}
+.header-right{
+  margin: auto;
+}
+
+header a {
+  vertical-align: middle;
+  float: left;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  text-decoration: none;
+  font-size: 30px;
+  line-height: 55px;
+  border-radius: 4px;
+}
+
+header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+body{
+  background-color: black;
+}
+
+#banner{
+  height: 800px;
+  overflow: hidden;
+  position: relative;
+}
+
+.centered{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white ;
+  /*background-color:  rgba(255, 255, 255, 0.5);*/
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  font-size: 40px;
+  padding: 10px;}
+
+#bannerimg{
+  margin-top:-20vw;
+  width: 100%;
+  opacity: 0.5;
+}
+
+#logito{
+  width: 100px;
+}
