@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import logo from '../../logo.png';
 import './Home.css';
 
-import bannerimg from './banner.jpg';
 import road from './road.jpg';
 import drive from './drive.jpg';
 import route from './route.png';
 import money from './money.png';
 import connect from './connect.png';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-
 
 class Home extends Component {
 
@@ -27,7 +24,7 @@ class Home extends Component {
           <div >
             <section id="home">
               <div id="banner">
-                <img id="bannerimg" src={drive}/>
+                <img id="bannerimg" src={drive} alt="banner uniwheels"/>
                 <header>
                   <div>
                   <h1> Uni-Wheels </h1>
@@ -54,7 +51,7 @@ class Home extends Component {
                        <p>Somos una aplicación que te da la oportunidad de llegar a tu casa o a tu universidad fácil y comodamente. Interactuando con miembros de la comunidad universitaria de Bogotá, donde tu decides si quieres ser conductor o ser pasajero.</p>
                      </Grid>
                      <Grid item xs={6} className="cuadro">
-                       <img src={road}/>
+                       <img src={road} alt="cuadro uniwheels"/>
                      </Grid>
                  </Grid>
                 </div>
@@ -65,23 +62,23 @@ class Home extends Component {
                        <Grid item xs>
                           <h3> Muevete de forma segura y confiable </h3>
                           <p> Tu conductor será un miembro de una universidad de la ciudad. </p>
-                          <img src={route} className="valores"/>
+                          <img src={route} className="valores" alt="container descripcion"/>
                        </Grid>
                        <Grid item xs>
                           <h3> Ahorra Dinero </h3>
                           <p> Pagaras un valor similar al del transporte público. </p>
-                            <img src={money} className="valores"/>
+                            <img src={money} className="valores" alt="banner descripcion ahorro"/>
                        </Grid>
                        <Grid item xs>
                           <h3> Conectate con mas Personas</h3>
                           <p> Podrás conocer a muchas personas de la comunidad universitaria de Bogotá. </p>
-                          <img src={connect} className="valores"/>
+                          <img src={connect} className="valores" alt="banner descripcion personas"/>
                        </Grid>
                    </Grid>
                   </div>
 
               </section>
-              <a id="upbutton"  href="#"> <i className="fa fa-arrow-circle-up"></i></a>
+              <a id="upbutton"  href="/#"> <i className="fa fa-arrow-circle-up"></i></a>
 
           </div>
         )
