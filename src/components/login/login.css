@@ -1,0 +1,26 @@
+
+
+body{
+    background-color:rgb(226, 115, 51);
+}
+
+
+.form{
+    margin-top: 5%;
+    margin-right: 35%;
+    margin-left: 35%;
+    border-radius: 7%;
+    background-color:rgb(253, 253, 253);
+}
+
+.text{
+    margin-top: 5%;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.rigth{
+    float: right;
+    margin-right: 7%;
+}
+
