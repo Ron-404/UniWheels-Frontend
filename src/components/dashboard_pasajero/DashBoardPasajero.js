@@ -17,17 +17,20 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Box
+    Box,
+    Collapse,
 } from '@material-ui/core/';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import TelegramIcon from '@material-ui/icons/Telegram';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import logo from '../../logo.png';
 
@@ -41,6 +44,7 @@ class DashBoardPasajero extends Component {
             mobileMoreAnchorEl: null,
             isMenuOpen: false,
             isMobileMenuOpen: false,
+            isRequestsOpen: false,
 
             selectedIndex: false,
             vista1: false,
@@ -58,6 +62,7 @@ class DashBoardPasajero extends Component {
         this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
         this.handleMenuClose = this.handleMenuClose.bind(this);
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
+        this.handleClickRequests = this.handleClickRequests.bind(this);
     }
 
     handleProfileMenuOpen(event) {
@@ -115,6 +120,10 @@ class DashBoardPasajero extends Component {
         this.handleDrawerClose();
 
     };
+
+    handleClickRequests(){
+        this.setState({ isRequestsOpen : !this.state.isRequestsOpen})
+    }
 
     handleDrawerOpen() {
         this.setState({ open: true });
@@ -236,17 +245,28 @@ class DashBoardPasajero extends Component {
                     </div>
                     <Divider />
                     <List>
-                        {['vista 1', 'vista 2', 'vista 3', 'vista 4'].map((text, index) => (
-                            <ListItem
-
-                                button key={text}
-                                selected={this.state.selectedIndex === index}
-                                onClick={this.handleListItemClick.bind(this, index)}
-                            >
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <ListItem button onClick={this.handleClickRequests}>
+                            <ListItemIcon>
+                                <TelegramIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Mis Solicitudes" />
+                            {this.state.isRequestsOpen ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse in={this.state.isRequestsOpen} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItem
+                                    className={classes.nested}
+                                    button
+                                    selected={this.state.selectedIndex === 0}
+                                    onClick={this.handleListItemClick.bind(this, 0)}
+                                >
+                                    <ListItemIcon>
+                                        <CheckCircleOutlineIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Activas" />
+                                </ListItem>
+                            </List>
+                        </Collapse>
                     </List>
                 </Drawer>
                 <main className={classes.content}>
@@ -262,7 +282,7 @@ class DashBoardPasajero extends Component {
                             <div>
                                 {this.state.vista1 &&
                                     <Typography variant="h6">
-                                        Vista 1
+                                        Activas
                                 </Typography>
                                 }
                             </div>
@@ -377,6 +397,9 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
     },
 });
 
