@@ -2,16 +2,21 @@
 html {
   scroll-behavior: smooth;
 }
-header *{
+
+body.home{
+  background-color: black;
+}
+
+.home header *{
   display: inline-block;
   vertical-align: middle;
   margin: 1vh 1vh;
 }
 
-h1{
+.home h1{
   font-size: 5vh;
 }
-h2{
+.home h2{
   font-size: 2.5vw;
   margin-top: 0px;
 }
@@ -20,7 +25,7 @@ h2{
   width: 5vw;
 }
 
-header{
+.home header{
   position: absolute;
   top: 0px;
   width: 100%;
@@ -28,7 +33,7 @@ header{
   color: white;
 }
 
-header a:hover {
+.home header a:hover {
   background-color: rgba(255, 255, 255, 0.4);
 
 }
@@ -40,7 +45,7 @@ header a:hover {
 a{
     text-decoration: none;
 }
-header a {
+.home header a {
   vertical-align: middle;
   float: left;
   color: white;
@@ -51,9 +56,7 @@ header a {
   border-radius: 4px;
 }
 
-body{
-  background-color: black;
-}
+
 
 #banner{
   max-height: 70vw;
@@ -67,7 +70,6 @@ body{
   top: 50%;
   left: 50%;
   color: white ;
-  /*background-color:  rgba(255, 255, 255, 0.5);*/
   transform: translate(-50%, -50%);
   border-radius: 25px;
   font-size: 30px;
@@ -77,9 +79,9 @@ body{
 #bannerimg{
   margin-top:0vw;
   width: 100%;
-  opacity: 0.5;  
+  opacity: 0.5;
 }
-section{
+.home section{
   padding-top:0;
   margin-top: 0px;
 }
@@ -95,7 +97,7 @@ section{
 .cuadro img{
   width: 100%;
 }
-h3{
+.home h3{
   font-size: 1.5vw;
 }
 
@@ -135,7 +137,7 @@ h3{
 #ls::before{
     width: 100%;
     min-height: 80vw;
-    content: ""; /* empty but necessary */
+    content: "";
     position: absolute;
     top:-20vw;
     left: 0%;
@@ -159,7 +161,7 @@ h3{
     font-size: 2vw;
   }
 
-  header a{
+  header.home a{
       font-size: 4vw;
       padding: 4vh 1vh 4vh 1vh;
   }
@@ -168,17 +170,20 @@ h3{
     max-width: none !important;
     font-size: 7vw;
   }
-
 }
+
+
 @media screen and (max-width: 1000px){
   .centered{
-    font-size: 3vw;
+      font-size: 3vw;
+    max-height: 200px;
+    top: 70%;
   }
 }
 
 
 @media screen and (max-width: 540px){
-    h2,h3{
+    .home h2,.home h3{
       font-size: 4vw;
     }
 
@@ -190,9 +195,10 @@ h3{
       margin: auto auto 2vh auto;
     }
 
-    header a{
+    header.home a{
         font-size: 4vw;
         padding: 2vh 1vh 2vh 1vh;
+          line-height: 0.5vh;
     }
     .MuiGrid-grid-xs-6 {
       max-width: 100% !important;
@@ -206,9 +212,9 @@ h3{
     #upbutton{
       font-size: 15vw;
     }
-    .centered{
-      max-height: 200px;
-      top: 70%;
+
+    .header-right{
+      margin: 0px !important;
     }
 
 }

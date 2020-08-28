@@ -1,6 +1,5 @@
 
-
-body{
+body.login{
     background-color:rgb(226, 115, 51);
 }
 
@@ -23,4 +22,3 @@ body{
     float: right;
     margin-right: 7%;
 }
-

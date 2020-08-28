@@ -17,17 +17,20 @@ class Home extends Component {
 
         }
     }
+    componentDidMount(){
+        document.body.classList.add('home');
+    }
 
     render() {
 
         return (
           <div >
-            <section id="home">
+            <section id="home" className="home">
               <div id="banner">
                 <img id="bannerimg" src={drive} alt="banner uniwheels"/>
-                <header>
+                <header className="home">
                   <div>
-                  <h1> Uni-Wheels </h1>
+                  <h1 className="home"> Uni-Wheels </h1>
                   </div>
                   <div>
                     <img src={logo} id="logito" alt="logo" />
@@ -43,11 +46,11 @@ class Home extends Component {
                 </div>
                   </div>
               </section>
-              <section id="about">
+              <section id="about" className="home">
                 <div id="info" className="gridcont">
                    <Grid container spacing={3}>
                      <Grid item xs={6}>
-                        <h2> ¿Quienes somos? </h2>
+                        <h2 className="home"> ¿Quienes somos? </h2>
                        <p>Somos una aplicación que te da la oportunidad de llegar a tu casa o a tu universidad fácil y comodamente. Interactuando con miembros de la comunidad universitaria de Bogotá, donde tu decides si quieres ser conductor o ser pasajero.</p>
                      </Grid>
                      <Grid item xs={6} className="cuadro">
@@ -56,21 +59,21 @@ class Home extends Component {
                  </Grid>
                 </div>
               </section>
-              <section id="ls">
+              <section id="ls" className="home">
                   <div id="otros" className="gridcont">
                      <Grid container spacing={3}>
                        <Grid item xs>
-                          <h3> Muevete de forma segura y confiable </h3>
+                          <h3 className="home"> Muevete de forma segura y confiable </h3>
                           <p> Tu conductor será un miembro de una universidad de la ciudad. </p>
                           <img src={route} className="valores" alt="container descripcion"/>
                        </Grid>
                        <Grid item xs>
-                          <h3> Ahorra Dinero </h3>
+                          <h3 className="home"> Ahorra Dinero </h3>
                           <p> Pagaras un valor similar al del transporte público. </p>
                             <img src={money} className="valores" alt="banner descripcion ahorro"/>
                        </Grid>
                        <Grid item xs>
-                          <h3> Conectate con mas Personas</h3>
+                          <h3 className="home"> Conectate con mas Personas</h3>
                           <p> Podrás conocer a muchas personas de la comunidad universitaria de Bogotá. </p>
                           <img src={connect} className="valores" alt="banner descripcion personas"/>
                        </Grid>

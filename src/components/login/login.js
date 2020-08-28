@@ -33,6 +33,11 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount(){
+        document.body.classList.add('login');
+    }
+
+
     handleUserChange(e){
         this.setState({
             user: e.target.value
@@ -55,8 +60,8 @@ class Login extends React.Component {
         e.preventDefault();
     };
 
-    render() { 
-        const { classes } = this.props;       
+    render() {
+        const { classes } = this.props;
         return (
             <div className="fondo">
                  <div>
@@ -66,12 +71,12 @@ class Login extends React.Component {
                         <br></br>
                         <div className="text">
                             <div>
-                                <TextField  id="username" label="Username" type="email" 
+                                <TextField  id="username" label="Username" type="email"
                                     onChange={this.handleUserChange} fullWidth autoFocus required />
                             </div>
                             <br></br>
                             <div >
-                                <TextField id="username" label="Password" type="password" 
+                                <TextField id="username" label="Password" type="password"
                                     onChange={this.handlePasswordChange} fullWidth required />
                             </div >
                             <br></br>
@@ -88,7 +93,7 @@ class Login extends React.Component {
                         <br></br>
                         <div>
                             <Button type="submit" color="primary" variant="contained"  className="submit">
-                                Entrar    
+                                Entrar
                             </Button>
                         </div>
                         <br></br>
@@ -102,7 +107,7 @@ class Login extends React.Component {
                     </form>
                 </div>
             </div>
-           
+
         );
     }
 }
