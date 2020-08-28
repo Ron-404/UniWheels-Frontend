@@ -4,7 +4,7 @@ body.login{
 }
 
 
-.form{
+.form.login{
     margin-top: 5%;
     margin-right: 35%;
     margin-left: 35%;
@@ -12,13 +12,13 @@ body.login{
     background-color:rgb(253, 253, 253);
 }
 
-.text{
+.text.login{
     margin-top: 5%;
     margin-right: 10%;
     margin-left: 10%;
 }
 
-.rigth{
+.rigth.login{
     float: right;
     margin-right: 7%;
 }

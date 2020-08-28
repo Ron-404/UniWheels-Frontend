@@ -33,11 +33,6 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount(){
-        document.body.classList.add('login');
-    }
-
-
     handleUserChange(e){
         this.setState({
             user: e.target.value
@@ -62,14 +57,15 @@ class Login extends React.Component {
 
     render() {
         const { classes } = this.props;
+        document.body.classList.add('login');
         return (
             <div className="fondo">
                  <div>
-                    <form onSubmit={this.handleSubmit} className="form" >
+                    <form onSubmit={this.handleSubmit} className="form login" >
                         <br></br>
                         <h2>Iniciar Sesión</h2>
                         <br></br>
-                        <div className="text">
+                        <div className="text login">
                             <div>
                                 <TextField  id="username" label="Username" type="email"
                                     onChange={this.handleUserChange} fullWidth autoFocus required />
@@ -98,7 +94,7 @@ class Login extends React.Component {
                         </div>
                         <br></br>
                         <br></br>
-                        <div className="rigth">
+                        <div className="rigth login">
                         <Link color="secondary" href="./login.js" className={classes.link} aria-current="page">
                             <HomeIcon  className={classes.icon} color="primary"/>Registrate</Link>
                         </div>

@@ -31,13 +31,13 @@ class RegistrarUsuario extends Component {
             </Typography>
           </div>
         </AppBar>
-        <div className="layout">
-          <Paper className="paper">
-            <Avatar className="avatar">
+        <div className="layout registrar">
+          <Paper className="paper registrar">
+            <Avatar className="avatar registrar">
               <LockIcon />
             </Avatar>
             <Typography variant="h4">CREA TU CUENTA</Typography>
-            <form className="form" onSubmit={this.handleSubmit} >
+            <form className="form registrar" onSubmit={this.handleSubmit} >
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="User">Usuario</InputLabel>
                 <Input id="user" name="user" onChange={this.handleUser} autoComplete="user" autoFocus />
@@ -62,7 +62,7 @@ class RegistrarUsuario extends Component {
                 <InputLabel htmlFor="password">Confimar Contraseña</InputLabel>
                 <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password"/>
               </FormControl>
-              <Button type="submit" fullWidth variant="contained" color="primary" className="submit">
+              <Button type="submit" fullWidth variant="contained" color="primary" className="submit registrar">
                 Registrar
               </Button>
             </form>

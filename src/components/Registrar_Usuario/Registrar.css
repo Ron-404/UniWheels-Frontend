@@ -1,11 +1,11 @@
-.layout {
+.layout.registrar {
     width: 30%;
     display: block;
     margin-left: auto;
     margin-right: auto;
 
 }
-.paper {
+.paper.registrar {
     margin-top: 20%;
     display: flex;
     flex-direction: column;
@@ -13,18 +13,17 @@
     padding: 20px;
 }
 
-.avatar {
+.avatar.registrar {
     margin: 10px;
     background: floralwhite;
 }
 
-.form {
+.form.registrar{
     width: 100%;
     margin-top: 30px;
 
 }
 
-.submit {
+.submit.registrar {
     marginTop: 40px;
 }
-

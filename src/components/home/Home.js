@@ -14,15 +14,11 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
         }
-    }
-    componentDidMount(){
-        document.body.classList.add('home');
     }
 
     render() {
-
+        document.body.classList.add('home');
         return (
           <div >
             <section id="home" className="home">
