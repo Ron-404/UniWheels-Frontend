@@ -34,6 +34,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import logo from '../../logo.png';
 
+import Solicitudes from './Solicitudes';
+
 class DashBoardPasajero extends Component {
 
     constructor(props) {
@@ -281,10 +283,9 @@ class DashBoardPasajero extends Component {
                                 </div>}
                             <div>
                                 {this.state.vista1 &&
-                                    <Typography variant="h6">
-                                        Activas
-                                </Typography>
+                                    <Solicitudes />
                                 }
+
                             </div>
                             <div>
                                 {this.state.vista2 &&
