@@ -34,6 +34,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import GroupIcon from '@material-ui/icons/Group';
+import OfrecerViaje from './OfrecerViaje';
 
 import logo from '../../logo.png';
 
@@ -295,7 +296,7 @@ class DashBoardConductor extends Component {
                                     <ListItemIcon>
                                         <EmojiTransportationIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Ofrecer viaje" />
+                                    <ListItemText primary="Ofrecer viaje"/>
                                 </ListItem>
                             </List>
                         </Collapse>
@@ -328,9 +329,7 @@ class DashBoardConductor extends Component {
                             </div>
                             <div>
                                 {this.state.vista3 &&
-                                    <Typography variant="h6">
-                                        Ofrecer Viaje
-                                </Typography>
+                                    <OfrecerViaje/>
                                 }
                             </div>
                             <div>
