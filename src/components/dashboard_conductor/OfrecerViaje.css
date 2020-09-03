@@ -3,38 +3,40 @@ body.OfrecerViaje{
     background-color:rgb(250, 246, 246);
 }
 
-.form-login{
+.form-OfrecerViaje{
     margin-top: 3%;
-    margin-right: 10%;
-    margin-left: 10%;
+    margin-right: auto;
+    margin-left: 50px;
+    width: 200%;
+    max-width: 400px;
     border-radius: 7%;
     background-color:rgb(253, 251, 250);
 }
 
 /** :rgb(92, 87, 83)*/
 
-.text.login{
+.text.OfrecerViaje{
     margin-top: 5%;
     margin-right: 10%;
     margin-left: 10%;
 }
 
-.rigth.login{
+.rigth.OfrecerViaje{
     float: right;
     margin-right: 7%;
 }
 
-.col-image{
+.col-image.OfrecerViaje{
     text-align: left;
     background-color:rgb(252, 252, 252);
 }
 
-.div-image-viaje{
+.div-image-viaje.OfrecerViaje{
     margin-top: 15%;
     margin-right: 2%;
     margin-left: 2%;
 }
 
-.text-form-cond{
+.text-form-cond.OfrecerViaje{
     background-color:rgb(250, 246, 246);
 }

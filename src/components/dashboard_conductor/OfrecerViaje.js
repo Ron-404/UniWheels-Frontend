@@ -67,24 +67,21 @@ class OfrecerViaje extends React.Component {
 
     render() {
         const { classes } = this.props;
-        document.body.classList.add('login');
+        document.body.classList.add('OfrecerViaje');
         return (
-            <div className="fondo">
-                <div className="container">
-                    <div className="row">
-                        <div className="col col-image">
-                            <div className="div-image-viaje">
+            <Grid container>
+                <Grid item xs={12} sm={6}>
+                            <div className="div-image-viaje OfrecerViaje">
                                 <img src={viaje} height="300" width="500"/>
                             </div>
-                            
-                        </div>
-                        <div className="col">
-                            <form onSubmit={this.handleSubmit} className="form-login">
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                            <form onSubmit={this.handleSubmit} className="form-OfrecerViaje">
                                 <br></br>
                                 <h2>Mi viaje</h2>
                                 <br></br>
-                                <div className="text login">
-                                    <div className="text-form-cond">
+                                <div className="text OfrecerViaje">
+                                    <div className="text-form-cond OfrecerViaje">
                                         <TextField id="select" label="¿Donde estás?" select required fullWidth
                                             onChange={this.handleOrigenChange}>
                                             <MenuItem value="usuario">Mi Casa</MenuItem>
@@ -92,7 +89,7 @@ class OfrecerViaje extends React.Component {
                                         </TextField>
                                     </div>
                                     <br></br>
-                                    <div className="text-form-cond">
+                                    <div className="text-form-cond OfrecerViaje">
                                         <TextField id="otlined-select" label="¿Para donde vás?" select required fullWidth
                                             onChange={this.handleDestinoChange}>
                                             <MenuItem value="usuario">Mi casa</MenuItem>
@@ -118,10 +115,9 @@ class OfrecerViaje extends React.Component {
                                 <br></br>
                                 <br></br>
                             </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </Grid>
+
+            </Grid>
         );
     }
 }
