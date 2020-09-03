@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
+import ListaCarros from './Carros/ListaCarros'
 
 import { withStyles } from "@material-ui/core/styles";
 import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
@@ -322,9 +323,7 @@ class DashBoardConductor extends Component {
                             </div>
                             <div>
                                 {this.state.vista2 &&
-                                    <Typography variant="h6">
-                                        Ver mis Carros
-                                </Typography>
+                                    <ListaCarros></ListaCarros>
                                 }
                             </div>
                             <div>
