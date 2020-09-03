@@ -13,8 +13,7 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = { }
     }
 
     render() {
@@ -32,7 +31,7 @@ class Home extends Component {
                     <img src={logo} id="logito" alt="logo" />
                   </div>
                     <div className="header-right">
-                     <a href="/">Login</a>
+                     <a href="/login">Login</a>
                      <a href="/">Registro</a>
                      <a href="#about">Acerca</a>
                    </div>

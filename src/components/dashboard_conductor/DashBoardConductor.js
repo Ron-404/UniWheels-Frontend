@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import clsx from 'clsx';
 
 import { withStyles } from "@material-ui/core/styles";
+import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
 
 import {
     Menu,
@@ -263,7 +264,7 @@ class DashBoardConductor extends Component {
                         <Collapse in={this.state.isCarsOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 {['Registrar Carro', 'Ver mis Carros'].map((text, index) => (
-                                    <ListItem 
+                                    <ListItem
                                         className={classes.nested}
                                         button key={text}
                                         selected={this.state.selectedIndex === index}
@@ -314,9 +315,8 @@ class DashBoardConductor extends Component {
                                 </div>}
                             <div>
                                 {this.state.vista1 &&
-                                    <Typography variant="h6">
-                                        Registrar Carro
-                                </Typography>
+                                    <ModalRegistrarAutomovil/>
+
                                 }
                             </div>
                             <div>
