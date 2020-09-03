@@ -1,0 +1,40 @@
+
+body.OfrecerViaje{
+    background-color:rgb(250, 246, 246);
+}
+
+.form-login{
+    margin-top: 3%;
+    margin-right: 10%;
+    margin-left: 10%;
+    border-radius: 7%;
+    background-color:rgb(253, 251, 250);
+}
+
+/** :rgb(92, 87, 83)*/
+
+.text.login{
+    margin-top: 5%;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.rigth.login{
+    float: right;
+    margin-right: 7%;
+}
+
+.col-image{
+    text-align: left;
+    background-color:rgb(252, 252, 252);
+}
+
+.div-image-viaje{
+    margin-top: 15%;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+.text-form-cond{
+    background-color:rgb(250, 246, 246);
+}
