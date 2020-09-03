@@ -37,6 +37,18 @@ npm run start
 ```
 http://localhost:5000
 ```
+
+# Componentes externos:
+
+## mapa component npm:
+
+[react-here-map](https://limistah.github.io/react-here-map/)
+
+## Api services map
+
+[developer-here page](https://developer.here.com/)
+[npm page](https://www.npmjs.com/package/@daiyam/react-here-map#hmaproute)
+
 # Circle CI
 
 [![CircleCI](https://circleci.com/gh/Ron-404/UniWheels-Frontend.svg?style=svg)](https://circleci.com/gh/Ron-404/UniWheels-Frontend)

@@ -36,6 +36,8 @@ import logo from '../../logo.png';
 
 import Solicitudes from './Solicitudes';
 
+import ViajesOfrecidosConductores from "../dashboard_pasajero/ViajesOfrecidosConductores";
+
 class DashBoardPasajero extends Component {
 
     constructor(props) {
@@ -278,8 +280,9 @@ class DashBoardPasajero extends Component {
                             {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
                                 <div>
                                     <Typography variant="h3">
-                                        BIENVENIDO PASAJERO
-                            </Typography>
+                                        Viajes Disponibles:
+                                    </Typography>
+                                    <ViajesOfrecidosConductores/>
                                 </div>}
                             <div>
                                 {this.state.vista1 &&
