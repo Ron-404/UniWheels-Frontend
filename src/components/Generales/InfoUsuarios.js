@@ -32,7 +32,6 @@ class InfoUsuarios extends Component {
     };
 
     render() {
-        const { classes } = this.props;
         return (
             <TransitionsModal user={this.state.user}></TransitionsModal>
         )
