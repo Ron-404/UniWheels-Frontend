@@ -139,6 +139,7 @@ class DashBoardPasajero extends Component {
 
     render() {
         const { classes } = this.props;
+        document.body.classList.add('dashBoardConductor');
         return (
             <div className={classes.root}>
                 <CssBaseline />

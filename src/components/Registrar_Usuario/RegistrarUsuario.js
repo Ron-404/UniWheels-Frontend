@@ -18,6 +18,7 @@ class RegistrarUsuario extends Component {
   }
 
   render() {
+    document.body.classList.add('dashBoardConductor');
     return (
       <React.Fragment >
         <CssBaseline />

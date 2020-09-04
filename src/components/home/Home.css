@@ -151,13 +151,13 @@ a{
   .gridcont p{
       font-size: 2vh;
   }
-  h1{
+  h1.home{
     font-size: 5vw;
   }
-  h2{
+  h2.home{
     font-size: 3vw;
   }
-  h3{
+  h3.home{
     font-size: 2vw;
   }
 

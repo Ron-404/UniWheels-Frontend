@@ -1,8 +1,10 @@
 import React from 'react';
 import './login.css';
-import {  withStyles,TextField, MenuItem, Button} from '@material-ui/core';
+import {  withStyles,TextField, MenuItem, Button, Grid} from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import HomeIcon from '@material-ui/icons/Home';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
+import logo from '../../logo.png';
+import { Redirect } from 'react-router-dom';
 
 
 const styles = theme => ({
@@ -13,12 +15,14 @@ const styles = theme => ({
         alignItems: 'center',
       },
       link: {
-        display: 'flex',
+          width: 20,
+          color: '#3f51b5',
       },
       icon: {
         marginRight: theme.spacing(0.5),
-        width: 25,
-        height: 25,
+        width: 45,
+        height: 45,
+        color: '#3f51b5',
       },
 });
 
@@ -26,43 +30,51 @@ class Login extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {user:'',password:'',rol:''};
-        this.handleUserChange = this.handleUserChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleRolChange = this.handleRolChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {user:'',password:'',rol:'',dashboardConductor: false, dashboardPasajero: false};
     }
 
-    handleUserChange(e){
+    handleUserChange = (e) =>{
         this.setState({
             user: e.target.value
         });
     };
 
-    handlePasswordChange(e){
+    handlePasswordChange = (e)=>{
         this.setState({
             password: e.target.value
         });
     };
 
-    handleRolChange(e){
+    handleRolChange = (e)=>{
         this.setState({
             rol: e.target.value
         });
     };
 
-    handleSubmit(e){
-        e.preventDefault();
+    handleSubmit = ()=>{
+        console.log("submit "+this.state.rol);
+        if(this.state.rol === 'pasajero'){
+            console.log("pasajero");
+            this.setState({dashboardPasajero:true});
+        }
+        else{
+            this.setState({dashboardConductor:true});
+        }
     };
 
     render() {
         const { classes } = this.props;
         document.body.classList.add('login');
         return (
-            <div className="fondo">
+            <div className="fondo login">
+                {this.state.dashboardConductor && <Redirect to={{pathname: "/dashboardConductor"}}></Redirect>}
+                {this.state.dashboardPasajero && <Redirect to={{pathname: "/dashboardPasajero"}}></Redirect>}
                  <div>
-                    <form onSubmit={this.handleSubmit} className="form login" >
+                    <form className="form login" >
                         <br></br>
+                        <div>
+                            <img src={logo} width="60px" height="60px" margin="auto" alt="Logo"/>
+                        </div>
                         <h2>Iniciar Sesión</h2>
                         <br></br>
                         <div className="text login">
@@ -79,7 +91,7 @@ class Login extends React.Component {
                             <div>
                                 <TextField id="select" label="Rol" select required fullWidth
                                     onChange={this.handleRolChange}>
-                                    <MenuItem value="usuario">Usuario</MenuItem>
+                                    <MenuItem value="pasajero">Pasajero</MenuItem>
                                     <MenuItem value="conductor">Conductor</MenuItem>
                                 </TextField>
                             </div>
@@ -87,17 +99,20 @@ class Login extends React.Component {
                         <br></br>
                         <br></br>
                         <br></br>
-                        <div>
-                            <Button type="submit" color="primary" variant="contained"  className="submit">
+                        <Grid>
+                            <div>
+                            <Button color="primary" variant="contained"  className="submit" onClick={this.handleSubmit}>
                                 Entrar
                             </Button>
-                        </div>
-                        <br></br>
-                        <br></br>
-                        <div className="rigth login">
-                        <Link color="secondary" href="./login.js" className={classes.link} aria-current="page">
-                            <HomeIcon  className={classes.icon} color="primary"/>Registrate</Link>
-                        </div>
+                            </div>
+                            <div id="boton-registrar">
+                                <HowToRegIcon className={classes.icon}/>
+                                <Link color="secondary" className={classes.link} aria-current="page"
+                                    to={{pathname: "/RegistrarUsuario"}}>
+                                    Registrate
+                                </Link>
+                            </div>
+                        </Grid>
                         <br></br>
                         <br></br>
                     </form>
