@@ -12,7 +12,8 @@ import Login from './components/login/login';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      {/* HACK reload stiles to diferent view forceRefresh={true}*/}
+      <BrowserRouter forceRefresh={true}>
         <Switch>
           <Route path='/' component={Home} exact ></Route>
           <Route path='/home' component={Home} exact ></Route>

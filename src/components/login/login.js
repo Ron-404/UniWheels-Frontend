@@ -33,6 +33,10 @@ class Login extends React.Component {
         this.state = {user:'',password:'',rol:'',dashboardConductor: false, dashboardPasajero: false};
     }
 
+    componentWillUnmount(){
+        document.body.classList.remove("login")
+    }
+
     handleUserChange = (e) =>{
         this.setState({
             user: e.target.value
@@ -52,13 +56,13 @@ class Login extends React.Component {
     };
 
     handleSubmit = ()=>{
-        console.log("submit "+this.state.rol);
+        const { history } = this.props;
         if(this.state.rol === 'pasajero'){
-            console.log("pasajero");
-            this.setState({dashboardPasajero:true});
+            history.push('/dashboardPasajero');
+                
         }
         else{
-            this.setState({dashboardConductor:true});
+            history.push('/dashboardConductor');
         }
     };
 
@@ -67,8 +71,6 @@ class Login extends React.Component {
         document.body.classList.add('login');
         return (
             <div className="fondo login">
-                {this.state.dashboardConductor && <Redirect to={{pathname: "/dashboardConductor"}}></Redirect>}
-                {this.state.dashboardPasajero && <Redirect to={{pathname: "/dashboardPasajero"}}></Redirect>}
                  <div>
                     <form className="form login" >
                         <br></br>

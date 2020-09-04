@@ -145,7 +145,7 @@ class DashBoardConductor extends Component {
 
     render() {
         const { classes } = this.props;
-        document.body.classList.add('dashBoardConductor');
+        
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -317,20 +317,13 @@ class DashBoardConductor extends Component {
                             </Typography>
                                 </div>}
                             <div>
-                                {this.state.vista1 &&
-                                    <ModalRegistrarAutomovil/>
-
-                                }
+                                {this.state.vista1 ? <ModalRegistrarAutomovil/> : null}
                             </div>
                             <div>
-                                {this.state.vista2 &&
-                                    <ListaCarros></ListaCarros>
-                                }
+                                {this.state.vista2 ? <ListaCarros/> : null}
                             </div>
                             <div>
-                                {this.state.vista3 &&
-                                    <OfrecerViaje/>
-                                }
+                                {this.state.vista3 ? <OfrecerViaje/> : null}
                             </div>
                             <div>
                                 {this.state.vista4 &&

@@ -37,6 +37,11 @@ class OfrecerViaje extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // HACK delete styles
+    componentWillUnmount(){
+        document.body.classList.remove("OfrecerViaje")
+    }
+
     handleOrigenChange(e){
         this.setState({
             origen: e.target.value

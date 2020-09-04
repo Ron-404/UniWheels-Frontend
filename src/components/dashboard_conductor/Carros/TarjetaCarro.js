@@ -9,6 +9,11 @@ class TarjetaCarro extends React.Component{
         "isPicked":this.props.car.isPicked,
     }
 
+    // HACK delete styles
+    componentWillUnmount(){
+        document.body.classList.remove("TarjetaCarro")
+    }
+
     iChooseThis = (bool) =>{
         const {selectCar} = this.props;
         selectCar(this.props.car);

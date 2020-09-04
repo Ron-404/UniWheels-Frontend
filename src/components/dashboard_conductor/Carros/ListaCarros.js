@@ -27,6 +27,11 @@ class ListaCarros extends React.Component{
         }]
     }
 
+    // HACK delete styles
+    componentWillUnmount(){
+        document.body.classList.remove("ListaCarros")
+    }
+
     selectCar = (car) =>{
         let index = this.state.listaDeCarros.indexOf(car);
         car.isPicked = true;
