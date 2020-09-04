@@ -71,13 +71,12 @@ class OfrecerViaje extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
         document.body.classList.add('OfrecerViaje');
         return (
             <Grid container>
                 <Grid item xs={12} sm={6}>
                             <div className="div-image-viaje OfrecerViaje">
-                                <img src={viaje} height="300" width="500"/>
+                                <img src={viaje} height="300" width="500" alt="img-registro"/>
                             </div>
                 </Grid>
                 <Grid item xs={12} sm={6}>

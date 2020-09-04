@@ -4,8 +4,6 @@ import {  withStyles,TextField, MenuItem, Button, Grid} from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import logo from '../../logo.png';
-import { Redirect } from 'react-router-dom';
-
 
 const styles = theme => ({
     paper: {
