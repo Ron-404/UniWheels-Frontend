@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography,AppBar} from '@material-ui/core/';
+import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography} from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
-import logo from '../../logo.png';
 import './Registrar.css'
 
 class RegistrarUsuario extends Component {
@@ -16,9 +15,8 @@ class RegistrarUsuario extends Component {
     this.handleConfirmPassword = this.handleConfirmPassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   render() {
-    document.body.classList.add('dashBoardConductor');
+    document.body.classList.add('registrar');
     return (
       <React.Fragment >
         <CssBaseline />
@@ -53,7 +51,7 @@ class RegistrarUsuario extends Component {
                 <InputLabel htmlFor="password">Confimar Contraseña</InputLabel>
                 <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password"/>
               </FormControl>
-              <Button type="submit" fullWidth variant="contained" color="primary" className="submit registrar">
+              <Button  onClick={this.onSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
                 Registrar
               </Button>
             </form>
@@ -62,6 +60,12 @@ class RegistrarUsuario extends Component {
       </React.Fragment>
     );
   }
+
+  onSubmit = () =>{
+    const { history } = this.props;
+    history.push('/login');
+  }
+
   handleUser(e) {
     this.setState({
       user: e.target.value
