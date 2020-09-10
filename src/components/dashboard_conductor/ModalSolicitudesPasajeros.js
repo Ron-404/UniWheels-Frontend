@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import './ModalSolicitudesPasajeros.css';
@@ -58,6 +59,7 @@ class RowPas extends Component {
         let row=this.state.row;
         return (
           <TableRow key={row.name}>
+
             <TableCell component="th" scope="row">
               {row.name}
             </TableCell>
@@ -78,6 +80,7 @@ class RowPas extends Component {
                        </Button> : null}
             </TableCell>
           </TableRow>
+          
         )
     }
 }
@@ -104,6 +107,9 @@ const SimpleTable=((props)=> {
 
   return (
     <TableContainer component={Paper}>
+          <Typography variant="h3" id="tableTitle" component="div">
+            Solicitudes de Pasajeros
+          </Typography>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
