@@ -22,16 +22,6 @@ class RegistrarUsuario extends Component {
     return (
       <React.Fragment >
         <CssBaseline />
-        <AppBar position="relative" className="appBar" style={{ background: '#FF5733'}}>
-          <div>
-            <img src={logo} width="40px" height="40px" margin="auto" alt="Logo"/>
-          </div>
-          <div className="nombre">
-            <Typography variant="h6" noWrap>
-              UNIWHEELS
-            </Typography>
-          </div>
-        </AppBar>
         <div className="layout registrar">
           <Paper className="paper registrar">
             <Avatar className="avatar registrar">
