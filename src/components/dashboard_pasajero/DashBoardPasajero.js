@@ -19,6 +19,7 @@ import {
     ListItemText,
     Box,
     Collapse,
+    Link,
 } from '@material-ui/core/';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -161,14 +162,15 @@ class DashBoardPasajero extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <div>
-                            <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
-                        </div>
-                        <div className={classes.menuTitle}>
-                            <Typography variant="h6">
-                                UNIWHEELS
-                            </Typography>
-                        </div>
+                        <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
+
+                        <Typography variant="h6" noWrap href="/home">
+                            <Link href="/home">
+                                <div className={classes.menuTitle}>
+                                    UNIWHEELS
+                                </div>
+                            </Link>
+                        </Typography>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <IconButton
@@ -364,6 +366,7 @@ const styles = theme => ({
     },
     menuTitle: {
         marginLeft: "5px",
+        color: "#FFFFFF"
     },
     hide: {
         display: 'none',

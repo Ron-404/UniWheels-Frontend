@@ -36,6 +36,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import GroupIcon from '@material-ui/icons/Group';
+import Link from '@material-ui/core/Link';
 import OfrecerViaje from './OfrecerViaje';
 
 import logo from '../../logo.png';
@@ -168,14 +169,18 @@ class DashBoardConductor extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <div>
-                            <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
-                        </div>
-                        <div className={classes.menuTitle}>
-                            <Typography variant="h6" noWrap>
-                                UNIWHEELS
-                            </Typography>
-                        </div>
+                        
+                        <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
+
+                        <Typography variant="h6" noWrap href="/home">
+                            <Link href="/home">
+                                <div className={classes.menuTitle}>
+                                    UNIWHEELS
+                                </div>
+                            </Link>
+                        </Typography>
+
+
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <IconButton
@@ -380,8 +385,12 @@ const styles = theme => ({
     menuButton: {
         marginRight: 36,
     },
+    menuLogo:{
+        position: "relative",
+    },
     menuTitle: {
         marginLeft: "5px",
+        color: "#FFFFFF",
     },
     hide: {
         display: 'none',
