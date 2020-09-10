@@ -4,6 +4,7 @@ import ListaCarros from './Carros/ListaCarros'
 
 import { withStyles } from "@material-ui/core/styles";
 import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
+import ModalSolicitudesPasajeros from './ModalSolicitudesPasajeros';
 
 import {
     Menu,
@@ -145,7 +146,7 @@ class DashBoardConductor extends Component {
 
     render() {
         const { classes } = this.props;
-        
+
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -289,17 +290,17 @@ class DashBoardConductor extends Component {
                         </ListItem>
                         <Collapse in={this.state.isTravelsOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
+                            {['Ofrecer Viaje', 'Solcitudes'].map((text, index) => (
                                 <ListItem
                                     className={classes.nested}
-                                    button
-                                    selected={this.state.selectedIndex === 2}
-                                    onClick={this.handleListItemClick.bind(this, 2)}
+                                    button key={text}
+                                    selected={this.state.selectedIndex === index+2}
+                                    onClick={this.handleListItemClick.bind(this, index+2)}
                                 >
-                                    <ListItemIcon>
-                                        <EmojiTransportationIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Ofrecer viaje"/>
+                                    <ListItemIcon>{index % 2 === 0 ? <EmojiTransportationIcon /> : <ListIcon />}</ListItemIcon>
+                                    <ListItemText primary={text} />
                                 </ListItem>
+                            ))}
                             </List>
                         </Collapse>
                     </List>
@@ -326,11 +327,7 @@ class DashBoardConductor extends Component {
                                 {this.state.vista3 ? <OfrecerViaje/> : null}
                             </div>
                             <div>
-                                {this.state.vista4 &&
-                                    <Typography variant="h6" noWrap>
-                                        Vista 4
-                                </Typography>
-                                }
+                                {this.state.vista4 ? <ModalSolicitudesPasajeros/>:null}
                             </div>
 
                         </div>

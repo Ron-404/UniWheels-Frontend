@@ -11,14 +11,14 @@ class ModalRegistrarAutomovil extends Component {
 
       constructor(props) {
         super(props);
-        this.state={'marca':'','modelo':'' ,
+        this.state={'marca':'','modelo':'' ,'color':'',
                   marcas:
                   [{marca:'Ford'},
                   {marca:'Nissan'}],
                   modelos:[
-                    {modelo:'xxxxxx'},
-                    {modelo:'yyyyyy'}
-                  ]
+                    {modelo:'Focus'},
+                    {modelo:'Versa'}
+                  ],colores:['blanco','negro','azul','rojo','amarillo','verde','naranja','morado']
 
                 };
 
@@ -42,6 +42,11 @@ class ModalRegistrarAutomovil extends Component {
               <h1> Registra Tu Automovil </h1>
               <img src={car} className='Rautomovil' alt="imagen-auto"/>
               <p>
+              <p>
+              <FormControl variant="filled" >
+                  <TextField id="standard-basic" label="Placa" />
+              </FormControl>
+              </p>
               <FormControl variant="filled" >
                 <InputLabel htmlFor="m">Marca</InputLabel>
                 <Select
@@ -76,12 +81,28 @@ class ModalRegistrarAutomovil extends Component {
                 </Select>
               </FormControl>
               </p>
+
               <p>
               <FormControl variant="filled" >
-                  <TextField id="standard-basic" label="Placa" />
+                <InputLabel htmlFor="co">Color</InputLabel>
+                <Select
+                  native
+                  value={this.state.color}
+                  onChange={this.handleChange}
+                  inputProps={{
+                    name: 'color',
+                    id: 'co',
+                  }}
+                >
+                  <option aria-label="None" value="" />
+                   { this.state.colores.map((color) => <option key={color} >{color}</option>) }
+                </Select>
               </FormControl>
               </p>
-              <Button onClick={() => { alert('clicked') }}>Registrar</Button>
+
+              <Button onClick={() => { alert('Registro !') }} variant="outlined" color="primary">
+                Registrar
+              </Button>
 
 
           </div>)
