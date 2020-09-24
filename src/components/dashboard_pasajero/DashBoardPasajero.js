@@ -32,6 +32,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 
 import logo from '../../logo.png';
 
@@ -50,6 +51,7 @@ class DashBoardPasajero extends Component {
             isMenuOpen: false,
             isMobileMenuOpen: false,
             isRequestsOpen: false,
+            isViajesOpen: false,
 
             selectedIndex: false,
             vista1: false,
@@ -68,6 +70,7 @@ class DashBoardPasajero extends Component {
         this.handleMenuClose = this.handleMenuClose.bind(this);
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
         this.handleClickRequests = this.handleClickRequests.bind(this);
+        this.handleClickRequestsViajes = this.handleClickRequestsViajes.bind(this);
     }
 
     handleProfileMenuOpen(event) {
@@ -128,6 +131,10 @@ class DashBoardPasajero extends Component {
 
     handleClickRequests(){
         this.setState({ isRequestsOpen : !this.state.isRequestsOpen})
+    }
+
+    handleClickRequestsViajes(){
+        this.setState({ isViajesOpen : !this.state.isViajesOpen})
     }
 
     handleDrawerOpen() {
@@ -271,6 +278,29 @@ class DashBoardPasajero extends Component {
                                         <CheckCircleOutlineIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Activas" />
+                                </ListItem>
+                            </List>
+                        </Collapse>
+
+                        <ListItem button onClick={this.handleClickRequestsViajes}>
+                            <ListItemIcon>
+                                <EmojiTransportationIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Mis Viajes" />
+                            {this.state.isViajesOpen ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse in={this.state.isViajesOpen} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItem
+                                    className={classes.nested}
+                                    button
+                                    selected={this.state.selectedIndex === 1}
+                                    onClick={this.handleListItemClick.bind(this, 1)}
+                                >
+                                    <ListItemIcon>
+                                        <CheckCircleOutlineIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Actual" />
                                 </ListItem>
                             </List>
                         </Collapse>
