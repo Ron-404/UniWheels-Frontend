@@ -33,12 +33,10 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
-
 import logo from '../../logo.png';
-
 import Solicitudes from './Solicitudes';
-
 import ViajesOfrecidosConductores from "../dashboard_pasajero/ViajesOfrecidosConductores";
+import ModalViajePasajero from './viaje/ModalViajePasajero';
 
 class DashBoardPasajero extends Component {
 
@@ -325,10 +323,16 @@ class DashBoardPasajero extends Component {
                             </div>
                             <div>
                                 {this.state.vista2 &&
-                                    <Typography variant="h6">
-                                        Vista 2
-                                </Typography>
-                                }
+                                    <div>
+                                        <div>
+                                            <Typography variant="h3">
+                                                Viaje Actual:
+                                            </Typography>
+                                        </div>
+                                        <div> 
+                                            <ModalViajePasajero/>
+                                        </div>
+                                    </div>}
                             </div>
                             <div>
                                 {this.state.vista3 &&

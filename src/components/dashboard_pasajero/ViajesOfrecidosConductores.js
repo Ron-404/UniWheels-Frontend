@@ -54,7 +54,7 @@ class ViajesOfrecidosConductores extends Component {
                                     
                                         <CardContent>
 
-                                            <MapRouting />
+                                            <MapRouting width="270px"/>
 
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 inicio: {viaje.viaje.inicio}

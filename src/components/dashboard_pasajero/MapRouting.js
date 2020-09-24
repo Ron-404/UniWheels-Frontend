@@ -6,24 +6,24 @@ import Swal from 'sweetalert2'
 
 class MapRouting extends Component {
 
-    constructor(props) {
+     constructor(props) {
         super(props);
         this.state = {
             open: false,
             shape: [],
-            lat: 4.782503,
-            lng: -74.042003
+            lat1: 4.782503,
+            lng1: -74.042003,
+            lat2: 4.731232,
+            lng2: -74.042022
         }
     }
 
-/*     open = (e)=>{
-        Swal.fire('punto agregado', 'a agregado el punto x al mapa!!', 'success')
-        //console.log("Map Pointer Down", e)
-    }; */
-
-    openMarker = (e)=>{
-        Swal.fire('Ubicación ECI', 'Escuela Colombiana de Ingenieria Julio Garavito!!', 'success')
-        console.log("Map Pointer Down", e)
+    openMarker = (e) => {
+        if (e.target.b.lat === this.state.lat1) {
+            Swal.fire('Ubicación ECI', 'Escuela Colombiana de Ingenieria Julio Garavito!!', 'success')
+        } else {
+            Swal.fire('Prado', 'zona x!!', 'success')
+        }
     };
 
     render() {
@@ -44,27 +44,34 @@ class MapRouting extends Component {
                 interactive // Required for events
                 includeUI
                 includePlaces
-                >
+            >
                 <HMap
                     style={{
-                    height: "200px",
-                    width: "270px",
-                    margin: "auto"
+                        height: "200px",
+                        width: this.props.width,
+                        margin: "auto"
                     }}
-                    mapOptions={{ center: { lat: 4.6359562, lng: -74.110048 },zoom:10 }}
+                    mapOptions={{ center: { lat: 4.6359562, lng: -74.110048 }, zoom: 10 }}
                     useEvents // Required for events
-                    // mapEvents={{ pointerdown: (e) => this.open(e) }} // event handlers
+                // mapEvents={{ pointerdown: (e) => this.open(e) }} // event handlers
                 >
-                        <HMapMarker
-                            coords={{ lat: this.state.lat, lng: this.state.lng }}
-                            icon={markerIcon}
-                            objectEvents={{
-                                pointerdown: (e) => this.openMarker(e)}}
-                            />
+                    <HMapMarker
+                        coords={{ lat: this.state.lat1, lng: this.state.lng1 }}
+                        icon={markerIcon}
+                        objectEvents={{
+                            pointerdown: (e) => this.openMarker(e)
+                        }}
+                    />
+                    <HMapMarker
+                        coords={{ lat: this.state.lat2, lng: this.state.lng2 }}
+                        icon={markerIcon}
+                        objectEvents={{
+                            pointerdown: (e) => this.openMarker(e)
+                        }}
+                    />
                 </HMap>
             </HPlatform>
         )
     }
 }
-
 export default MapRouting;
