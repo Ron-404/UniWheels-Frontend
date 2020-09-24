@@ -152,7 +152,7 @@ class ModalViajeConductor extends Component {
 
 const styles = theme => ({
     root: {
-        width: "700px",
+        width: "400px",
         height: "100%",
         marginBottom: "50px",
         backgroundColor: "#E0E3E5"
