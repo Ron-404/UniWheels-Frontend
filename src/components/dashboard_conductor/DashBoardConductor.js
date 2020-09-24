@@ -38,6 +38,7 @@ import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import GroupIcon from '@material-ui/icons/Group';
 import Link from '@material-ui/core/Link';
 import OfrecerViaje from './OfrecerViaje';
+import ModalViajeConductor from './viaje/ModalViajeConductor';
 
 import logo from '../../logo.png';
 
@@ -318,9 +319,14 @@ class DashBoardConductor extends Component {
 
                             {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
                                 <div>
-                                    <Typography variant="h3">
-                                        BIENVENIDO CONDUCTOR
-                            </Typography>
+                                    <div>
+                                        <Typography variant="h3">
+                                            Viajes Actuales:
+                                        </Typography>
+                                    </div>
+                                    <div> 
+                                        <ModalViajeConductor/>
+                                    </div>
                                 </div>}
                             <div>
                                 {this.state.vista1 ? <ModalRegistrarAutomovil/> : null}
