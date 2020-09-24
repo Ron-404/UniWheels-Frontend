@@ -101,8 +101,8 @@ class ModalViajeConductor extends Component {
                                         {viaje.pasajeros.map((pasajero, index) => {
                                             return (
                                                 <div>
-                                                    <Divider />
-                                                    <ListItem key={index}>
+                                                    <Divider key={index} />
+                                                    <ListItem key={index+1} >
 
                                                         <ListItemAvatar>
                                                             <Avatar>
@@ -112,13 +112,15 @@ class ModalViajeConductor extends Component {
                                                         <ListItemText
                                                             primary={pasajero.name}
                                                             secondary={
-                                                                <ReactStars
-                                                                    value={pasajero.rating}
-                                                                    size={24}
-                                                                    color="#AFAFAF"
-                                                                    activeColor="#ffd700"
-                                                                    edit={false}
-                                                                />
+                                                                <p>
+                                                                    <ReactStars
+                                                                        value={pasajero.rating}
+                                                                        size={24}
+                                                                        color="#AFAFAF"
+                                                                        activeColor="#ffd700"
+                                                                        edit={false}
+                                                                    />
+                                                                </p>
                                                             }
 
                                                         />

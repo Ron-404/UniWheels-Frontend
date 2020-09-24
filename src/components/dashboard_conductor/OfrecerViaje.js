@@ -7,8 +7,6 @@ import {  withStyles,
     Grid,
 } from '@material-ui/core';
 
-import viaje from './viaje.jpg';
-
 const styles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
