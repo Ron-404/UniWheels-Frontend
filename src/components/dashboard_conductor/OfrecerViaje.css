@@ -7,7 +7,7 @@ body.OfrecerViaje{
     margin-top: 3%;
     margin-right: auto;
     margin-left: 50px;
-    width: 200%;
+    width: 100%;
     max-width: 400px;
     border-radius: 7%;
     background-color:rgb(253, 251, 250);
@@ -39,4 +39,12 @@ body.OfrecerViaje{
 
 .text-form-cond.OfrecerViaje{
     background-color:rgb(250, 246, 246);
+}
+#mapazona{
+  max-width: 100%;
+}
+
+.MuiGrid-grid-sm-6 {
+
+    max-width: none !important;
 }
