@@ -48,7 +48,7 @@ class MapaViajeInicioDestino extends Component {
                 <HMap
                     style={{
                         height: "200px",
-                        width: "600px",
+                        width: "350px",
                         margin: "auto"
                     }}
                     mapOptions={{ center: { lat: 4.6359562, lng: -74.110048 }, zoom: 11 }}
