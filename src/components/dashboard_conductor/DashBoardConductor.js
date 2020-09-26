@@ -321,7 +321,7 @@ class DashBoardConductor extends Component {
                                 <div>
                                     <div>
                                         <Typography variant="h3">
-                                            Viajes Actuales:
+                                            Viaje Actual:
                                         </Typography>
                                     </div>
                                     <div> 
