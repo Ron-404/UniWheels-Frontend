@@ -99,6 +99,7 @@ class RegistrarUsuario extends Component {
     });
   }
   async handleSubmit(e) {
+    const { history } = this.props;
     var f = "@escuelaing.edu.co";
     console.log(this.state.email);
     e.preventDefault();
@@ -127,14 +128,27 @@ class RegistrarUsuario extends Component {
                         carros : [],
                         viajesConductor : [],
                         viajesPasajero : []
-                      })
+                      },
+                      )
                       .then(function (response) {
                         console.log(response.status);
                         console.log(response.data);
+                          if(response.status===200){
+                            Swal.fire(
+                                'Cuenta creada satisfactoriamente!',
+                                'Sera redireccionado a la pagina de inicio de sesion',
+                                'success'
+                            )
+                            
+                            history.push('/login');
+                          }else{
+                            Swal.fire("Signup failed!", "try again later", "error");
+                          }
+                        
                       })
-      Swal.fire('Cuenta creada satisfactoriamente!', 'Por favor inice sesión para continuar','success');
-      const { history } = this.props;
-      history.push('/login');
+                      .catch(function (error) {
+                        console.log(error);
+                      });
       return;
     }
   }
