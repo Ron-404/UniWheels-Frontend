@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography} from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 class RegistrarUsuario extends Component {
   constructor(props){
@@ -26,7 +28,7 @@ class RegistrarUsuario extends Component {
               <LockIcon />
             </Avatar>
             <Typography variant="h4">CREA TU CUENTA</Typography>
-            <form className="form registrar" onSubmit={this.handleSubmit} >
+            <form className="form registrar" >
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="User">Usuario</InputLabel>
                 <Input id="user" name="user" onChange={this.handleUser} autoComplete="user" autoFocus />
@@ -51,7 +53,7 @@ class RegistrarUsuario extends Component {
                 <InputLabel htmlFor="password">Confimar Contraseña</InputLabel>
                 <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password"/>
               </FormControl>
-              <Button  onClick={this.onSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
+              <Button  onClick={this.handleSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
                 Registrar
               </Button>
             </form>
@@ -96,16 +98,43 @@ class RegistrarUsuario extends Component {
       confirmPassword: e.target.value
     });
   }
-  handleSubmit(e) {
+  async handleSubmit(e) {
     var f = "@escuelaing.edu.co";
+    console.log(this.state.email);
     e.preventDefault();
-    if(!this.state.email.includes(f)){
-      alert("El correo no corresponde con uno institucional");
+    if(this.state.email === '' ||
+            this.state.user === '' ||
+            this.state.university === '' ||
+            this.state.address === '' ||
+            this.state.confirmPassword === '' ||
+            this.state.password === ''){
+      Swal.fire("Algún espacio esta vacio", "Por favor llene todos los campos", "error");
+    }else if(!this.state.email.includes(f)){
+      Swal.fire("El correo no corresponde con uno institucional.", "Por favor ingrese un correo institucional.", "error");
       return;
     }else if(this.state.password !== this.state.confirmPassword){
-      alert("Las contraseñas ingresadas no coinciden.");
+      Swal.fire("Las contraseñas ingresadas no coinciden.", "Por favor ingrese de nuevo las contraseñas.", "error");
       return;
     }else{
+      let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/addUser', {
+                        username : this.state.user,
+                        nombreCompleto : this.state.user,
+                        email :  this.state.email,
+                        universidad : this.state.university,
+                        password : this.state.password,
+                        direccionResidencia : this.state.address,
+                        numero : '',
+                        carros : [],
+                        viajesConductor : [],
+                        viajesPasajero : []
+                      })
+                      .then(function (response) {
+                        console.log(response.status);
+                        console.log(response.data);
+                      })
+      Swal.fire('Cuenta creada satisfactoriamente!', 'Por favor inice sesión para continuar','success');
+      const { history } = this.props;
+      history.push('/login');
       return;
     }
   }
