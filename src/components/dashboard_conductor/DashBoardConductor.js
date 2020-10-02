@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import ListaCarros from './Carros/ListaCarros'
 
 import { withStyles } from "@material-ui/core/styles";
+import Swal from 'sweetalert2';
 import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
 import ModalSolicitudesPasajeros from './ModalSolicitudesPasajeros';
 
@@ -84,9 +85,36 @@ class DashBoardConductor extends Component {
         this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
     };
 
-    handleMenuClose() {
+    handleMenuClose(index) {
+        const { history } = this.props;
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: true
+          })
+
         this.setState({ anchorEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
+
+        if(index===2){ // cambio dashboard
+            swalWithBootstrapButtons.fire({
+                title: 'Está seguro de ser pasajero?',
+                text: "como pasajero podra tomar viajes y llegar como a su destino!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Seguro!',
+                cancelButtonText: 'No, Regresar!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  history.push('/dashboardPasajero');
+                }
+              })
+            
+        } 
     };
 
     handleMobileMenuOpen(event) {
@@ -164,9 +192,7 @@ class DashBoardConductor extends Component {
                             aria-label="open drawer"
                             onClick={this.handleDrawerOpen}
                             edge="start"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: this.state.open,
-                            })}
+                            className={clsx(classes.menuButton, this.state.open && classes.hide)}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -204,6 +230,7 @@ class DashBoardConductor extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose}>Perfil</MenuItem>
+                                <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Pasajero</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
                             </Menu>
                         </div>
@@ -236,7 +263,7 @@ class DashBoardConductor extends Component {
                                     >
                                         <AccountCircle />
                                     </IconButton>
-                                    <p>Perfil</p>
+                                    <span>Perfil</span>
 
                                 </MenuItem>
                             </Menu>
@@ -244,7 +271,8 @@ class DashBoardConductor extends Component {
                     </Toolbar>
                 </AppBar>
                 <Drawer
-                    variant="permanent"
+                    variant="temporary"
+                    open={this.state.open}
                     className={clsx(classes.drawer, {
                         [classes.drawerOpen]: this.state.open,
                         [classes.drawerClose]: !this.state.open,
@@ -319,11 +347,11 @@ class DashBoardConductor extends Component {
 
                             {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
                                 <div>
-                                    <div>
+                                    <article>
                                         <Typography variant="h3">
                                             Viaje Actual:
                                         </Typography>
-                                    </div>
+                                    </article>
                                     <div> 
                                         <ModalViajeConductor/>
                                     </div>
@@ -373,18 +401,17 @@ const styles = theme => ({
         },
     },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
         backgroundColor: "#000000"
     },
     appBarShift: {
-        marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
@@ -404,7 +431,6 @@ const styles = theme => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        whiteSpace: 'nowrap',
     },
     drawerOpen: {
         width: drawerWidth,
@@ -435,6 +461,17 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
     },
     nested: {
         paddingLeft: theme.spacing(4),

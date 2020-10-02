@@ -3,6 +3,8 @@ import clsx from 'clsx';
 
 import { withStyles } from "@material-ui/core/styles";
 
+import Swal from 'sweetalert2';
+
 import {
     Menu,
     MenuItem,
@@ -80,9 +82,36 @@ class DashBoardPasajero extends Component {
         this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
     };
 
-    handleMenuClose() {
+    handleMenuClose(index) {
+        const { history } = this.props;
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: true
+          })
+
         this.setState({ anchorEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
+
+        if(index===2){ // cambio dashboard
+            swalWithBootstrapButtons.fire({
+                title: 'Está seguro de ser conductor?',
+                text: "como conductor podra ofrecer viajes o registrar su vehiculo!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Seguro!',
+                cancelButtonText: 'No, Regresar!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  history.push('/dashboardConductor');
+                }
+              })
+            
+        } 
     };
 
     handleMobileMenuOpen(event) {
@@ -127,12 +156,13 @@ class DashBoardPasajero extends Component {
 
     };
 
-    handleClickRequests(){
-        this.setState({ isRequestsOpen : !this.state.isRequestsOpen})
+    handleClickRequests = () => {
+
+        this.setState({ isRequestsOpen: !this.state.isRequestsOpen });
     }
 
-    handleClickRequestsViajes(){
-        this.setState({ isViajesOpen : !this.state.isViajesOpen})
+    handleClickRequestsViajes() {
+        this.setState({ isViajesOpen: !this.state.isViajesOpen })
     }
 
     handleDrawerOpen() {
@@ -147,6 +177,7 @@ class DashBoardPasajero extends Component {
         const { classes } = this.props;
         document.body.classList.add('dashBoardConductor');
         return (
+
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar
@@ -161,9 +192,7 @@ class DashBoardPasajero extends Component {
                             aria-label="open drawer"
                             onClick={this.handleDrawerOpen}
                             edge="start"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: this.state.open,
-                            })}
+                            className={clsx(classes.menuButton, this.state.open && classes.hide)}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -198,6 +227,7 @@ class DashBoardPasajero extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose}>Perfil</MenuItem>
+                                <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Conductor</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
                             </Menu>
                         </div>
@@ -230,7 +260,7 @@ class DashBoardPasajero extends Component {
                                     >
                                         <AccountCircle />
                                     </IconButton>
-                                    <p>Perfil</p>
+                                    <span>Perfil</span>
 
                                 </MenuItem>
                             </Menu>
@@ -238,7 +268,8 @@ class DashBoardPasajero extends Component {
                     </Toolbar>
                 </AppBar>
                 <Drawer
-                    variant="permanent"
+                    variant="temporary"
+                    open={this.state.open}
                     className={clsx(classes.drawer, {
                         [classes.drawerOpen]: this.state.open,
                         [classes.drawerClose]: !this.state.open,
@@ -304,7 +335,11 @@ class DashBoardPasajero extends Component {
                         </Collapse>
                     </List>
                 </Drawer>
-                <main className={classes.content}>
+                <main
+                    className={clsx(classes.content, {
+                        [classes.contentShift]: this.state.open,
+                    })}
+                >
                     <div className={classes.toolbar} />
                     <Box>
                         <div>
@@ -313,7 +348,7 @@ class DashBoardPasajero extends Component {
                                     <Typography variant="h3">
                                         Viajes Disponibles:
                                     </Typography>
-                                    <ViajesOfrecidosConductores/>
+                                    <ViajesOfrecidosConductores />
                                 </div>}
                             <div>
                                 {this.state.vista1 &&
@@ -329,8 +364,8 @@ class DashBoardPasajero extends Component {
                                                 Viaje Actual:
                                             </Typography>
                                         </div>
-                                        <div> 
-                                            <ModalViajePasajero/>
+                                        <div>
+                                            <ModalViajePasajero />
                                         </div>
                                     </div>}
                             </div>
@@ -364,6 +399,42 @@ const styles = theme => ({
     root: {
         display: 'flex',
     },
+    appBar: {
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        backgroundColor: "#000000"
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    hide: {
+        display: 'none',
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
     grow: {
         flexGrow: 1,
     },
@@ -379,36 +450,9 @@ const styles = theme => ({
             display: 'none',
         },
     },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: "#000000"
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
     menuTitle: {
         marginLeft: "5px",
         color: "#FFFFFF"
-    },
-    hide: {
-        display: 'none',
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
     },
     drawerOpen: {
         width: drawerWidth,
@@ -439,6 +483,17 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
     },
     nested: {
         paddingLeft: theme.spacing(4),
