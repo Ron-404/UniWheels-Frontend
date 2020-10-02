@@ -4,6 +4,16 @@ import {  withStyles,TextField, MenuItem, Button, Grid} from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import logo from '../../logo.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import clsx from 'clsx';
 
 const styles = theme => ({
     paper: {
@@ -22,13 +32,24 @@ const styles = theme => ({
         height: 45,
         color: '#3f51b5',
       },
+      formControl: {
+         width: '100%',
+         marginTop: theme.spacing(1),
+       },
+       margin: {
+  margin: theme.spacing(0),
+},
+textField: {
+  width: '100%',
+  marginTop: theme.spacing(1),
+},
 });
 
 class Login extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {user:'',password:'',rol:'',dashboardConductor: false, dashboardPasajero: false};
+        this.state = {user:'',password:'',rol:'',dashboardConductor: false, dashboardPasajero: false,  showPassword: false};
     }
 
     componentWillUnmount(){
@@ -52,16 +73,59 @@ class Login extends React.Component {
             rol: e.target.value
         });
     };
+    handleClickShowPassword = () => {
+        this.setState({showPassword : !this.state.showPassword});
+    }
 
-    handleSubmit = ()=>{
+  handleSubmit =   async ()=>{
         const { history } = this.props;
+        let redirrect="";
+        if (this.state.rol && this.state.user && this.state.password){
         if(this.state.rol === 'pasajero'){
-            history.push('/dashboardPasajero');
-                
+            redirrect='/dashboardPasajero';
+        }else{
+            redirrect='/dashboardConductor';
         }
-        else{
-            history.push('/dashboardConductor');
-        }
+        let rol=this.state.rol;
+         let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
+              username: this.state.user,
+              password: this.state.password,
+              token:""
+           })
+           .then(function (response) {
+              // console.log(response.data);
+              if (response.status===200){
+                   Swal.fire(
+                                 'Bienvenido ',
+                                 'Sera redireccionado al dashboard de '+rol,
+                                 'success'
+                             )
+                   history.push(redirrect);
+              }else{
+                Swal.fire(
+                              'Datos Erroneos',
+                              'Verifique los campos',
+                              'error'
+                          )
+
+              }
+
+           }).catch(function(error){
+             console.log(error);
+             Swal.fire(
+                           'Campos Erroneos',
+                           'Verifique los campos',
+                           'error'
+                       )
+
+           })
+         }else{
+           Swal.fire(
+                         'Campos no validos',
+                         'Verifique los campos',
+                         'error'
+                     )
+         }
     };
 
     render() {
@@ -79,17 +143,40 @@ class Login extends React.Component {
                         <br></br>
                         <div className="text login">
                             <div>
-                                <TextField  id="username" label="Username" type="email"
+                                <TextField variant="outlined" id="username" label="Username" type="email"
                                     onChange={this.handleUserChange} fullWidth autoFocus required />
                             </div>
                             <br></br>
                             <div >
-                                <TextField id="username" label="Password" type="password"
-                                    onChange={this.handlePasswordChange} fullWidth required />
+                             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                    <OutlinedInput   fullWidth label="Password"
+                                      id="outlined-adornment-password-login"
+                                      type={this.state.showPassword ? 'text' : 'password'}
+                                      value={this.state.password}
+                                      name="password"
+                                      autoComplete="off"
+                                      onChange={this.handlePasswordChange}
+
+                                      endAdornment={
+                                        <InputAdornment position="end">
+                                          <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={this.handleClickShowPassword}
+                                            onMouseDown={this.handleMouseDownPassword}
+                                            edge="end"
+                                          >
+                                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                          </IconButton>
+                                        </InputAdornment>
+                                      }
+                                    />
+                                </FormControl>
+
                             </div >
                             <br></br>
                             <div>
-                                <TextField id="select" label="Rol" select required fullWidth
+                                <TextField variant="outlined" id="select" label="Rol" select required fullWidth
                                     onChange={this.handleRolChange}>
                                     <MenuItem value="pasajero">Pasajero</MenuItem>
                                     <MenuItem value="conductor">Conductor</MenuItem>
