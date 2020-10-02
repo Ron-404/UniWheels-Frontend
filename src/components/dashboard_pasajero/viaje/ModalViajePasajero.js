@@ -66,7 +66,7 @@ class ModalViajePasajero extends Component {
                                         <br />
                                         Destino: {viaje.viajeCurso.destino}
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
+                                    <Typography variant="body2" color="textSecondary" component="span">
                                         {viaje.dueDate}
                                     </Typography>
                                     </CardContent>
@@ -74,21 +74,21 @@ class ModalViajePasajero extends Component {
                                 
                                     <IconButton edge="end" aria-label="delete">
                                         <Star />
-                                        <Typography variant="h5" color="textPrimary" component="p">
+                                        <Typography variant="h5" color="textPrimary" component="span">
                                             Calificar
                                         </Typography>
                                     </IconButton>
                                 }
                                 <div className={classes.demo}>
-                                    <Typography variant="h5" color="textPrimary" component="p">
+                                    <Typography variant="h5" color="textPrimary" component="span">
                                         Pasajeros:
                                     </Typography>
                                     <List>
                                         {viaje.pasajeros.map((pasajero, index) => {
                                             return (
-                                                <div>
-                                                    <Divider key={index}/>
-                                                    <ListItem key={index+2}>
+                                                <div key={index}>
+                                                    <Divider />
+                                                    <ListItem >
                                                         <ListItemAvatar>
                                                             <Avatar>
                                                                 <AccountCircle />
@@ -97,7 +97,7 @@ class ModalViajePasajero extends Component {
                                                         <ListItemText
                                                             primary={pasajero.name}
                                                             secondary={
-                                                                <p>
+                                                                <span>
                                                                     <ReactStars
                                                                         value={pasajero.rating}
                                                                         size={24}
@@ -105,7 +105,7 @@ class ModalViajePasajero extends Component {
                                                                         activeColor="#ffd700"
                                                                         edit={false}
                                                                     />
-                                                                </p>
+                                                                </span>
                                                             }
                                                         />
                                                     </ListItem>

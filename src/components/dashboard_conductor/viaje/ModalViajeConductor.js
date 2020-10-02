@@ -80,7 +80,7 @@ class ModalViajeConductor extends Component {
                                         <br />
                                                     destino: {viaje.viajeCurso.destino}
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
+                                    <Typography variant="body2" color="textSecondary" component="span">
                                         {viaje.dueDate}
                                     </Typography>
 
@@ -94,16 +94,15 @@ class ModalViajeConductor extends Component {
                                 </CardActions>
 
                                 <div className={classes.demo}>
-                                    <Typography variant="h5" color="textPrimary" component="p">
+                                    <Typography variant="h5" color="textPrimary" component="span">
                                         Pasajeros:
                                     </Typography>
                                     <List>
                                         {viaje.pasajeros.map((pasajero, index) => {
                                             return (
-                                                <div>
-                                                    <Divider key={index} />
-                                                    <ListItem key={index+1} >
-
+                                                <div key={index}>
+                                                    <Divider/>
+                                                    <ListItem>
                                                         <ListItemAvatar>
                                                             <Avatar>
                                                                 <AccountCircle />
@@ -112,7 +111,7 @@ class ModalViajeConductor extends Component {
                                                         <ListItemText
                                                             primary={pasajero.name}
                                                             secondary={
-                                                                <p>
+                                                                <span>
                                                                     <ReactStars
                                                                         value={pasajero.rating}
                                                                         size={24}
@@ -120,14 +119,14 @@ class ModalViajeConductor extends Component {
                                                                         activeColor="#ffd700"
                                                                         edit={false}
                                                                     />
-                                                                </p>
+                                                                </span>
                                                             }
 
                                                         />
                                                         <ListItemSecondaryAction>
                                                             <IconButton edge="end" aria-label="delete">
                                                                 <Star />
-                                                                <Typography variant="h5" color="textPrimary" component="p">
+                                                                <Typography variant="h5" color="textPrimary" component="span">
                                                                     Calificar
                                             </Typography>
                                                             </IconButton>
