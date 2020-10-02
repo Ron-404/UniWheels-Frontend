@@ -4,6 +4,8 @@ import {  withStyles,TextField, MenuItem, Button, Grid} from '@material-ui/core'
 import { Link } from 'react-router-dom';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import logo from '../../logo.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const styles = theme => ({
     paper: {
@@ -53,15 +55,55 @@ class Login extends React.Component {
         });
     };
 
-    handleSubmit = ()=>{
+  handleSubmit =   async ()=>{
         const { history } = this.props;
+        let redirrect="";
+        if (this.state.rol && this.state.user && this.state.password){
         if(this.state.rol === 'pasajero'){
-            history.push('/dashboardPasajero');
-                
+            redirrect='/dashboardPasajero';
+        }else{
+            redirrect='/dashboardConductor';
         }
-        else{
-            history.push('/dashboardConductor');
-        }
+        let rol=this.state.rol;
+         let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
+              username: this.state.user,
+              password: this.state.password,
+              token:""
+           })
+           .then(function (response) {
+              // console.log(response.data);
+              if (response.status===200){
+                   Swal.fire(
+                                 'Bienvenido ',
+                                 'Sera redireccionado al dashboard de '+rol,
+                                 'success'
+                             )
+                   history.push(redirrect);
+              }else{
+                Swal.fire(
+                              'Datos Erroneos',
+                              'Verifique los campos',
+                              'error'
+                          )
+
+              }
+
+           }).catch(function(error){
+             console.log(error);
+             Swal.fire(
+                           'Campos Erroneos',
+                           'Verifique los campos',
+                           'error'
+                       )
+
+           })
+         }else{
+           Swal.fire(
+                         'Campos no validos',
+                         'Verifique los campos',
+                         'error'
+                     )
+         }
     };
 
     render() {
