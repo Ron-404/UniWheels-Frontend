@@ -6,22 +6,25 @@ import Fade from '@material-ui/core/Fade';
 
 import ReactStars from "react-rating-stars-component";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 
 import CardActionArea from '@material-ui/core/CardActionArea';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
-class InfoUsuarios extends Component {
+class InfoPerfil extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             name: false,
             open:false,
-            user:this.props.user
+            user:this.props.user,
         }
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        console.log("infoUsuario");
+        console.log("infoPerfil");
     }
 
     handleOpen() {
@@ -59,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TransitionsModal = ((props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const { user } = props;
   
@@ -70,14 +73,13 @@ const TransitionsModal = ((props) => {
     const handleClose = () => {
       setOpen(false);
     };
+
+    const handleEdit = () => {
+        document.location.href="/ActualizarrUsuario";
+      };
   
     return (
       <div>
-        <CardActionArea>
-            <h1 type="text" className={classes.h3}onClick={handleOpen}>
-            {user.name}
-            </h1>
-        </CardActionArea>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -107,6 +109,11 @@ const TransitionsModal = ((props) => {
                     edit={false}
                 />
                 </div>
+                <br></br>
+                <Button color="primary" variant="contained"  className="submit" onClick={handleEdit}>
+                    Editar
+                </Button>
+
             </div>
           </Fade>
         </Modal>
@@ -116,4 +123,4 @@ const TransitionsModal = ((props) => {
 
 
 
-export default InfoUsuarios;
+export default InfoPerfil;
