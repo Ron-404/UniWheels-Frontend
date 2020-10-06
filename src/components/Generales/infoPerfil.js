@@ -75,7 +75,7 @@ const TransitionsModal = ((props) => {
     };
 
     const handleEdit = () => {
-        document.location.href="/ActualizarrUsuario";
+        document.location.href="/ActualizarUsuario";
       };
   
     return (
@@ -100,7 +100,7 @@ const TransitionsModal = ((props) => {
                 {user.email}
 
                 <div >
-                <h2 id="transition-modal-description">Calificación: </h2>
+                <h2 id="transition-modal-calificacion">Calificación: </h2>
                 <ReactStars
                     value={user.rating}
                     size={24}

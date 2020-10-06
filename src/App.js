@@ -21,7 +21,7 @@ function App() {
           <Route path='/dashboardPasajero' component={DashBoardPasajero} exact ></Route>
           <Route path='/dashboardConductor' component={DashBoardConductor} exact ></Route>
           <Route path='/RegistrarUsuario' component={RegistrarUsuario} exact ></Route>
-          <Route path='/ActualizarrUsuario' component={ActualizarUsuario} exact ></Route>
+          <Route path='/ActualizarUsuario' component={ActualizarUsuario} exact ></Route>
           <Route path='/login' component={Login} exact ></Route>
         </Switch>
       </BrowserRouter>
