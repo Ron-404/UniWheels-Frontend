@@ -2,11 +2,18 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import './TarjetaCarro.css'
+import ActualizarCarro from './ActualizarCarro';
 
 class TarjetaCarro extends React.Component{
 
-    state = {
-        "isPicked":this.props.car.isPicked,
+    constructor(props){
+        super(props);
+        this.state = {
+            "isPicked":this.props.car.isPicked,
+            edit: false
+        }
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.editData = this.editData.bind(this);
     }
 
     // HACK delete styles
@@ -22,10 +29,16 @@ class TarjetaCarro extends React.Component{
         })
     }
 
+    editData(){
+        this.setState({
+            edit : !this.state.edit
+        });
+    }
 
     render(){
         const STYLE = `Tarjeta car`;
         document.body.classList.add('TarjetaCarro');
+        //console.log(this.props.car);
         const {Marca,Color,Placa,Modelo} = this.props.car;
         
         return(
@@ -36,7 +49,8 @@ class TarjetaCarro extends React.Component{
                 <p>Modelo: {Modelo}</p>
                 <p>Color: {Color}</p>
                 <p>Placa: {Placa}</p>
-                <Button variant="contained" color="primary">Editar</Button>
+                <Button variant="contained" color="primary" onClick={this.editData}>Editar</Button>
+                {this.state.edit ? <ActualizarCarro car={this.props.car}/> : null}
             </div>
             
         );

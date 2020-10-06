@@ -40,6 +40,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import Link from '@material-ui/core/Link';
 import OfrecerViaje from './OfrecerViaje';
 import ModalViajeConductor from './viaje/ModalViajeConductor';
+import InfoPerfil from "../Generales/infoPerfil";
 
 import logo from '../../logo.png';
 
@@ -61,7 +62,8 @@ class DashBoardConductor extends Component {
             vista2: false,
             vista3: false,
             vista4: false,
-            open: false
+            open: false,
+            verPerfil: false
         }
 
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -74,6 +76,7 @@ class DashBoardConductor extends Component {
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
         this.handleClickCars = this.handleClickCars.bind(this);
         this.handleClickTravels = this.handleClickTravels.bind(this);
+        this.info = this.info.bind(this);
     }
 
     handleProfileMenuOpen(event) {
@@ -85,7 +88,7 @@ class DashBoardConductor extends Component {
         this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
     };
 
-    handleMenuClose(index) {
+    async handleMenuClose(index) {
         const { history } = this.props;
 
         const swalWithBootstrapButtons = Swal.mixin({
@@ -98,6 +101,15 @@ class DashBoardConductor extends Component {
 
         this.setState({ anchorEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
+
+        if(index===1){ //modal perfil usuario
+            if(this.state.verPerfil){
+                await this.setState({verPerfil : false});
+                this.setState({verPerfil : true});
+            }else{
+                this.setState({verPerfil : true});
+            }
+        }
 
         if(index===2){ // cambio dashboard
             swalWithBootstrapButtons.fire({
@@ -174,6 +186,13 @@ class DashBoardConductor extends Component {
         this.setState({ open: false });
     };
 
+    
+    info(){
+        console.log("Mostrar info usuario");
+        this.setState({ verPerfil: !this.state.verPerfil });
+        console.log(this.state.verPerfil);
+    };
+
     render() {
         const { classes } = this.props;
 
@@ -229,7 +248,9 @@ class DashBoardConductor extends Component {
                                 open={this.state.isMenuOpen}
                                 onClose={this.handleMenuClose}
                             >
-                                <MenuItem onClick={this.handleMenuClose}>Perfil</MenuItem>
+                                <MenuItem onClick={this.info}>Perfil</MenuItem>
+                                {console.log(this.state.verPerfil)}
+                                {this.state.verPerfil ? <InfoPerfil user={{name:"Orlando",email:"orlando@hotmail.com",rating:2}} />: null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Pasajero</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
                             </Menu>
