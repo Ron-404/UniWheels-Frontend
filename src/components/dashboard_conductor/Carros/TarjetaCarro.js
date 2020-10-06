@@ -29,10 +29,13 @@ class TarjetaCarro extends React.Component{
         })
     }
 
-    editData(){
-        this.setState({
-            edit : !this.state.edit
-        });
+    async editData(){
+        if(this.state.edit){
+            await this.setState({edit : false});
+            this.setState({edit : true});
+        }else{
+            this.setState({edit : true});
+        }
     }
 
     render(){
@@ -42,16 +45,18 @@ class TarjetaCarro extends React.Component{
         const {Marca,Color,Placa,Modelo} = this.props.car;
         
         return(
-            <div className={STYLE}>
-                {this.state.isPicked &&<b>Seleccionada</b>}
-                <DriveEtaIcon/>
-                <p>Marca: {Marca}</p>
-                <p>Modelo: {Modelo}</p>
-                <p>Color: {Color}</p>
-                <p>Placa: {Placa}</p>
-                <Button variant="contained" color="primary" onClick={this.editData}>Editar</Button>
-                {this.state.edit ? <ActualizarCarro car={this.props.car}/> : null}
-            </div>
+            <React.Fragment>
+                <div className={STYLE}>
+                    {this.state.isPicked &&<b>Seleccionada</b>}
+                    <DriveEtaIcon/>
+                    <p>Marca: {Marca}</p>
+                    <p>Modelo: {Modelo}</p>
+                    <p>Color: {Color}</p>
+                    <p>Placa: {Placa}</p>
+                    <Button variant="contained" color="primary" onClick={this.editData}>Editar</Button>
+                    {this.state.edit ? <ActualizarCarro car={this.props.car}/> : null}
+                </div>
+            </React.Fragment>
             
         );
     }

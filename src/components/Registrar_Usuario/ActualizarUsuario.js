@@ -3,7 +3,6 @@ import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography}
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
 import Swal from 'sweetalert2';
-import axios from 'axios';
 
 class ActualizarUsuario extends Component {
   constructor(props){
@@ -94,7 +93,6 @@ class ActualizarUsuario extends Component {
     });
   }
   async handleSubmit(e) {
-    const { history } = this.props;
     var f = "@escuelaing.edu.co";
     console.log(this.state.email);
     e.preventDefault();

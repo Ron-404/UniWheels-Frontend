@@ -39,7 +39,6 @@ import logo from '../../logo.png';
 import Solicitudes from './Solicitudes';
 import ViajesOfrecidosConductores from "../dashboard_pasajero/ViajesOfrecidosConductores";
 import ModalViajePasajero from './viaje/ModalViajePasajero';
-import { Info } from '@material-ui/icons';
 
 import InfoPerfil from "../Generales/infoPerfil";
 
@@ -75,7 +74,6 @@ class DashBoardPasajero extends Component {
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
         this.handleClickRequests = this.handleClickRequests.bind(this);
         this.handleClickRequestsViajes = this.handleClickRequestsViajes.bind(this);
-        this.info = this.info.bind(this);
     }
 
     handleProfileMenuOpen(event) {
@@ -187,12 +185,6 @@ class DashBoardPasajero extends Component {
         this.setState({ open: false });
     };
 
-    info(){
-        console.log("Mostrar info usuario");
-        this.setState({ verPerfil: !this.state.verPerfil });
-        console.log(this.state.verPerfil);
-    };
-
     render() {
         const { classes } = this.props;
         document.body.classList.add('dashBoardConductor');
@@ -246,7 +238,7 @@ class DashBoardPasajero extends Component {
                                 open={this.state.isMenuOpen}
                                 onClose={this.handleMenuClose}
                             >
-                                <MenuItem onClick={this.info}>Perfil</MenuItem>
+                                <MenuItem onClick={this.handleMenuClose.bind(this,1)}>Perfil</MenuItem>
                                 {this.state.verPerfil ? <InfoPerfil user={{name:"Orlando",email:"orlando@hotmail.com",rating:2}} />: null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Conductor</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>

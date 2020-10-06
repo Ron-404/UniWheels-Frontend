@@ -1,6 +1,6 @@
 import React from 'react';
 import './login.css';
-import {  withStyles,TextField, MenuItem, Button, Grid} from '@material-ui/core';
+import { withStyles, TextField, MenuItem, Button, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import logo from '../../logo.png';
@@ -21,111 +21,112 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-      },
-      link: {
-          width: 20,
-          color: '#3f51b5',
-      },
-      icon: {
+    },
+    link: {
+        width: 20,
+        color: '#3f51b5',
+    },
+    icon: {
         marginRight: theme.spacing(0.5),
         width: 45,
         height: 45,
         color: '#3f51b5',
-      },
-      formControl: {
-         width: '100%',
-         marginTop: theme.spacing(1),
-       },
-       margin: {
-  margin: theme.spacing(0),
-},
-textField: {
-  width: '100%',
-  marginTop: theme.spacing(1),
-},
+    },
+    formControl: {
+        width: '100%',
+        marginTop: theme.spacing(1),
+    },
+    margin: {
+        margin: theme.spacing(0),
+    },
+    textField: {
+        width: '100%',
+        marginTop: theme.spacing(1),
+    },
 });
 
 class Login extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = {user:'',password:'',rol:'',dashboardConductor: false, dashboardPasajero: false,  showPassword: false};
+        this.state = { user: '', password: '', rol: '', dashboardConductor: false, dashboardPasajero: false, showPassword: false };
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         document.body.classList.remove("login")
     }
 
-    handleUserChange = (e) =>{
+    handleUserChange = (e) => {
         this.setState({
             user: e.target.value
         });
     };
 
-    handlePasswordChange = (e)=>{
+    handlePasswordChange = (e) => {
         this.setState({
             password: e.target.value
         });
     };
 
-    handleRolChange = (e)=>{
+    handleRolChange = (e) => {
         this.setState({
             rol: e.target.value
         });
     };
     handleClickShowPassword = () => {
-        this.setState({showPassword : !this.state.showPassword});
+        this.setState({ showPassword: !this.state.showPassword });
     }
 
-  handleSubmit =   async ()=>{
+    handleSubmit = async () => {
         const { history } = this.props;
-        let redirrect="";
-        if (this.state.rol && this.state.user && this.state.password){
-        if(this.state.rol === 'pasajero'){
-            redirrect='/dashboardPasajero';
-        }else{
-            redirrect='/dashboardConductor';
+        let redirrect = "";
+        if (this.state.rol && this.state.user && this.state.password) {
+            if (this.state.rol === 'pasajero') {
+                redirrect = '/dashboardPasajero';
+            } else {
+                redirrect = '/dashboardConductor';
+            }
+            let rol = this.state.rol;
+            let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
+                username: this.state.user,
+                password: this.state.password,
+                token: ""
+            })
+                .then(function (response) {
+                    // console.log(response.data);
+                    if (response.status === 200) {
+                        Swal.fire(
+                            'Bienvenido ',
+                            'Sera redireccionado al dashboard de ' + rol,
+                            'success'
+                        )
+                        history.push(redirrect);
+                    } else {
+                        Swal.fire(
+                            'Datos Erroneos',
+                            'Verifique los campos',
+                            'error'
+                        )
+
+                    }
+
+                }).catch(function (error) {
+                    console.log(res)
+                    console.log(error);
+                    Swal.fire(
+                        'Campos Erroneos',
+                        'Verifique los campos',
+                        'error'
+                    )
+
+                })
+        } else {
+            Swal.fire(
+                'Campos no validos',
+                'Verifique los campos',
+                'error'
+            )
         }
-        let rol=this.state.rol;
-         let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
-              username: this.state.user,
-              password: this.state.password,
-              token:""
-           })
-           .then(function (response) {
-              // console.log(response.data);
-              if (response.status===200){
-                   Swal.fire(
-                                 'Bienvenido ',
-                                 'Sera redireccionado al dashboard de '+rol,
-                                 'success'
-                             )
-                   history.push(redirrect);
-              }else{
-                Swal.fire(
-                              'Datos Erroneos',
-                              'Verifique los campos',
-                              'error'
-                          )
-
-              }
-
-           }).catch(function(error){
-             console.log(error);
-             Swal.fire(
-                           'Campos Erroneos',
-                           'Verifique los campos',
-                           'error'
-                       )
-
-           })
-         }else{
-           Swal.fire(
-                         'Campos no validos',
-                         'Verifique los campos',
-                         'error'
-                     )
-         }
     };
 
     render() {
@@ -133,11 +134,11 @@ class Login extends React.Component {
         document.body.classList.add('login');
         return (
             <div className="fondo login">
-                 <div>
+                <div>
                     <form className="form login" >
                         <br></br>
                         <div>
-                            <img src={logo} width="60px" height="60px" margin="auto" alt="Logo"/>
+                            <img src={logo} width="60px" height="60px" margin="auto" alt="Logo" />
                         </div>
                         <h2>Iniciar Sesión</h2>
                         <br></br>
@@ -148,28 +149,28 @@ class Login extends React.Component {
                             </div>
                             <br></br>
                             <div >
-                             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                    <OutlinedInput   fullWidth label="Password"
-                                      id="outlined-adornment-password-login"
-                                      type={this.state.showPassword ? 'text' : 'password'}
-                                      value={this.state.password}
-                                      name="password"
-                                      autoComplete="off"
-                                      onChange={this.handlePasswordChange}
+                                <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                    <OutlinedInput fullWidth label="Password"
+                                        id="outlined-adornment-password-login"
+                                        type={this.state.showPassword ? 'text' : 'password'}
+                                        value={this.state.password}
+                                        name="password"
+                                        autoComplete="off"
+                                        onChange={this.handlePasswordChange}
 
-                                      endAdornment={
-                                        <InputAdornment position="end">
-                                          <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={this.handleClickShowPassword}
-                                            onMouseDown={this.handleMouseDownPassword}
-                                            edge="end"
-                                          >
-                                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                          </IconButton>
-                                        </InputAdornment>
-                                      }
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={this.handleClickShowPassword}
+                                                    onMouseDown={this.handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
                                     />
                                 </FormControl>
 
@@ -188,14 +189,14 @@ class Login extends React.Component {
                         <br></br>
                         <Grid>
                             <div>
-                            <Button color="primary" variant="contained"  className="submit" onClick={this.handleSubmit}>
-                                Entrar
+                                <Button color="primary" variant="contained" className="submit" onClick={this.handleSubmit}>
+                                    Entrar
                             </Button>
                             </div>
                             <div id="boton-registrar">
-                                <HowToRegIcon className={classes.icon}/>
+                                <HowToRegIcon className={classes.icon} />
                                 <Link color="secondary" className={classes.link} aria-current="page"
-                                    to={{pathname: "/RegistrarUsuario"}}>
+                                    to={{ pathname: "/RegistrarUsuario" }}>
                                     Registrate
                                 </Link>
                             </div>

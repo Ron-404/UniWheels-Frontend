@@ -5,11 +5,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Swal from 'sweetalert2';
 
-import ReactStars from "react-rating-stars-component";
-
 import { withStyles} from '@material-ui/core/styles';
 
-import CardActionArea from '@material-ui/core/CardActionArea';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';

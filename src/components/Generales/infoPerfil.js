@@ -8,9 +8,6 @@ import ReactStars from "react-rating-stars-component";
 
 import { makeStyles} from '@material-ui/core/styles';
 
-import CardActionArea from '@material-ui/core/CardActionArea';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 class InfoPerfil extends Component {
@@ -65,10 +62,6 @@ const TransitionsModal = ((props) => {
     const [open, setOpen] = React.useState(true);
 
     const { user } = props;
-  
-    const handleOpen = () => {
-      setOpen(true);
-    };
   
     const handleClose = () => {
       setOpen(false);

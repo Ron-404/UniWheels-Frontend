@@ -76,7 +76,6 @@ class DashBoardConductor extends Component {
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
         this.handleClickCars = this.handleClickCars.bind(this);
         this.handleClickTravels = this.handleClickTravels.bind(this);
-        this.info = this.info.bind(this);
     }
 
     handleProfileMenuOpen(event) {
@@ -186,13 +185,6 @@ class DashBoardConductor extends Component {
         this.setState({ open: false });
     };
 
-    
-    info(){
-        console.log("Mostrar info usuario");
-        this.setState({ verPerfil: !this.state.verPerfil });
-        console.log(this.state.verPerfil);
-    };
-
     render() {
         const { classes } = this.props;
 
@@ -248,8 +240,7 @@ class DashBoardConductor extends Component {
                                 open={this.state.isMenuOpen}
                                 onClose={this.handleMenuClose}
                             >
-                                <MenuItem onClick={this.info}>Perfil</MenuItem>
-                                {console.log(this.state.verPerfil)}
+                                <MenuItem onClick={this.handleMenuClose.bind(this,1)}>Perfil</MenuItem>
                                 {this.state.verPerfil ? <InfoPerfil user={{name:"Orlando",email:"orlando@hotmail.com",rating:2}} />: null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Pasajero</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
