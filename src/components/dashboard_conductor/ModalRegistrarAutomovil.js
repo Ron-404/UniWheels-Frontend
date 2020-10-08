@@ -11,11 +11,15 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Car from "./CarImage"
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 class ModalRegistrarAutomovil extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      cargaMarcas: true,
+      registrarCarro: true,
       'marca': '', 'modelo': '', 'color': '', 'placa': '',
       marcas:
         [{ marca: 'Ford' },
@@ -44,6 +48,7 @@ class ModalRegistrarAutomovil extends Component {
       .then(res => {
         const marcas = res.data;
         this.setState({ marcas });
+        this.setState({ cargaMarcas: false });
       })
   }
 
@@ -65,7 +70,7 @@ class ModalRegistrarAutomovil extends Component {
 
 
   async handleSubmit() {
-    
+    this.setState({ registrarCarro: false });
     // falta hacer validaciones de campos vacios
     if (!(this.state.placa &&
       this.state.marca.brand &&
@@ -76,6 +81,7 @@ class ModalRegistrarAutomovil extends Component {
         'Llene todos los campos por favor ',
         'error'
       )
+      this.setState({ registrarCarro: true });
     } else {
       // sacar user token y username de localEstorage
       var userInfo = JSON.parse(localStorage.getItem('user'));
@@ -94,107 +100,126 @@ class ModalRegistrarAutomovil extends Component {
         }
       )
         .then(res => {
-          if(res.status === 201){
+          if (res.status === 201) {
             Swal.fire(
               'Registro Exitoso',
               'su carro ha sido registrado exitosamente',
               'success'
             )
-          }else{
+            this.setState({ registrarCarro: true });
+          } else {
             Swal.fire(
               'Registro Fallido',
               'error del servidor, vuelva a registrarlo',
               'error'
             )
+            this.setState({ registrarCarro: true });
           }
         }).catch(async function () {
           // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
           await Swal.fire(
-              'Sesion Finalizada',
-              'Vuelva a loguearse',
-              'error'
+            'Sesion Finalizada',
+            'Vuelva a loguearse',
+            'error'
           )
           // redireccionar a login
           window.location.replace("/login")
 
-      })
+        })
     }
 
   }
 
   render() {
-    return (< div >
-      <h1> Registra Tu Automovil </h1>
-      <Grid>
-        <Car color={this.state.color.id} />
-      </Grid>
 
-      <p>
+    return (
+      < div >
+        <h1> Registra Tu Automovil </h1>
+        <Grid>
+          <Car color={this.state.color.id} />
+        </Grid>
+
         <p>
+          <p>
+            <FormControl variant="filled" >
+              <TextField
+                id="standard-basic"
+                label="Placa"
+                name="placa"
+                value={this.state.placa}
+                onChange={this.handleChange}
+              />
+            </FormControl>
+          </p>
           <FormControl variant="filled" >
-            <TextField
-              id="standard-basic"
-              label="Placa"
-              name="placa"
-              value={this.state.placa}
-              onChange={this.handleChange}
-            />
+            {this.state.cargaMarcas
+              ?
+              <div >
+                <CircularProgress />
+              </div>
+              :
+              <React.Fragment>
+                <InputLabel htmlFor="m">Marca</InputLabel>
+                <Select
+                  value={this.state.marca}
+                  onChange={this.handleChange}
+                  inputProps={{
+                    name: 'marca',
+                    id: 'm',
+                  }}
+                >
+                  {this.state.marcas.map((option) => <MenuItem key={option.id} value={option}>{option.brand}</MenuItem>)}
+
+                </Select>
+              </React.Fragment>
+            }
           </FormControl>
         </p>
-        <FormControl variant="filled" >
-          <InputLabel htmlFor="m">Marca</InputLabel>
-          <Select
-            value={this.state.marca}
-            onChange={this.handleChange}
-            inputProps={{
-              name: 'marca',
-              id: 'm',
-            }}
-          >
-            {this.state.marcas.map((option) => <MenuItem key={option.id} value={option}>{option.brand}</MenuItem>)}
 
-          </Select>
-        </FormControl>
-      </p>
+        <p>
+          <FormControl variant="filled" >
+            <InputLabel htmlFor="mo">Modelo</InputLabel>
+            <Select
+              value={this.state.modelo}
+              onChange={this.handleChange}
+              inputProps={{
+                name: 'modelo',
+                id: 'mo',
+              }}
+            >
+              {this.state.modelos.map((option) => <MenuItem key={option.id} value={option}>{option.model}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </p>
 
-      <p>
-        <FormControl variant="filled" >
-          <InputLabel htmlFor="mo">Modelo</InputLabel>
-          <Select
-            value={this.state.modelo}
-            onChange={this.handleChange}
-            inputProps={{
-              name: 'modelo',
-              id: 'mo',
-            }}
-          >
-            {this.state.modelos.map((option) => <MenuItem key={option.id} value={option}>{option.model}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </p>
+        <p>
+          <FormControl variant="filled" >
+            <InputLabel htmlFor="co">Color</InputLabel>
+            <Select
+              value={this.state.color}
+              onChange={this.handleChange}
+              inputProps={{
+                name: 'color',
+                id: 'co',
+              }}
+            >
+              {this.state.colores.map((option) => <MenuItem key={option.color} value={option}>{option.color}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </p>
 
-      <p>
-        <FormControl variant="filled" >
-          <InputLabel htmlFor="co">Color</InputLabel>
-          <Select
-            value={this.state.color}
-            onChange={this.handleChange}
-            inputProps={{
-              name: 'color',
-              id: 'co',
-            }}
-          >
-            {this.state.colores.map((option) => <MenuItem key={option.color} value={option}>{option.color}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </p>
-
-      <Button onClick={() => { this.handleSubmit() }} variant="outlined" color="primary">
-        Registrar
-              </Button>
+        {this.state.registrarCarro ?
+          <Button onClick={() => { this.handleSubmit() }} variant="outlined" color="primary">
+            Registrar
+          </Button>
+          :
+          <div >
+              <CircularProgress />
+          </div>
+        }
 
 
-    </div>)
+      </div>)
   };
 
 
