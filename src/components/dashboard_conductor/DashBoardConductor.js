@@ -78,6 +78,21 @@ class DashBoardConductor extends Component {
         this.handleClickTravels = this.handleClickTravels.bind(this);
     }
 
+    async componentDidMount() {
+    
+        // verificar usuario de localestorage
+        // si no esta es que no se a loegueado redireccionarlo a login
+        if (!JSON.parse(localStorage.getItem('user'))) {
+          await Swal.fire(
+            'No está autentificado',
+            'Por favor inicie sesion para usar esta funcionalidad',
+            'error'
+          )
+          // redireccionar a login
+          window.location.replace("/login")
+        }
+    }
+
     handleProfileMenuOpen(event) {
         this.setState({ anchorEl: event.currentTarget, isMenuOpen: true });
         this.handleMobileMenuClose();
