@@ -92,14 +92,18 @@ class Login extends React.Component {
                 password: this.state.password,
                 token: ""
             })
-                .then(function (response) {
+                .then(async function (response) {
                     // console.log(response.data);
                     if (response.status === 200) {
-                        Swal.fire(
+                        await Swal.fire(
                             'Bienvenido ',
                             'Sera redireccionado al dashboard de ' + rol,
                             'success'
                         )
+                        // guardar token e username logueado en localestorage
+                        var user = response.data;
+                        await localStorage.setItem('user', JSON.stringify(user));
+                        // redireccionar
                         history.push(redirrect);
                     } else {
                         Swal.fire(
