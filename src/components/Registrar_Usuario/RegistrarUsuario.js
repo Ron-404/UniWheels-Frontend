@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography} from '@material-ui/core/';
+import { Avatar, Button, CssBaseline, FormControl, Input, InputLabel, Paper, Typography } from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class RegistrarUsuario extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={user:'', email:'', university:'', address:'', password:'', confirmPassword:''}
+    this.state = { confirmReister: true, user: '', email: '', university: '', address: '', password: '', confirmPassword: '' }
     this.handleUser = this.handleUser.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handleUniversity = this.handleUniversity.bind(this);
@@ -43,19 +44,24 @@ class RegistrarUsuario extends Component {
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="address">Dirección</InputLabel>
-                <Input name="address" id="address" onChange={this.handleAddress} autoComplete="current-password"/>
+                <Input name="address" id="address" onChange={this.handleAddress} autoComplete="current-password" />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Contraseña</InputLabel>
-                <Input name="password" type="password" id="password" onChange={this.handlePassword} autoComplete="current-password"/>
+                <Input name="password" type="password" id="password" onChange={this.handlePassword} autoComplete="current-password" />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Confimar Contraseña</InputLabel>
-                <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password"/>
+                <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password" />
               </FormControl>
-              <Button  onClick={this.handleSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
-                Registrar
-              </Button>
+
+              {this.state.confirmReister ?
+                <Button onClick={this.handleSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
+                  Registrar
+                </Button>
+                :
+                <div><CircularProgress /></div>
+              }
             </form>
           </Paper>
         </div>
@@ -63,7 +69,7 @@ class RegistrarUsuario extends Component {
     );
   }
 
-  onSubmit = () =>{
+  onSubmit = () => {
     const { history } = this.props;
     history.push('/login');
   }
@@ -100,59 +106,60 @@ class RegistrarUsuario extends Component {
   }
   async handleSubmit(e) {
     const { history } = this.props;
+    this.setState({ confirmReister: false });
     var f = "@escuelaing.edu.co";
     console.log(this.state.email);
     e.preventDefault();
-    if(this.state.email === '' ||
-            this.state.user === '' ||
-            this.state.university === '' ||
-            this.state.address === '' ||
-            this.state.confirmPassword === '' ||
-            this.state.password === ''){
+    if (this.state.email === '' ||
+      this.state.user === '' ||
+      this.state.university === '' ||
+      this.state.address === '' ||
+      this.state.confirmPassword === '' ||
+      this.state.password === '') {
       Swal.fire("Algún espacio esta vacio", "Por favor llene todos los campos", "error");
-    }else if(!this.state.email.includes(f)){
+    } else if (!this.state.email.includes(f)) {
       Swal.fire("El correo no corresponde con uno institucional.", "Por favor ingrese un correo institucional.", "error");
       return;
-    }else if(this.state.password !== this.state.confirmPassword){
+    } else if (this.state.password !== this.state.confirmPassword) {
       Swal.fire("Las contraseñas ingresadas no coinciden.", "Por favor ingrese de nuevo las contraseñas.", "error");
       return;
-    }else{
-      let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/addUser', {
-                        username : this.state.user,
-                        nombreCompleto : this.state.user,
-                        email :  this.state.email,
-                        universidad : this.state.university,
-                        password : this.state.password,
-                        direccionResidencia : this.state.address,
-                        numero : '',
-                        carros : [],
-                        viajesConductor : [],
-                        viajesPasajero : []
-                      },
-                      )
-                      .then(function (response) {
-                        console.log(response.status);
-                        console.log(response.data);
-                          if(response.status===200){
-                            Swal.fire(
-                                'Cuenta creada satisfactoriamente!',
-                                'Sera redireccionado a la pagina de inicio de sesion',
-                                'success'
-                            )
-                            
-                            history.push('/login');
-                          }else{
-                            Swal.fire("Signup failed!", "try again later", "error");
-                          }
-                        
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                        console.log(res)
-                      });
-      
+    } else {
+      await axios.post('https://uniwheels-backend.herokuapp.com/auth/addUser', {
+        username: this.state.user,
+        nombreCompleto: this.state.user,
+        email: this.state.email,
+        universidad: this.state.university,
+        password: this.state.password,
+        direccionResidencia: this.state.address,
+        numero: '',
+        carros: [],
+        viajesConductor: [],
+        viajesPasajero: []
+      },
+      )
+        .then(async function (response) {
+          console.log(response.status);
+          console.log(response.data);
+          if (response.status === 200) {
+            await Swal.fire(
+              'Cuenta creada satisfactoriamente!',
+              'Sera redireccionado a la pagina de inicio de sesion',
+              'success'
+            )
+
+            history.push('/login');
+          } else {
+            Swal.fire("Signup failed!", "try again later", "error");
+          }
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
       return;
     }
+    this.setState({ confirmReister: true });
   }
 }
 export default RegistrarUsuario;

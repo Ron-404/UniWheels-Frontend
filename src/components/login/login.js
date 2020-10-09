@@ -14,6 +14,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 import clsx from 'clsx';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
     paper: {
@@ -49,7 +50,7 @@ class Login extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { user: '', password: '', rol: '', dashboardConductor: false, dashboardPasajero: false, showPassword: false };
+        this.state = { loginConfirm: true, user: '', password: '', rol: '', dashboardConductor: false, dashboardPasajero: false, showPassword: false };
     }
 
     componentWillUnmount() {
@@ -79,6 +80,7 @@ class Login extends React.Component {
 
     handleSubmit = async () => {
         const { history } = this.props;
+        this.setState({ loginConfirm: false });
         let redirrect = "";
         if (this.state.rol && this.state.user && this.state.password) {
             if (this.state.rol === 'pasajero') {
@@ -87,7 +89,7 @@ class Login extends React.Component {
                 redirrect = '/dashboardConductor';
             }
             let rol = this.state.rol;
-            let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
+            await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
                 username: this.state.user,
                 password: this.state.password,
                 token: ""
@@ -115,7 +117,6 @@ class Login extends React.Component {
                     }
 
                 }).catch(function (error) {
-                    console.log(res)
                     console.log(error);
                     Swal.fire(
                         'Campos Erroneos',
@@ -123,7 +124,8 @@ class Login extends React.Component {
                         'error'
                     )
 
-                })
+                });
+            this.setState({ loginConfirm: false });
         } else {
             Swal.fire(
                 'Campos no validos',
@@ -193,9 +195,13 @@ class Login extends React.Component {
                         <br></br>
                         <Grid>
                             <div>
-                                <Button color="primary" variant="contained" className="submit" onClick={this.handleSubmit}>
-                                    Entrar
-                            </Button>
+                                {this.state.loginConfirm ?
+                                    <Button color="primary" variant="contained" className="submit" onClick={this.handleSubmit}>
+                                        Entrar
+                                    </Button>
+                                    :
+                                    <div><CircularProgress /></div>
+                                }
                             </div>
                             <div id="boton-registrar">
                                 <HowToRegIcon className={classes.icon} />

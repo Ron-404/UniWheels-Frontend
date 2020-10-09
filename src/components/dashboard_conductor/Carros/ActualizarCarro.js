@@ -10,6 +10,13 @@ import { withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import axios from 'axios';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class ActualizarCarro extends Component {
 
@@ -19,10 +26,20 @@ class ActualizarCarro extends Component {
             name: false,
             open:true,
             car:this.props.car,
-            marca: this.props.car.Marca,
-            modelo: this.props.car.Modelo,
-            color: this.props.car.Color,
-            placa: this.props.car.Placa
+            marca: this.props.car.marca,
+            modelo: this.props.car.modelo,
+            color: this.props.car.color,
+            placa: this.props.car.placa,
+            editCarro: true,
+            colores: [
+                { color: 'blanco', id: "#AAAAAA" },
+                { color: 'negro', id: "#000000" },
+                { color: 'azul', id: "#0032FF" },
+                { color: 'rojo', id: "#FF0000" },
+                { color: 'amarillo', id: "#FFFF00" },
+                { color: 'verde', id: "#008000" },
+                { color: 'naranja', id: "#FF4500" },
+                { color: 'morado', id: "#800080" }]
         }
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -56,20 +73,54 @@ class ActualizarCarro extends Component {
         this.setState({ placa: e.target.value });
     }
 
-    handleEdit(){
-        this.handleClose();
+    async handleEdit(){
+        this.setState({ editCarro: false });
         if(this.state.marca!== "" && this.state.modelo !== "" && this.state.color !== "" && this.state.placa !== ""){
-            console.log("datos correctos");
-            console.log(this.state.marca);
-            console.log(this.state.modelo);
-            console.log(this.state.color);
-            console.log(this.state.placa);
-            //Conectar con la API
-            Swal.fire(
-                'Datos Guardados',
-                'Puedes verificar los cambios en la vista de "Mis Carros"',
-                'success'
+            // sacar user token y username de localEstorage
+            var userInfo = JSON.parse(localStorage.getItem('user'));
+            // hacer el put
+            await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateCarro/` + userInfo.username,
+                {
+                placa: this.state.placa,
+                marca: this.state.marca,
+                color: this.state.color,
+                modelo: this.state.modelo
+                },
+                {
+                headers: {
+                    Authorization: userInfo.token //the token is a variable which holds the token
+                }
+                }
             )
+            .then(res => {
+                if (res.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Carro Editado con Exito!',
+                        showConfirmButton: false,
+                        timer: 2000
+                      });
+                  this.props.updateListCar(); // actualizar lista de carros con la funcion componentDidmount de ModalListaCarros
+                  this.setState({ open: false });
+                  this.setState({ editCarro: true });
+                } else {
+                  Swal.fire(
+                    'Registro Fallido',
+                    'error del servidor, vuelva a registrarlo',
+                    'error'
+                  )
+                  this.setState({ open: false });
+                }
+            }).catch(function (error) {
+                console.log(error);
+                Swal.fire(
+                    'sesion finalizada',
+                    'error del servidor, vuelva a loguearse',
+                    'error'
+                )
+                // redireccionar a login
+                window.location.replace("/login")
+            });
         }
         else{
             Swal.fire(
@@ -77,7 +128,10 @@ class ActualizarCarro extends Component {
                 'Verifique los campos',
                 'error'
             )
+            this.setState({ open: false });
         }
+
+        this.setState({ editCarro: true });
       };
   
 
@@ -106,14 +160,27 @@ class ActualizarCarro extends Component {
                                 <h2 id="transition-modal-modelo">Modelo: </h2>
                                     <TextField id="textfield-modelo" label={this.state.modelo} onChange={this.handleModelo}/>
                                 <h2 id="transition-modal-color">Color: </h2>
-                                    <TextField id="textfield-color" label={this.state.color} onChange={this.handleColor}  />
+                                    <FormControl variant="filled" >
+                                        <InputLabel htmlFor="co">Color</InputLabel>
+                                        <Select
+                                        value={this.state.color}
+                                        onChange={this.handleColor}
+                                        >
+                                        {this.state.colores.map((option) => <MenuItem key={option.color} value={option.color}>{option.color}</MenuItem>)}
+                                        </Select>
+                                    </FormControl>
                                 <h2 id="transition-modal-placa">Placa: </h2>
-                                    <TextField id="textfield-placa" label={this.state.placa} onChange={this.handlePlaca}/>
+                                    <TextField disabled id="textfield-placa" label={this.state.placa} onChange={this.handlePlaca}/>
 
                                 <br></br>
-                                <Button color="primary" variant="contained"  className="submit" onClick={this.handleEdit}>
-                                    Editar
-                                </Button>
+                                {
+                                    this.state.editCarro ?
+                                        <Button color="primary" variant="contained"  className="submit" onClick={this.handleEdit}>
+                                            Editar
+                                        </Button>
+                                    :
+                                        <CircularProgress/>
+                                }
                             </FormControl>
                         </div>
                     </Fade>
@@ -130,6 +197,7 @@ const styles = theme =>({
       justifyContent: 'center',
     },
     paper: {
+      display: 'flex',
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
