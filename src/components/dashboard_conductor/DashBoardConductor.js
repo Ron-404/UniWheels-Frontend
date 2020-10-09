@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
-import ListaCarros from './Carros/ListaCarros'
+import ModalListaCarros from './Carros/ModalListaCarros'
 
 import { withStyles } from "@material-ui/core/styles";
 import Swal from 'sweetalert2';
@@ -387,7 +387,7 @@ class DashBoardConductor extends Component {
                                 {this.state.vista1 ? <ModalRegistrarAutomovil/> : null}
                             </div>
                             <div>
-                                {this.state.vista2 ? <ListaCarros/> : null}
+                                {this.state.vista2 ? <ModalListaCarros/> : null}
                             </div>
                             <div>
                                 {this.state.vista3 ? <OfrecerViaje/> : null}
