@@ -86,6 +86,8 @@ class DashBoardPasajero extends Component {
             'Por favor inicie sesion para usar esta funcionalidad',
             'error'
           )
+          // eliminar localStorage
+          await localStorage.clear();
           // redireccionar a login
           window.location.replace("/login")
         }
@@ -137,7 +139,24 @@ class DashBoardPasajero extends Component {
                   history.push('/dashboardConductor');
                 }
               })
-            
+        }
+
+        if (index === 3) {
+            swalWithBootstrapButtons.fire({
+                title: 'Está seguro de cerrar sesion?',
+                text: "sera redirigido a la pagina principal",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Seguro!',
+                cancelButtonText: 'No, Regresar!',
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    // limpiar localStorage
+                    await localStorage.clear();
+                    history.push('/home');
+                }
+            })
         } 
     };
 
@@ -256,7 +275,7 @@ class DashBoardPasajero extends Component {
                                 <MenuItem onClick={this.handleMenuClose.bind(this,1)}>Perfil</MenuItem>
                                 {this.state.verPerfil ? <InfoPerfil user={{name:"Orlando",email:"orlando@hotmail.com",rating:2}} />: null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this,2)}>Ser Conductor</MenuItem>
-                                <MenuItem onClick={this.handleMenuClose}>Cerrar Sesion</MenuItem>
+                                <MenuItem onClick={this.handleMenuClose.bind(this,3)}>Cerrar Sesion</MenuItem>
                             </Menu>
                         </div>
                         <div className={classes.sectionMobile}>
