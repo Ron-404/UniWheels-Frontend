@@ -123,9 +123,8 @@ class Login extends React.Component {
                         'Verifique los campos',
                         'error'
                     )
-
                 });
-            this.setState({ loginConfirm: false });
+            
         } else {
             Swal.fire(
                 'Campos no validos',
@@ -133,6 +132,7 @@ class Login extends React.Component {
                 'error'
             )
         }
+        this.setState({ loginConfirm: true });
     };
 
     render() {
