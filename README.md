@@ -4,7 +4,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 UniWheels App
 
-* [UniWheels App - Heroku](https://uniwheels-frontend.herokuapp.com/)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://uniwheels-frontend.herokuapp.com/)
+
+# Circle CI
+
+[![CircleCI](https://circleci.com/gh/Ron-404/UniWheels-Frontend.svg?style=svg)](https://circleci.com/gh/Ron-404/UniWheels-Frontend)
 
 # Empezar
 
@@ -46,12 +50,7 @@ http://localhost:5000
 
 ## Api services map
 
-[developer-here page](https://developer.here.com/)
-[npm page](https://www.npmjs.com/package/@daiyam/react-here-map#hmaproute)
-
-# Circle CI
-
-[![CircleCI](https://circleci.com/gh/Ron-404/UniWheels-Frontend.svg?style=svg)](https://circleci.com/gh/Ron-404/UniWheels-Frontend)
+[developer-here page](https://developer.here.com/documentation/maps/3.1.19.2/dev_guide/index.html)
 
 # Equipo
 
