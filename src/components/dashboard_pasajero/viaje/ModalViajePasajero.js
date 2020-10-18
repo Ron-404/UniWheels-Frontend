@@ -59,7 +59,7 @@ class ModalViajePasajero extends Component {
                                 
                                 <CardContent>
                                     <div>
-                                        <MapRouting width="350px" />
+                                        <MapRouting ini={{lat:4.782659,lng:-74.041970}} des={{lat:4.749564,lng:-74.042032}} />
                                     </div>
                                     <Typography gutterBottom variant="h5" component="h2">
                                         Origen: {viaje.viajeCurso.inicio}
@@ -127,7 +127,7 @@ class ModalViajePasajero extends Component {
 
 const styles = theme => ({
     root: {
-        width: "400px",
+        width: "300px",
         height: "100%",
         marginBottom: "50px",
         backgroundColor: "#E0E3E5"

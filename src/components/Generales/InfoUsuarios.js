@@ -21,7 +21,6 @@ class InfoUsuarios extends Component {
         }
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        console.log("infoUsuario");
     }
 
     handleOpen() {

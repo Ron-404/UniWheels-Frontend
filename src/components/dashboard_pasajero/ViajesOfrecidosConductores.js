@@ -19,6 +19,17 @@ const viajes = [
     { viaje: { inicio: "eci", destino: "prado" }, conductor: { name: "Andres Vasquez", email: "sancarbar@gmail", rating: 3 }, dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() },
     { viaje: { inicio: "eci", destino: "prado" }, conductor: { name: "Juanito equisde", email: "sancarbar@gmail", rating: 1 }, dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() },
 ]
+const placesIni = [
+    {lat:4.782659,lng:-74.041970},
+    {lat:4.782659,lng:-74.041970},
+    {lat:4.782659,lng:-74.041970},
+]
+
+const placesDes = [
+    {lat:4.730125,lng:-74.068478},
+    {lat:4.730725,lng:-74.034664},
+    {lat:4.749564,lng:-74.042032},
+]
 
 class ViajesOfrecidosConductores extends Component {
 
@@ -54,7 +65,7 @@ class ViajesOfrecidosConductores extends Component {
                                     
                                         <CardContent>
 
-                                            <MapRouting width="270px"/>
+                                            <MapRouting ini ={placesIni[index]} des={placesDes[index]}/>
 
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 inicio: {viaje.viaje.inicio}

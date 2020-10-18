@@ -10,9 +10,3 @@ test('render Home', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
-// Prueba Render DashBoard Pasajero
-test('renders Dashboard Pasajero', () => {
-  const { getByText } = render(<DashBoardPasajero />);
-  const linkElement = getByText(/Viajes Disponibles:/i);
-  expect(linkElement).toBeInTheDocument();
-});
