@@ -12,6 +12,8 @@ import {
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
+import SockJsClient from 'react-stomp';
+
 const styles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -52,7 +54,7 @@ class OfrecerViaje extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { origen: '', destino: '', precio: 0, cargaUniversidades: false, universidades: [], userInfo: "" };
+        this.state = { clientConnected: false, messages: [], origen: '', destino: '', precio: 0, cargaUniversidades: false, universidades: [], userInfo: "" };
         this.handleOrigenChange = this.handleOrigenChange.bind(this);
         this.handleDestinoChange = this.handleDestinoChange.bind(this);
         this.handlePrecioChange = this.handlePrecioChange.bind(this);
@@ -121,10 +123,36 @@ class OfrecerViaje extends React.Component {
         }
     };
 
+    // prueba socket
+    onMessageReceive = (msg, topic) => {
+        this.setState(prevState => ({
+            messages: [...prevState.messages, msg]
+        }));
+    }
+    // prueba socket ofrecer viaje qui se mandaria el viaje se supone?
+    sendMessage = (msg, selfMsg) => {
+        try {
+            this.clientRef.sendMessage("/app/ofrecerViaje.orlandoagk", JSON.stringify(selfMsg));
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
     render() {
         document.body.classList.add('OfrecerViaje');
         return (
             <Grid container>
+
+                {/* prueba de coneccion de socket */}
+                <SockJsClient url='https://uniwheels-backend.herokuapp.com/stompendpoint' topics={['/uniwheels']}
+                    onMessage={ this.onMessageReceive } ref={ (client) => { this.clientRef = client }}
+                    onConnect={ () => { this.setState({ clientConnected: true }) } }
+                    onDisconnect={ () => { this.setState({ clientConnected: false }) } }
+                    debug={ false }/>
+
+                {this.state.clientConnected && console.log("connect: ",this.state.clientConnected )}
+
                 <Grid item xs={12} sm={6} id="zonamapa">
                     <iframe id="mapazona" title="zonas" src="https://www.google.com/maps/d/embed?mid=1eCm1IraFBJkNpkpOQ-DnlR7ePFC1KbZT" width="640" height="480"></iframe>
                 </Grid>
@@ -140,7 +168,7 @@ class OfrecerViaje extends React.Component {
                                     <div className="text-form-cond OfrecerViaje">
                                         <TextField id="select" label="¿En que universidad estás?" select required fullWidth
                                             onChange={this.handleOrigenChange}>
-                                            {this.state.universidades.map((universidad,index) => (<MenuItem key = {index} value={universidad.nombre}>{universidad.nombre}</MenuItem>))}
+                                            {this.state.universidades.map((universidad, index) => (<MenuItem key={index} value={universidad.nombre}>{universidad.nombre}</MenuItem>))}
                                         </TextField>
                                     </div>
 
