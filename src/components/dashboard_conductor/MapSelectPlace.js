@@ -97,7 +97,7 @@ export default class MapSelectPlace extends Component {
     }
 
     componentWillUnmount(props) {
-        props.map.dispose();
+        this.setState({ map : null });
     }
 
     render() {

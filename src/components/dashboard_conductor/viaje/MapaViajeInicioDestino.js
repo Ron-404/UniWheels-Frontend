@@ -88,7 +88,7 @@ export default class MapaViajeInicioDestino extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.map) this.state.map.dispose();
+    this.setState({ map : null });
   }
 
 
