@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Button, CssBaseline, FormControl, Input, InputLabel, Paper, Typography } from '@material-ui/core/';
+import { Avatar, Button, CssBaseline, FormControl, Input, InputLabel, Paper, Typography, TextField} from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
 import Swal from 'sweetalert2';
@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 class RegistrarUsuario extends Component {
   constructor(props) {
     super(props);
-    this.state = { confirmReister: true, user: '', email: '', university: '', address: '', password: '', confirmPassword: '' }
+    this.state = { url: 'https://uniwheels-backend.herokuapp.com/', confirmReister: true, user: '', email: '', university: '', address: '', password: '', confirmPassword: '' }
     this.handleUser = this.handleUser.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handleUniversity = this.handleUniversity.bind(this);
@@ -31,30 +31,23 @@ class RegistrarUsuario extends Component {
             <Typography variant="h4">CREA TU CUENTA</Typography>
             <form className="form registrar" >
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="User">Usuario</InputLabel>
-                <Input id="user" name="user" onChange={this.handleUser} autoComplete="user" autoFocus />
+                <TextField id="user" name="user" label="Usuario" required onChange={this.handleUser} autoComplete="user" autoFocus />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Correo</InputLabel>
-                <Input id="email" name="email" onChange={this.handleEmail} autoComplete="email" autoFocus />
+                <TextField id="email" name="email" label="Correo" required onChange={this.handleEmail} autoComplete="email" autoFocus />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="User">Universidad</InputLabel>
-                <Input id="university" name="university" onChange={this.handleUniversity} autoComplete="university" autoFocus />
+                <TextField id="university" name="university" label="Universidad" required onChange={this.handleUniversity} autoComplete="university" autoFocus />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="address">Dirección</InputLabel>
-                <Input name="address" id="address" onChange={this.handleAddress} autoComplete="current-password" />
+                <TextField name="address" id="address" required label="Dirección" onChange={this.handleAddress} autoComplete="current-password" />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Contraseña</InputLabel>
-                <Input name="password" type="password" id="password" onChange={this.handlePassword} autoComplete="current-password" />
+                <TextField name="password" type="password" id="password" label="Contraseña" required onChange={this.handlePassword} autoComplete="current-password" />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Confimar Contraseña</InputLabel>
-                <Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleConfirmPassword} autoComplete="current-password" />
+                <TextField name="confirmPassword" type="password" label="Confimar Contraseña" id="confirmPassword" required onChange={this.handleConfirmPassword} autoComplete="current-password" />
               </FormControl>
-
               {this.state.confirmReister ?
                 <Button onClick={this.handleSubmit} fullWidth variant="contained" color="primary" className="submit registrar">
                   Registrar
@@ -107,15 +100,10 @@ class RegistrarUsuario extends Component {
   async handleSubmit(e) {
     const { history } = this.props;
     this.setState({ confirmReister: false });
-    var f = "@escuelaing.edu.co";
+    var f = "@mail.escuelaing.edu.co";
     console.log(this.state.email);
     e.preventDefault();
-    if (this.state.email === '' ||
-      this.state.user === '' ||
-      this.state.university === '' ||
-      this.state.address === '' ||
-      this.state.confirmPassword === '' ||
-      this.state.password === '') {
+    if (!this.state.email ||!this.state.user || !this.state.university || !this.state.address|| !this.state.confirmPassword || !this.state.password) {
       Swal.fire("Algún espacio esta vacio", "Por favor llene todos los campos", "error");
     } else if (!this.state.email.includes(f)) {
       Swal.fire("El correo no corresponde con uno institucional.", "Por favor ingrese un correo institucional.", "error");
@@ -124,7 +112,7 @@ class RegistrarUsuario extends Component {
       Swal.fire("Las contraseñas ingresadas no coinciden.", "Por favor ingrese de nuevo las contraseñas.", "error");
       return;
     } else {
-      await axios.post('https://uniwheels-backend.herokuapp.com/auth/addUser', {
+      await axios.post(this.state.url+'auth/addUser', {
         username: this.state.user,
         nombreCompleto: this.state.user,
         email: this.state.email,
