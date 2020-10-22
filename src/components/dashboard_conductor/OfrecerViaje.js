@@ -12,7 +12,8 @@ import {
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-import SockJsClient from 'react-stomp';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 const styles = theme => ({
     paper: {
@@ -67,9 +68,24 @@ class OfrecerViaje extends React.Component {
     }
 
     async componentDidMount() {
+
         // sacar info usuario localestorage
-        var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+        const userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
+
+
+        // conexion socket
+
+        const socket = new SockJS('/stompendpoint');
+        const stompClient = Stomp.over(socket);
+        const headers = {Authorization: userLocalestorage.token};
+
+        stompClient.connect(headers, () => {
+            stompClient.send(
+              `/app/uniwheels/ofrecerViaje.${userLocalestorage.username}`, console.log, headers,
+            );
+          });
+
         // sacar listas de universidades
         await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
             {
@@ -123,33 +139,13 @@ class OfrecerViaje extends React.Component {
         }
     };
 
-    // prueba socket
-    onMessageReceive = (msg, topic) => {
-        this.setState(prevState => ({
-            messages: [...prevState.messages, msg]
-        }));
-    }
-    // prueba socket ofrecer viaje qui se mandaria el viaje se supone?
-    sendMessage = (msg, selfMsg) => {
-        try {
-            this.clientRef.sendMessage("/app/ofrecerViaje.orlandoagk", JSON.stringify(selfMsg));
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-
     render() {
         document.body.classList.add('OfrecerViaje');
         return (
             <Grid container>
 
                 {/* prueba de coneccion de socket */}
-                <SockJsClient url='https://uniwheels-backend.herokuapp.com/stompendpoint' topics={['/uniwheels']}
-                    onMessage={ this.onMessageReceive } ref={ (client) => { this.clientRef = client }}
-                    onConnect={ () => { this.setState({ clientConnected: true }) } }
-                    onDisconnect={ () => { this.setState({ clientConnected: false }) } }
-                    debug={ false }/>
+
 
                 {this.state.clientConnected && console.log("connect: ",this.state.clientConnected )}
 
