@@ -3,6 +3,7 @@ import {Avatar,Button,CssBaseline,FormControl,Input,InputLabel,Paper,Typography}
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 class ActualizarUsuario extends Component {
   constructor(props){
@@ -111,42 +112,39 @@ class ActualizarUsuario extends Component {
       return;
     }else{
 
-        /**
-         * let res = await axios.post('https://uniwheels-backend.herokuapp.com/auth/addUser', {
-                        username : this.state.user,
-                        nombreCompleto : this.state.user,
-                        email :  this.state.email,
-                        universidad : this.state.university,
-                        password : this.state.password,
-                        direccionResidencia : this.state.address,
-                        numero : '',
-                        carros : [],
-                        viajesConductor : [],
-                        viajesPasajero : []
-                      },
-                      )
-                      .then(function (response) {
-                        console.log(response.status);
-                        console.log(response.data);
-                          if(response.status===200){
-                            Swal.fire(
-                                'Cuenta creada satisfactoriamente!',
-                                'Sera redireccionado a la pagina de inicio de sesion',
-                                'success'
-                            )
-                            
-                            history.push('/login');
-                          }else{
-                            Swal.fire("Signup failed!", "try again later", "error");
-                          }
-                        
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                        console.log(res)
-                      });
-         */
-        document.location.href="/login";
+        await axios.put('https://uniwheels-backend.herokuapp.com/auth/updateUser', {
+            username : this.state.user,
+            nombreCompleto : this.state.user,
+            email :  this.state.email,
+            universidad : this.state.university,
+            password : this.state.password,
+            direccionResidencia : this.state.address,
+            numero : '',
+            carros : [],
+            viajesConductor : [],
+            viajesPasajero : []
+          },
+          )
+          .then(function (response) {
+            console.log(response.status);
+            console.log(response.data);
+              if(response.status===200){
+                Swal.fire(
+                    'Haz actualizado la información de tu perfil!',
+                    'Sera redireccionado a la pagina de inicio de sesion',
+                    'success'
+                )
+                
+                //history.push('/login');
+              }else{
+                Swal.fire("Signup failed!", "try again later", "error");
+              }
+            
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        //document.location.href="/login";
       return;
     }
   }
