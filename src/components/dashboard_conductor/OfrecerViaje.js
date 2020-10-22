@@ -14,7 +14,6 @@ import axios from 'axios';
 
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-
 const styles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -50,6 +49,24 @@ const zonas = [
     { id: "15", name: "15 Cajicá y Alrededores" },
     { id: "16", name: "16 Cota y Alrededores" }
 ]
+const userLocalestorage = JSON.parse(localStorage.getItem('user'));
+
+function socketConnect(){
+    console.log("connecting to OfrecerViaje... ");
+    let socket = new SockJS("https://uniwheels-backend.herokuapp.com"+"/ofrecerViaje/"+userLocalestorage.username);
+    var stompClient=Stomp.over(socket);
+    const headers = {Authorization: userLocalestorage.token};
+    stompClient.connect(headers, function(frame){
+      console.log("connected to :"+frame);
+      stompClient.subcribe("/conductoresDisponibles",function(response){
+        let data=JSON.parse(response.body);
+        console.log(data);
+      });
+    });
+    return stompClient;
+}
+
+
 
 class OfrecerViaje extends React.Component {
 
@@ -60,55 +77,21 @@ class OfrecerViaje extends React.Component {
         this.handleDestinoChange = this.handleDestinoChange.bind(this);
         this.handlePrecioChange = this.handlePrecioChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.stompClient=null;
     }
 
     // HACK delete styles
     componentWillUnmount() {
-        document.body.classList.remove("OfrecerViaje")
+        document.body.classList.remove("OfrecerViaje");
+    }
+    componentDidMount(){
+        this.stompClient=socketConnect();
     }
 
-    async componentDidMount() {
-
-        // sacar info usuario localestorage
-        const userLocalestorage = await JSON.parse(localStorage.getItem('user'));
-        this.setState({ userInfo: userLocalestorage })
-
-
-        // conexion socket
-
-        const socket = new SockJS('/stompendpoint');
-        const stompClient = Stomp.over(socket);
-        const headers = {Authorization: userLocalestorage.token};
-
-        stompClient.connect(headers, () => {
-            stompClient.send(
-              `/app/uniwheels/ofrecerViaje.${userLocalestorage.username}`, console.log, headers,
-            );
-          });
-
-        // sacar listas de universidades
-        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
-            {
-                headers: {
-                    Authorization: userLocalestorage.token //the token is a variable which holds the token
-                }
-            }
-        )
-            .then(res => {
-                const universidades = res.data;
-                this.setState({ universidades });
-                this.setState({ cargaUniversidades: true });
-            })
-            .catch(async function () {
-                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
-                await Swal.fire(
-                    'Sesion Finalizada',
-                    'Vuelva a loguearse',
-                    'error'
-                )
-                // redireccionar a login
-                window.location.replace("/login")
-            });
+    send(){
+      if(this.stompClient!=null){
+        this.stompClient.send("/app/ofrecerViaje/"+userLocalestorage,{},JSON.stringify({ruta: "pa la casita"}));
+      }
     }
 
     handleOrigenChange(e) {
@@ -189,7 +172,7 @@ class OfrecerViaje extends React.Component {
                             <br></br>
                         </div>
                         <div>
-                            <Button type="submit" color="primary" variant="contained" className="submit">
+                            <Button onClick={this.send()} color="primary" variant="contained" className="submit">
                                 Iniciar
                             </Button>
                         </div>
