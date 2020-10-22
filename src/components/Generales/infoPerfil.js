@@ -89,24 +89,32 @@ class InfoPerfil extends Component {
 
     handleSave(){
       var f = "@escuelaing.edu.co";
+      var witheSpace = true;
+      var emailWrong = true;
+      var passWrong = true;
+    
+      if (this.state.name !== "" &&
+          this.state.email !== "" &&
+          this.state.password !== "" &&
+          this.state.confirPass !== "" &&
+          this.state.direction !== ""){
+        witheSpace = false;
+        console.log("vamos");
+      } 
+      if(this.state.email.includes(f)) {
+          emailWrong = false;
+          console.log("vamos email");
+      } 
+      if (this.state.password === this.state.confirPass) {
+          passWrong = false;
+          console.log("vamos pass");
+      } 
+      
+      console.log(witheSpace);
+      console.log(emailWrong);
+      console.log(passWrong);
 
-      if (this.state.email === '' ||
-        this.state.user === '' ||
-        this.state.university === '' ||
-        this.state.address === '' ||
-        this.state.confirmPassword === '' ||
-        this.state.password === '') {
-        Swal.fire("Algún espacio esta vacio", "Por favor llene todos los campos", "error");
-      } 
-      else if (!this.state.email.includes(f)) {
-          Swal.fire("El correo no corresponde con uno institucional.", "Por favor ingrese un correo institucional.", "error");
-          return;
-      } 
-      else if (this.state.password !== this.state.confirmPassword) {
-          Swal.fire("Las contraseñas ingresadas no coinciden.", "Por favor ingrese de nuevo las contraseñas.", "error");
-          return;
-      } 
-        else {
+      if(!witheSpace && !emailWrong && !passWrong){
           //Conectar con la API updateUser
           //Revisar conexión de RegistrarUsuario
           Swal.fire(
@@ -145,12 +153,16 @@ class InfoPerfil extends Component {
                 <h2 id="transition-modal-title">Nombre: </h2>
                 {!this.state.edit ? this.state.name : 
                     <TextField variant="outlined" id="name" label="Nombre" type="text"
+                        error={this.state.name === ""} 
+                        helperText={this.state.name === "" && "Error el nombre está vacío"}
                         value={this.state.name} onChange={this.handleName} fullWidth autoFocus required />}
   
                 <h2 id="transition-modal-description">Correo: </h2>
                   {!this.state.edit ? this.state.email :
                     <TextField variant="outlined" id="email" label="Correo" type="text"
-                    value={this.state.email} onChange={this.handleEmail} fullWidth autoFocus required />}
+                      error={this.state.email === "" || !this.state.email.includes("@escuelaing.edu.co")} 
+                      helperText={this.state.email === "" ? "Error el nombre está vacío" : !this.state.email.includes("@escuelaing.edu.co") ? "Error el correo no es válido" : null }
+                      value={this.state.email} onChange={this.handleEmail} fullWidth autoFocus required />}
   
                 {this.state.edit ? 
                   <div>
@@ -159,6 +171,8 @@ class InfoPerfil extends Component {
                       <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                       <OutlinedInput fullWidth label="Password"
                           id="outlined-adornment-password-login"
+                          error={this.state.password !== this.state.confirPass || this.state.password === ""}
+                          helperText={this.state.password !== this.state.confirPass ? "Error la contraseña no coincide" : this.state.password === "" ? "Error el campo está vacío" : null}
                           type={this.state.showPassword ? 'text' : 'password'}
                           value={this.state.password}
                           name="password"
@@ -210,6 +224,8 @@ class InfoPerfil extends Component {
                     <h2 id="transition-modal-description">Dirección: </h2>
                     
                     <TextField variant="outlined" id="direction" label="Dirección" type="text"
+                          error={this.state.direction === ""}
+                          helperText={this.state.direction === "" ? "Error la dirección no es válida" :  null}
                           onChange={this.handleDirection} fullWidth autoFocus required />
                   </div>
                   : null
