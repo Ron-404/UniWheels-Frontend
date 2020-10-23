@@ -50,20 +50,26 @@ const zonas = [
     { id: "16", name: "16 Cota y Alrededores" }
 ]
 const userLocalestorage = JSON.parse(localStorage.getItem('user'));
+var stompClient;
 
 function socketConnect(){
-    console.log("connecting to OfrecerViaje... ");
-    let socket = new SockJS("https://uniwheels-backend.herokuapp.com"+"/ofrecerViaje/"+userLocalestorage.username);
-    var stompClient=Stomp.over(socket);
-    const headers = {Authorization: userLocalestorage.token};
-    stompClient.connect(headers, function(frame){
-      console.log("connected to :"+frame);
-      stompClient.subcribe("/conductoresDisponibles",function(response){
-        let data=JSON.parse(response.body);
+    console.log("Connecting to WebSocket... ");
+    let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function(frame){
+      console.log("connected to: " + frame);
+      stompClient.subcribe("/uniwheels/conductores", function(response){
+        let data = response.body;
         console.log(data);
       });
     });
     return stompClient;
+}
+
+//Invoke this function to trigger the ofrecerViaje/{conducNombre} method
+function sendRequest() {
+    //TODO change the sample request
+    stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username,{},JSON.stringify({ruta: "pa la casita", precio:"10000", origen:"Chico", destino: "Kennedy", carro:"renault"}));
 }
 
 
