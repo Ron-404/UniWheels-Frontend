@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import Input from '@material-ui/core/Input';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -167,12 +166,16 @@ class InfoPerfil extends Component {
                 {this.state.edit ? 
                   <div>
                     <h2 id="transition-modal-description">Contraseña: </h2>
+
                     <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                      <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
-                      <OutlinedInput fullWidth label="Password"
+                      
+                    <TextField 
+                          variant="outlined"
+                          fullWidth 
+                          label="Password"
                           id="outlined-adornment-password-login"
                           error={this.state.password !== this.state.confirPass || this.state.password === ""}
-                          helperText={this.state.password !== this.state.confirPass ? "Error la contraseña no coincide" : this.state.password === "" ? "Error el campo está vacío" : null}
+                          helperText={this.state.password !== this.state.confirPass ? "Error la contraseña no coincide con la confirmada" : this.state.password === "" ? "Error el campo está vacío" : null}
                           type={this.state.showPassword ? 'text' : 'password'}
                           value={this.state.password}
                           name="password"
@@ -194,7 +197,6 @@ class InfoPerfil extends Component {
                         />
                       </FormControl>
                     
-                    
                     <h2 id="transition-modal-description">Confirmar Contraseña: </h2>
                     
                     <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
@@ -202,7 +204,7 @@ class InfoPerfil extends Component {
                       <OutlinedInput fullWidth label="Password"
                             id="outlined-adornment-password-login"
                             type={this.state.showPassword ? 'text' : 'password'}
-                            value={this.state.confirmPassword}
+                            value={this.state.confirPass}
                             name="confirmPass"
                             autoComplete="off"
                             onChange={this.handleConfirPass}

@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import DashBoardPasajero from './components/dashboard_pasajero/DashBoardPasajero';
 import DashBoardConductor from './components/dashboard_conductor/DashBoardConductor';
 import RegistrarUsuario from './components/Registrar_Usuario/RegistrarUsuario';
-import ActualizarUsuario from './components/Registrar_Usuario/ActualizarUsuario';
 import Home from './components/home/Home';
 import Login from './components/login/login';
 
@@ -27,7 +26,6 @@ class App extends Component {
             <Route path='/dashboardPasajero' component={DashBoardPasajero} exact ></Route>
             <Route path='/dashboardConductor' component={DashBoardConductor} exact ></Route>
             <Route path='/RegistrarUsuario' component={RegistrarUsuario} exact ></Route>
-            <Route path='/ActualizarUsuario' component={ActualizarUsuario} exact ></Route>
             <Route path='/login' component={Login} exact ></Route>
             <Route path="*" component={Home} />
           </Switch>

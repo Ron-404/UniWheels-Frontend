@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, Button, CssBaseline, FormControl, Input, InputLabel, Paper, Typography, TextField} from '@material-ui/core/';
+import { Avatar, Button, CssBaseline, FormControl, Paper, Typography, TextField} from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import './Registrar.css'
 import Swal from 'sweetalert2';
