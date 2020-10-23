@@ -24,15 +24,15 @@ export default class MapRouting extends Component {
         pixelRatio: window.devicePixelRatio || 1
       }
     );
-    const inicio= this.props.ini;
-    const destino= this.props.des;
+    const inicio = this.props.ini;
+    const destino = this.props.des;
     var routingParameters = {
       'routingMode': 'fast',
       'transportMode': 'car',
       // The start point of the route:
-      'origin': inicio.lat +","+ inicio.lng, 
+      'origin': inicio.lat + "," + inicio.lng,
       // The end point of the route:
-      'destination': destino.lat +","+ destino.lng,
+      'destination': destino.lat + "," + destino.lng,
       // Include the route shape in the response
       'return': 'polyline'
     };
@@ -85,11 +85,10 @@ export default class MapRouting extends Component {
 
     this.setState({ map });
 
-
   }
 
   componentWillUnmount() {
-    this.setState({ map : null });
+    this.setState({ map: null });
   }
 
 
