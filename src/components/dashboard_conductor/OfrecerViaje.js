@@ -52,27 +52,20 @@ const zonas = [
 const userLocalestorage = JSON.parse(localStorage.getItem('user'));
 var stompClient;
 
-function socketConnect(){
+function socketConnect(user) {
     console.log("Connecting to WebSocket... ");
     let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame){
-      console.log("connected to: " + frame);
-      stompClient.subcribe("/uniwheels/conductores", function(response){
-        let data = response.body;
-        console.log(data);
-      });
+    const header = {Authorization : user.token};
+    stompClient.connect(header, function (frame) {
+        console.log("connected to: " + frame);
+        stompClient.subscribe("/uniwheels/conductores", function (response) {
+            let data = response.body;
+            console.log(data);
+        },header);
     });
     return stompClient;
 }
-
-//Invoke this function to trigger the ofrecerViaje/{conducNombre} method
-function sendRequest() {
-    //TODO change the sample request
-    stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username,{},JSON.stringify({ruta: "pa la casita", precio:"10000", origen:"Chico", destino: "Kennedy", carro:"renault"}));
-}
-
-
 
 class OfrecerViaje extends React.Component {
 
@@ -83,21 +76,51 @@ class OfrecerViaje extends React.Component {
         this.handleDestinoChange = this.handleDestinoChange.bind(this);
         this.handlePrecioChange = this.handlePrecioChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.stompClient=null;
+        this.stompClient = null;
     }
 
     // HACK delete styles
     componentWillUnmount() {
         document.body.classList.remove("OfrecerViaje");
     }
-    componentDidMount(){
-        this.stompClient=socketConnect();
+    async componentDidMount() {
+        // sacar info usuario localestorage
+        var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+        this.setState({ userInfo: userLocalestorage })
+
+        // llamar socket
+        this.stompClient = socketConnect(userLocalestorage);
+
+
+        // sacar listas de universidades
+        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
+            {
+                headers: {
+                    Authorization: userLocalestorage.token //the token is a variable which holds the token
+                }
+            }
+        )
+            .then(res => {
+                const universidades = res.data;
+                this.setState({ universidades });
+                this.setState({ cargaUniversidades: true });
+            })
+            .catch(async function () {
+                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
+                await Swal.fire(
+                    'Sesion Finalizada',
+                    'Vuelva a loguearse',
+                    'error'
+                )
+                // redireccionar a login
+                window.location.replace("/login")
+            });
     }
 
-    send(){
-      if(this.stompClient!=null){
-        this.stompClient.send("/app/ofrecerViaje/"+userLocalestorage,{},JSON.stringify({ruta: "pa la casita"}));
-      }
+    send = () => {
+        if (this.stompClient != null) {
+            this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "pa la casita", precio: "10000", origen: "Chico", destino: "Kennedy", carro: "ABC123" }));
+        }
     }
 
     handleOrigenChange(e) {
@@ -136,7 +159,7 @@ class OfrecerViaje extends React.Component {
                 {/* prueba de coneccion de socket */}
 
 
-                {this.state.clientConnected && console.log("connect: ",this.state.clientConnected )}
+                {this.state.clientConnected && console.log("connect: ", this.state.clientConnected)}
 
                 <Grid item xs={12} sm={6} id="zonamapa">
                     <iframe id="mapazona" title="zonas" src="https://www.google.com/maps/d/embed?mid=1eCm1IraFBJkNpkpOQ-DnlR7ePFC1KbZT" width="640" height="480"></iframe>
@@ -178,7 +201,7 @@ class OfrecerViaje extends React.Component {
                             <br></br>
                         </div>
                         <div>
-                            <Button onClick={this.send()} color="primary" variant="contained" className="submit">
+                            <Button onClick={this.send} color="primary" variant="contained" className="submit">
                                 Iniciar
                             </Button>
                         </div>
