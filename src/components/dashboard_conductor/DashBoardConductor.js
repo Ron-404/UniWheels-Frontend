@@ -44,6 +44,8 @@ import InfoPerfil from "../Generales/infoPerfil";
 
 import logo from '../../logo.png';
 
+import axios from 'axios';
+
 class DashBoardConductor extends Component {
 
     constructor(props) {
@@ -63,7 +65,8 @@ class DashBoardConductor extends Component {
             vista3: false,
             vista4: false,
             open: false,
-            verPerfil: false
+            verPerfil: false,
+            userInfo:""
         }
 
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -93,6 +96,38 @@ class DashBoardConductor extends Component {
             // redireccionar a login
             window.location.replace("/login")
         }
+        // sacar info usuario localestorage
+        var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+        this.setState({ userInfo: userLocalestorage })
+        // sacar usuario si es valido, si no redirigirlo al login
+        await axios.get(`https://uniwheels-backend.herokuapp.com/auth/loggedUser/` + userLocalestorage.username,
+            {
+                headers: {
+                    Authorization: userLocalestorage.token //the token is a variable which holds the token
+                }
+            }
+        )
+            .then(res => {
+                const user = res.data;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenido ' + user.nombreCompleto,
+                    showConfirmButton: false,
+                    timer: 1400
+                });
+            })
+            .catch(async function () {
+                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
+                await Swal.fire(
+                    'Sesion Finalizada',
+                    'Vuelva a loguearse',
+                    'error'
+                )
+                //clear local estorage
+                localStorage.clear();
+                // redireccionar a login
+                window.location.replace("/login")
+            });
     }
 
     handleProfileMenuOpen(event) {
@@ -224,6 +259,7 @@ class DashBoardConductor extends Component {
         const { classes } = this.props;
 
         return (
+            <Box m="auto">
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar
@@ -386,6 +422,7 @@ class DashBoardConductor extends Component {
                         </Collapse>
                     </List>
                 </Drawer>
+                <Box m="auto">
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     <Box>
@@ -419,7 +456,9 @@ class DashBoardConductor extends Component {
                         </div>
                     </Box>
                 </main>
+                </Box>
             </div>
+            </Box>
 
 
         )

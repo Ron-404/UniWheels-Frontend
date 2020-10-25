@@ -56,13 +56,9 @@ function socketConnect(user) {
     console.log("Connecting to WebSocket... ");
     let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
     stompClient = Stomp.over(socket);
-    const header = {Authorization : user.token};
+    const header = { Authorization: user.token };
     stompClient.connect(header, function (frame) {
         console.log("connected to: " + frame);
-        stompClient.subscribe("/uniwheels/conductores", function (response) {
-            let data = response.body;
-            console.log(data);
-        },header);
     });
     return stompClient;
 }
@@ -112,6 +108,8 @@ class OfrecerViaje extends React.Component {
                     'Vuelva a loguearse',
                     'error'
                 )
+                //clear local estorage
+                localStorage.clear();
                 // redireccionar a login
                 window.location.replace("/login")
             });

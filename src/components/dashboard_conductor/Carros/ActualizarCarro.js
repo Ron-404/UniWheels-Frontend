@@ -5,7 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Swal from 'sweetalert2';
 
-import { withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -24,8 +24,8 @@ class ActualizarCarro extends Component {
         super(props);
         this.state = {
             name: false,
-            open:true,
-            car:this.props.car,
+            open: true,
+            car: this.props.car,
             marca: this.props.car.marca,
             modelo: this.props.car.modelo,
             color: this.props.car.color,
@@ -46,7 +46,7 @@ class ActualizarCarro extends Component {
         this.handleMarca = this.handleMarca.bind(this);
         this.handleModelo = this.handleModelo.bind(this);
         this.handleColor = this.handleColor.bind(this);
-        this.handlePlaca= this.handlePlaca.bind(this);
+        this.handlePlaca = this.handlePlaca.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
 
     }
@@ -59,70 +59,73 @@ class ActualizarCarro extends Component {
         this.setState({ open: false });
     };
 
-    handleMarca(e){
+    handleMarca(e) {
         this.setState({ marca: e.target.value });
     }
 
-    handleModelo(e){
+    handleModelo(e) {
         this.setState({ modelo: e.target.value });
     }
-    handleColor(e){
+    handleColor(e) {
         this.setState({ color: e.target.value });
     }
-    handlePlaca(e){
+    handlePlaca(e) {
         this.setState({ placa: e.target.value });
     }
 
-    async handleEdit(){
+    async handleEdit() {
         this.setState({ editCarro: false });
-        if(this.state.marca!== "" && this.state.modelo !== "" && this.state.color !== "" && this.state.placa !== ""){
+        if (this.state.marca !== "" && this.state.modelo !== "" && this.state.color !== "" && this.state.placa !== "") {
             // sacar user token y username de localEstorage
             var userInfo = JSON.parse(localStorage.getItem('user'));
             // hacer el put
             await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateCarro/` + userInfo.username,
                 {
-                placa: this.state.placa,
-                marca: this.state.marca,
-                color: this.state.color,
-                modelo: this.state.modelo
+                    placa: this.state.placa,
+                    marca: this.state.marca,
+                    color: this.state.color,
+                    modelo: this.state.modelo
                 },
                 {
-                headers: {
-                    Authorization: userInfo.token //the token is a variable which holds the token
-                }
+                    headers: {
+                        Authorization: userInfo.token //the token is a variable which holds the token
+                    }
                 }
             )
-            .then(res => {
-                if (res.status === 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Carro Editado con Exito!',
-                        showConfirmButton: false,
-                        timer: 2000
-                      });
-                  this.props.updateListCar(); // actualizar lista de carros con la funcion componentDidmount de ModalListaCarros
-                  this.setState({ open: false });
-                  this.setState({ editCarro: true });
-                } else {
-                  Swal.fire(
-                    'Registro Fallido',
-                    'error del servidor, vuelva a registrarlo',
-                    'error'
-                  )
-                  this.setState({ open: false });
-                }
-            }).catch(function (error) {
-                console.log(error);
-                Swal.fire(
-                    'sesion finalizada',
-                    'error del servidor, vuelva a loguearse',
-                    'error'
-                )
-                // redireccionar a login
-                window.location.replace("/login")
-            });
+                .then(res => {
+                    if (res.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Carro Editado con Exito!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        this.props.updateListCar(); // actualizar lista de carros con la funcion componentDidmount de ModalListaCarros
+                        this.setState({ open: false });
+                        this.setState({ editCarro: true });
+                    } else {
+                        this.setState({ open: false });
+                        Swal.fire(
+                            'Registro Fallido',
+                            'error del servidor, vuelva a intentarlo',
+                            'error'
+                        )
+                    }
+                }).catch(async error => {
+                    console.log(error);
+                    this.setState({ open: false });
+                    await Swal.fire(
+                        'sesion finalizada',
+                        'error del servidor, vuelva a loguearse',
+                        'error'
+                    )
+                    //clear local estorage
+                    localStorage.clear();
+                    // redireccionar a login
+                    window.location.replace("/login")
+                });
         }
-        else{
+        else {
             Swal.fire(
                 'Datos Erroneos',
                 'Verifique los campos',
@@ -132,8 +135,8 @@ class ActualizarCarro extends Component {
         }
 
         this.setState({ editCarro: true });
-      };
-  
+    };
+
 
     render() {
         const { classes } = this.props;
@@ -151,35 +154,35 @@ class ActualizarCarro extends Component {
                     BackdropProps={{
                         timeout: 500,
                     }}
-                    >
+                >
                     <Fade in={this.state.open}>
                         <div className={classes.paper}>
                             <FormControl variant="outlined">
                                 <h2 id="transition-modal-marca">Marca: </h2>
-                                    <TextField id="textfield-marca" label={this.state.marca} onChange={this.handleMarca}  />
+                                <TextField id="textfield-marca" label={this.state.marca} onChange={this.handleMarca} />
                                 <h2 id="transition-modal-modelo">Modelo: </h2>
-                                    <TextField id="textfield-modelo" label={this.state.modelo} onChange={this.handleModelo}/>
+                                <TextField id="textfield-modelo" label={this.state.modelo} onChange={this.handleModelo} />
                                 <h2 id="transition-modal-color">Color: </h2>
-                                    <FormControl variant="filled" >
-                                        <InputLabel htmlFor="co">Color</InputLabel>
-                                        <Select
+                                <FormControl variant="filled" >
+                                    <InputLabel htmlFor="co">Color</InputLabel>
+                                    <Select
                                         value={this.state.color}
                                         onChange={this.handleColor}
-                                        >
+                                    >
                                         {this.state.colores.map((option) => <MenuItem key={option.color} value={option.color}>{option.color}</MenuItem>)}
-                                        </Select>
-                                    </FormControl>
+                                    </Select>
+                                </FormControl>
                                 <h2 id="transition-modal-placa">Placa: </h2>
-                                    <TextField disabled id="textfield-placa" label={this.state.placa} onChange={this.handlePlaca}/>
+                                <TextField disabled id="textfield-placa" label={this.state.placa} onChange={this.handlePlaca} />
 
                                 <br></br>
                                 {
                                     this.state.editCarro ?
-                                        <Button color="primary" variant="contained"  className="submit" onClick={this.handleEdit}>
+                                        <Button color="primary" variant="contained" className="submit" onClick={this.handleEdit}>
                                             Editar
                                         </Button>
-                                    :
-                                        <CircularProgress/>
+                                        :
+                                        <CircularProgress />
                                 }
                             </FormControl>
                         </div>
@@ -190,23 +193,23 @@ class ActualizarCarro extends Component {
     }
 }
 
-const styles = theme =>({
+const styles = theme => ({
     modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     paper: {
-      display: 'flex',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+        display: 'flex',
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     },
-    h3:{
+    h3: {
         marginBottom: "-30px",
         marginTop: "-5px"
     }
-  });
+});
 
 export default withStyles(styles, { withTheme: true })(ActualizarCarro);

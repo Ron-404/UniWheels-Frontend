@@ -24,8 +24,24 @@ class ModalViajePasajero extends Component {
         super(props);
         this.state = {
             open: false,
+            width: window.innerWidth,
             shape: []
         }
+    }
+
+    // resize box
+    updateDimensions = () => {
+        this.setState({ width: window.innerWidth });
+    };
+
+    componentDidMount() {
+        // resize box
+        window.addEventListener('resize', this.updateDimensions);
+        window.onresize = this.updateDimensions;
+    }
+    // resize box
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {
@@ -45,7 +61,12 @@ class ModalViajePasajero extends Component {
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={2}>
                         <Grid item>
-                            <Card className={classes.root}>
+                            <Card style={{
+                                        width: this.state.width - 70,
+                                        height: "100%",
+                                        marginBottom: "50px",
+                                        backgroundColor: "#E0E3E5"
+                                    }}>
                                 <CardHeader
                                     action={this.renderModalInfoPersona}
                                     title={
