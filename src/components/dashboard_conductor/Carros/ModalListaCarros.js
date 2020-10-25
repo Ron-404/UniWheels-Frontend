@@ -52,6 +52,8 @@ class ModalListaCarros extends Component {
                     'Vuelva a loguearse',
                     'error'
                 )
+                //clear local estorage
+                localStorage.clear();
                 // redireccionar a login
                 window.location.replace("/login")
             });

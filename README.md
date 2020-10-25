@@ -44,9 +44,7 @@ http://localhost:5000
 
 # Componentes externos:
 
-## mapa component npm:
-
-[react-here-map](https://limistah.github.io/react-here-map/)
+Se usa la version free de sus planes que para este proyecto es mucho mas que suficiente para cubrir todos los servicios e interactividad que necesitamos con mapas,
 
 ## Api services map
 

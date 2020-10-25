@@ -122,6 +122,8 @@ class ModalRegistrarAutomovil extends Component {
             'Vuelva a loguearse',
             'error'
           )
+          //clear local estorage
+          localStorage.clear();
           // redireccionar a login
           window.location.replace("/login")
 
@@ -214,7 +216,7 @@ class ModalRegistrarAutomovil extends Component {
           </Button>
           :
           <div >
-              <CircularProgress />
+            <CircularProgress />
           </div>
         }
 

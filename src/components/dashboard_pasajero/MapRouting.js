@@ -4,10 +4,20 @@ import React, { Component } from 'react';
 export default class MapRouting extends Component {
   mapRef = React.createRef();
   state = {
-    map: null
+    map: null,
+    width: "auto"
+  };
+
+  // resize box
+  updateDimensions = () => {
+    this.setState({ width: "auto" });
   };
 
   componentDidMount() {
+    // resize map automatic
+    window.addEventListener('resize', this.updateDimensions);
+    window.onresize = this.updateDimensions;
+
     const H = window.H;
     const platform = new H.service.Platform({
       apikey: "t5F4KkchItOSCKZO3wWCQIKtAoIjmaZforgZxkdGKaw"
@@ -89,10 +99,11 @@ export default class MapRouting extends Component {
 
   componentWillUnmount() {
     this.setState({ map: null });
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
 
   render() {
-    return <div ref={this.mapRef} style={{ height: "250px", width: "270px" }} />;
+    return <div ref={this.mapRef} style={{ height: "250px", width: this.state.width }} />;
   }
 }

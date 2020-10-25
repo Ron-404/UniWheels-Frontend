@@ -25,14 +25,31 @@ import MapaViajeInicioDestino from "./MapaViajeInicioDestino";
 
 import InfoUsuarios from "../../Generales/InfoUsuarios";
 
+import { Box } from '@material-ui/core'
+
 class ModalViajeConductor extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             open: false,
+            width: window.innerWidth,
             shape: []
         }
+    }
+    // resize box
+    updateDimensions = () => {
+        this.setState({ width: window.innerWidth });
+    };
+
+    componentDidMount() {
+        // resize box
+        window.addEventListener('resize', this.updateDimensions);
+        window.onresize = this.updateDimensions;
+    }
+    // resize box
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {
@@ -50,129 +67,137 @@ class ModalViajeConductor extends Component {
 
         };
         return (
-            <Grid container className={classes.gridContainer} spacing={2}>
+            <Box m="auto">
+                <Grid container className={classes.gridContainer} spacing={2}>
 
-                <Grid item xs={12}>
-                    <Grid container justify="center" spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center" spacing={2}>
 
-                        <Grid item>
-                            <Card className={classes.root}>
+                            <Grid item>
+                                <Card style={{
+                                    width: this.state.width - 70,
+                                    height: "100%",
+                                    marginBottom: "50px",
+                                    backgroundColor: "#E0E3E5"
+                                }}>
 
-                                <CardHeader
-                                    action={this.renderModalInfoPersona}
-                                    title={
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Conductor: <InfoUsuarios user={viaje.conductor} />
-                                            <br />
+                                    <CardHeader
+                                        action={this.renderModalInfoPersona}
+                                        title={
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                Conductor: <InfoUsuarios user={viaje.conductor} />
+                                                <br />
                                             Estado: En curso
                                         </Typography>
-                                    }
-                                />
+                                        }
+                                    />
 
-                                <CardContent>
-                                    <div>
-                                        <MapaViajeInicioDestino />
-                                    </div>
-                                    
+                                    <CardContent>
+                                        <div>
+                                            <MapaViajeInicioDestino />
+                                        </div>
 
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        inicio: {viaje.viajeCurso.inicio}
-                                        <br />
+
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            inicio: {viaje.viajeCurso.inicio}
+                                            <br />
                                                     destino: {viaje.viajeCurso.destino}
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="span">
-                                        {viaje.dueDate}
-                                    </Typography>
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="span">
+                                            {viaje.dueDate}
+                                        </Typography>
 
 
-                                </CardContent>
+                                    </CardContent>
 
-                                <CardActions className={classes.botonSolc}>
-                                    <Button className={classes.boton} variant="contained" size="small" >
-                                        Finalizar Viaje
+                                    <CardActions className={classes.botonSolc}>
+                                        <Button className={classes.boton} variant="contained" size="small" >
+                                            Finalizar Viaje
                                         </Button>
-                                </CardActions>
+                                    </CardActions>
 
-                                <div className={classes.demo}>
-                                    <Typography variant="h5" color="textPrimary" component="span">
-                                        Pasajeros:
+                                    <div className={classes.demo}>
+                                        <Typography variant="h5" color="textPrimary" component="span">
+                                            Pasajeros:
                                     </Typography>
-                                    <List>
-                                        {viaje.pasajeros.map((pasajero, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <Divider/>
-                                                    <ListItem>
-                                                        <ListItemAvatar>
-                                                            <Avatar>
-                                                                <AccountCircle />
-                                                            </Avatar>
-                                                        </ListItemAvatar>
-                                                        <ListItemText
-                                                            primary={pasajero.name}
-                                                            secondary={
-                                                                <span>
-                                                                    <ReactStars
-                                                                        value={pasajero.rating}
-                                                                        size={24}
-                                                                        color="#AFAFAF"
-                                                                        activeColor="#ffd700"
-                                                                        edit={false}
-                                                                    />
-                                                                </span>
-                                                            }
+                                        <List>
+                                            {viaje.pasajeros.map((pasajero, index) => {
+                                                return (
+                                                    <Box m="auto" key={index}>
+                                                        <Divider />
+                                                        <ListItem>
+                                                            <ListItemAvatar>
+                                                                <Avatar>
+                                                                    <AccountCircle />
+                                                                </Avatar>
+                                                            </ListItemAvatar>
+                                                            <ListItemText
+                                                                primary={pasajero.name}
+                                                                secondary={
+                                                                    <span>
+                                                                        <ReactStars
+                                                                            value={pasajero.rating}
+                                                                            size={24}
+                                                                            color="#AFAFAF"
+                                                                            activeColor="#ffd700"
+                                                                            edit={false}
+                                                                        />
+                                                                    </span>
+                                                                }
 
-                                                        />
-                                                        <ListItemSecondaryAction>
-                                                            <IconButton edge="end" aria-label="delete">
-                                                                <Star />
-                                                                <Typography variant="h5" color="textPrimary" component="span">
-                                                                    Calificar
+                                                            />
+                                                            <ListItemSecondaryAction>
+                                                                <IconButton edge="end" aria-label="delete">
+                                                                    <Star />
+                                                                    <Typography variant="h5" color="textPrimary" component="span">
+                                                                        Calificar
                                             </Typography>
-                                                            </IconButton>
-                                                        </ListItemSecondaryAction>
+                                                                </IconButton>
+                                                            </ListItemSecondaryAction>
 
-                                                    </ListItem>
-                                                    <Divider />
-                                                </div>
-                                            )
-                                        })}
-                                    </List>
+                                                        </ListItem>
+                                                        <Divider />
+                                                    </Box>
+                                                )
+                                            })}
+                                        </List>
 
-                                </div>
-                            </Card>
+                                    </div>
+                                </Card>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Box>
         )
     }
 }
 
 
 
-const styles = theme => ({
-    root: {
-        width: "400px",
-        height: "100%",
-        marginBottom: "50px",
-        backgroundColor: "#E0E3E5"
-    },
-    demo: {
-        backgroundColor: "#FF5733",
-    },
-    botonSolc: {
-        justifyContent: "center",
-    },
-    boton: {
-        color: "#FFFFFF",
-        backgroundColor: "#0071EA",
-    },
-    gridContainer: {
-        flexGrow: 1,
-    },
+var styles = theme => (
+    {
+        root: {
+            
+            height: "100%",
+            marginBottom: "50px",
+            backgroundColor: "#E0E3E5"
+        },
+        demo: {
+            backgroundColor: "#FF5733",
+        },
+        botonSolc: {
+            justifyContent: "center",
+        },
+        boton: {
+            color: "#FFFFFF",
+            backgroundColor: "#0071EA",
+        },
+        gridContainer: {
+            flexGrow: 1,
+        },
 
-});
+    });
 
 
 export default withStyles(styles, { withTheme: true })(ModalViajeConductor);
