@@ -59,6 +59,10 @@ function socketConnect(user) {
     const header = { Authorization: user.token };
     stompClient.connect(header, function (frame) {
         console.log("connected to: " + frame);
+        stompClient.subscribe("/uniwheels/conductores",function(response){
+            let data=response.body;
+            console.log("connected to: " + data);
+        })
     });
     return stompClient;
 }

@@ -84,10 +84,12 @@ export default class MapSelectPlace extends Component {
         window.addEventListener('resize', () => map.getViewPort().resize());
         // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
         // This variable is unused and is present for explanatory purposes
+        // eslint-disable-next-line
         const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
         // Create the default UI components to allow the user to interact with them
         // This variable is unused
+        // eslint-disable-next-line
         const ui = H.ui.UI.createDefault(map, defaultLayers);
 
         this.addDraggableMarker(map, behavior);

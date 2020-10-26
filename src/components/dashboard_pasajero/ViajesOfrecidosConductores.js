@@ -7,7 +7,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 
 import MapRouting from "./MapRouting";
@@ -76,20 +75,13 @@ class ViajesOfrecidosConductores extends Component {
                                                 {viaje.dueDate}
                                             </Typography>
 
-
-                                        </CardContent>
-
-                                        <CardActions className={classes.botonSolc}>
                                             <Button className={classes.boton} variant="contained" size="small" >
                                                 Solicitar Ahora
-                                        </Button>
-                                        </CardActions>
+                                            </Button>
 
-
+                                        </CardContent>
                                     </Card>
-
                                 </Grid>
-
                             )
                         })}
                     </Grid>
@@ -99,12 +91,10 @@ class ViajesOfrecidosConductores extends Component {
     }
 }
 
-
-
 const styles = theme => ({
     root: {
         width: 300,
-        height: 450,
+        height: 470,
         marginBottom: "50px",
         backgroundColor: "#FF5733"
     },
