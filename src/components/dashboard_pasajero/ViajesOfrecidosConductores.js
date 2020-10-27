@@ -10,25 +10,58 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import MapRouting from "./MapRouting";
-
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+import axios from 'axios';
 import InfoUsuarios from "../Generales/InfoUsuarios";
 
-const viajes = [
-    { viaje: { inicio: "eci", destino: "prado" }, conductor: { name: "Santiago Carrillo", email: "sancarbar@gmail", rating: 4 }, dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() },
-    { viaje: { inicio: "eci", destino: "prado" }, conductor: { name: "Andres Vasquez", email: "sancarbar@gmail", rating: 3 }, dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() },
-    { viaje: { inicio: "eci", destino: "prado" }, conductor: { name: "Juanito equisde", email: "sancarbar@gmail", rating: 1 }, dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() },
-]
-const placesIni = [
-    {lat:4.782659,lng:-74.041970},
-    {lat:4.782659,lng:-74.041970},
-    {lat:4.782659,lng:-74.041970},
-]
 
-const placesDes = [
-    {lat:4.730125,lng:-74.068478},
+var viajes = []
+
+const placesIni = [
+    {lat:4.782759,lng: -74.041757},
     {lat:4.730725,lng:-74.034664},
     {lat:4.749564,lng:-74.042032},
 ]
+
+const placesDes = [
+    {lat:4.761791,lng:-74.045695},
+    {lat:4.725453,lng:-74.068611},
+    {lat:4.749031,lng:-74.095855},
+    {lat:4.715535,lng: -74.040589},
+    {lat:4.770427,lng: -74.041994},
+    {lat:4.682908,lng: -74.080549},
+    {lat:4.710511,lng:-74.112041},
+    {lat:4.619751,lng:-74.067846},
+    {lat:4.678589,lng:-74.143212},
+    {lat:4.656140,lng:-74.101287},
+    {lat:4.622150,lng:-74.137102},
+    {lat:4.615749,lng:-74.160834},
+    {lat:4.578822,lng: -74.131480},
+    {lat:4.863296,lng:-74.053489},
+    {lat:4.956239,lng:-74.010661},
+    {lat:4.798722,lng:-74.071049}
+]
+
+const userLocalestorage = JSON.parse(localStorage.getItem('user'));
+var stompClient;
+
+function socketConnect(user) {
+    console.log("Connecting to WebSocket... ");
+    let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
+    stompClient = Stomp.over(socket);
+    const header = { Authorization: user.token };
+    stompClient.connect(header, function (frame) {
+        console.log("connected to: " + frame);
+        stompClient.subscribe("/uniwheels/conductores",function(response){
+            let data=response.body;
+            console.log("connected to: " + data);
+            viajes = data;
+            console.log("vaijes" + viajes);
+        })
+    });
+    return stompClient;
+}
 
 class ViajesOfrecidosConductores extends Component {
 
@@ -37,6 +70,20 @@ class ViajesOfrecidosConductores extends Component {
         this.state = {
             open: false,
             shape: []
+        }
+    }
+
+    async componentDidMount(){
+         // sacar info usuario localestorage
+         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+         this.setState({ userInfo: userLocalestorage })
+
+        // llamar socket
+        this.stompClient = socketConnect(userLocalestorage);
+
+        //Send inicial para traer los viajes que ya están 
+        if (this.stompClient != null) {
+            //this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "", precio: "" , origen: "" , destino: "", carro: "" }));
         }
     }
 
@@ -64,7 +111,7 @@ class ViajesOfrecidosConductores extends Component {
                                     
                                         <CardContent>
 
-                                            <MapRouting ini ={placesIni[index]} des={placesDes[index]}/>
+                                            <MapRouting ini ={placesIni[0]} des={placesDes[index]}/>
 
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 inicio: {viaje.viaje.inicio}

@@ -120,9 +120,23 @@ class OfrecerViaje extends React.Component {
     }
 
     send = () => {
-        if (this.stompClient != null) {
-            this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "pa la casita", precio: "10000", origen: "Chico", destino: "Kennedy", carro: "ABC123" }));
+
+        if(this.state.destino != "" && this.state.origen != "" && this.state.precio != ""
+            && this.state.userInfo != ""){
+                console.log("username" + userLocalestorage.username);
+            if (this.stompClient != null) {
+                this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "pa la casita", precio: this.state.precio , origen: this.state.origen , destino: this.state.destino , carro: "Ford Fusion" }));
+                //Mostrar notificación de viaje iniciado
+            }
         }
+        else{
+            Swal.fire(
+                'Datos Incorrectos',
+                'Error al ingresar los datos, vuelva a intentarlo',
+                'error'
+            )
+        }
+
     }
 
     handleOrigenChange(e) {
