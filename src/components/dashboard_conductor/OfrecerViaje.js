@@ -71,10 +71,12 @@ class OfrecerViaje extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { clientConnected: false, messages: [], origen: '', destino: '', precio: 0, cargaUniversidades: false, universidades: [], userInfo: "" };
+        this.state = { clientConnected: false, messages: [], origen: '', destino: '', precio: 0, cargaUniversidades: false, universidades: [], carros: [],carroActual: "", userInfo: "", ruta:""};
         this.handleOrigenChange = this.handleOrigenChange.bind(this);
         this.handleDestinoChange = this.handleDestinoChange.bind(this);
         this.handlePrecioChange = this.handlePrecioChange.bind(this);
+        this.handleCarroChange = this.handleCarroChange.bind(this);
+        this.handleRutaChange = this.handleRutaChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.stompClient = null;
     }
@@ -117,12 +119,62 @@ class OfrecerViaje extends React.Component {
                 // redireccionar a login
                 window.location.replace("/login")
             });
+
+
+        // sacar listas de carros
+        var user = this.state.userInfo;
+        if( user !== ""){
+            const username = user.username;
+            await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/`+username,
+            {
+                headers: {
+                    Authorization: userLocalestorage.token //the token is a variable which holds the token
+                }
+            }
+        )
+            .then(res => {
+                const carros = res.data;
+                this.setState({ carros : carros });
+                if(carros.length === 0){
+                    alert("Debes registrar un carro para iniciar un viaje");
+                }
+                    
+            })
+            .catch(async function () {
+                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
+                await Swal.fire(
+                    'Sesion Finalizada',
+                    'Vuelva a loguearse',
+                    'error'
+                )
+                //clear local estorage
+                localStorage.clear();
+                // redireccionar a login
+                window.location.replace("/login")
+            });
+
+        }
+        
     }
 
     send = () => {
-        if (this.stompClient != null) {
-            this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "pa la casita", precio: "10000", origen: "Chico", destino: "Kennedy", carro: "ABC123" }));
+
+        if(this.state.destino != "" && this.state.origen != "" && this.state.precio != ""
+            && this.state.userInfo != "" && this.state.carroActual !== "" && this.state.ruta !== ""){
+                console.log("username" + userLocalestorage.username);
+            if (this.stompClient != null) {
+                this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: this.state.ruta, precio: this.state.precio , origen: this.state.origen , destino: this.state.destino , carro: this.state.carroActual }));
+                //Mostrar notificación de viaje iniciado
+            }
         }
+        else{
+            Swal.fire(
+                'Datos Incorrectos',
+                'Error al ingresar los datos, vuelva a intentarlo',
+                'error'
+            )
+        }
+
     }
 
     handleOrigenChange(e) {
@@ -143,10 +195,25 @@ class OfrecerViaje extends React.Component {
         });
     };
 
+    handleCarroChange(e){
+        this.setState({
+            carroActual: e.target.value
+        });
+    };
+
+    handleRutaChange(e){
+        this.setState({
+            ruta: e.target.value
+        });
+    };
+
     handleSubmit(e) {
         e.preventDefault();
         if (this.state.precio < 0 || this.state.origen === this.state.destino) {
             alert("Los datos ingresados son incorrectos");
+        }
+        else if(this.state.carroActual === ""){
+            alert("Debe seleccionar un carro");
         }
         else {
             alert("Viaje iniciado");
@@ -172,6 +239,11 @@ class OfrecerViaje extends React.Component {
                         <h2>Mi viaje</h2>
                         <br></br>
                         <div className="text OfrecerViaje">
+                            <div className="text-form-cond OfrecerViaje">
+                            <TextField variant="outlined" id="Ruta" label="Nombre de la ruta" type="text"
+                                    onChange={this.handleRutaChange} fullWidth autoFocus required />
+                            </div>
+                            <br></br>
                             {
                                 this.state.cargaUniversidades ?
 
@@ -186,6 +258,26 @@ class OfrecerViaje extends React.Component {
 
                                     <CircularProgress />
                             }
+
+                            <br></br>
+
+                            {
+                                this.state.carros.length > 0 ?
+
+                                    <div className="text-form-cond OfrecerViaje">
+                                        <TextField id="select" label="¿Qué carro vas a usar?" select required fullWidth
+                                            onChange={this.handleCarroChange}>
+                                            {this.state.carros.map((carro, index) => (<MenuItem key={index} value={carro.marca +" "+ carro.modelo}>{carro.marca +" "+ carro.modelo}</MenuItem>))}
+                                        </TextField>
+                                    </div>
+
+                                    :
+
+                                    <CircularProgress />
+                            }
+
+
+
                             <br></br>
                             <div className="text-form-cond OfrecerViaje">
                                 <TextField id="otlined-select" label="¿Para donde vás?" select required fullWidth
