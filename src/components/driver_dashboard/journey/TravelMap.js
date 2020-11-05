@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Box } from '@material-ui/core'
 
-export default class MapaViajeInicioDestino extends Component {
+export default class TravelMap extends Component {
   mapRef = React.createRef();
   state = {
     map: null,

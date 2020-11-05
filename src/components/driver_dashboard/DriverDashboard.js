@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
-import ModalListaCarros from './Carros/ModalListaCarros'
+import CarListModal from './Cars/CarListModal'
 
 import { withStyles } from "@material-ui/core/styles";
 import Swal from 'sweetalert2';
-import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
-import ModalSolicitudesPasajeros from './ModalSolicitudesPasajeros';
+import RegisterCarModal from './RegisterCarModal';
+import PassangerRequestModal from './PassangerRequestModal';
 
 import {
     Menu,
@@ -38,22 +38,22 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import GroupIcon from '@material-ui/icons/Group';
 import Link from '@material-ui/core/Link';
-import OfrecerViaje from './OfrecerViaje';
-import ModalViajeConductor from './viaje/ModalViajeConductor';
+import OfferJourney from './OfferJourney';
+import DriverJourneyModal from './journey/DriverJourneyModal';
 import ProfileInfo from "../General/ProfileInfo";
 
 import logo from '../../logo.png';
 
 import axios from 'axios';
 
-class DashBoardConductor extends Component {
+class DriverDashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
 
-            anchorEl: null,
-            mobileMoreAnchorEl: null,
+            widthEl: null,
+            mobileMoreWidthEl: null,
             isMenuOpen: false,
             isMobileMenuOpen: false,
             isCarsOpen: false,
@@ -131,12 +131,12 @@ class DashBoardConductor extends Component {
     }
 
     handleProfileMenuOpen(event) {
-        this.setState({ anchorEl: event.currentTarget, isMenuOpen: true });
+        this.setState({ widthEl: event.currentTarget, isMenuOpen: true });
         this.handleMobileMenuClose();
     };
 
     handleMobileMenuClose() {
-        this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
+        this.setState({ mobileMoreWidthEl: null, isMobileMenuOpen: false });
     };
 
     async handleMenuClose(index) {
@@ -150,7 +150,7 @@ class DashBoardConductor extends Component {
             buttonsStyling: true
         })
 
-        this.setState({ anchorEl: null, isMenuOpen: false });
+        this.setState({ widthEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
 
         if (index === 1) { //modal perfil usuario
@@ -199,7 +199,7 @@ class DashBoardConductor extends Component {
     };
 
     handleMobileMenuOpen(event) {
-        this.setState({ mobileMoreAnchorEl: event.currentTarget, isMobileMenuOpen: true });
+        this.setState({ mobileMoreWidthEl: event.currentTarget, isMobileMenuOpen: true });
     };
 
     handleListItemClick(index) {
@@ -303,7 +303,7 @@ class DashBoardConductor extends Component {
                                 <AccountCircle />
                             </IconButton>
                             <Menu
-                                anchorEl={this.state.anchorEl}
+                                widthEl={this.state.widthEl}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 id={'primary - search - account - menu'}
                                 keepMounted
@@ -328,7 +328,7 @@ class DashBoardConductor extends Component {
                                 <MoreIcon />
                             </IconButton>
                             <Menu
-                                anchorEl={this.state.mobileMoreAnchorEl}
+                                widthEl={this.state.mobileMoreWidthEl}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 id={'primary - search - account - menu - mobile'}
                                 keepMounted
@@ -437,20 +437,20 @@ class DashBoardConductor extends Component {
                                         </Typography>
                                     </article>
                                     <div>
-                                        <ModalViajeConductor />
+                                        <DriverJourneyModal />
                                     </div>
                                 </div>}
                             <div>
-                                {this.state.page1 ? <ModalRegistrarAutomovil /> : null}
+                                {this.state.page1 ? <RegisterCarModal /> : null}
                             </div>
                             <div>
-                                {this.state.page2 ? <ModalListaCarros /> : null}
+                                {this.state.page2 ? <CarListModal /> : null}
                             </div>
                             <div>
-                                {this.state.page3 ? <OfrecerViaje /> : null}
+                                {this.state.page3 ? <OfferJourney /> : null}
                             </div>
                             <div>
-                                {this.state.page4 ? <ModalSolicitudesPasajeros /> : null}
+                                {this.state.page4 ? <PassangerRequestModal /> : null}
                             </div>
 
                         </div>
@@ -565,4 +565,4 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles, { withTheme: true })(DashBoardConductor);
+export default withStyles(styles, { withTheme: true })(DriverDashboard);

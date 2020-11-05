@@ -15,7 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import UpdateCar from './UpdateCar';
 import Swal from 'sweetalert2';
 
-class ModalListaCarros extends Component {
+class CarListModal extends Component {
 
     constructor(props) {
         super(props);
@@ -162,4 +162,4 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles, { withTheme: true })(ModalListaCarros);
+export default withStyles(styles, { withTheme: true })(CarListModal);

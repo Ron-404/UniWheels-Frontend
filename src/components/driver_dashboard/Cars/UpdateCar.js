@@ -26,12 +26,12 @@ class UpdateCar extends Component {
             name: false,
             open: true,
             car: this.props.car,
-            marca: this.props.car.marca,
-            modelo: this.props.car.modelo,
+            brand: this.props.car.brand,
+            model: this.props.car.model,
             color: this.props.car.color,
-            placa: this.props.car.placa,
-            editCarro: true,
-            colores: [
+            plate: this.props.car.plate,
+            editCar: true,
+            colors: [
                 { color: 'blanco', id: "#AAAAAA" },
                 { color: 'negro', id: "#000000" },
                 { color: 'azul', id: "#0032FF" },
@@ -43,10 +43,10 @@ class UpdateCar extends Component {
         }
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleMarca = this.handleMarca.bind(this);
-        this.handleModelo = this.handleModelo.bind(this);
+        this.handleBrand = this.handleBrand.bind(this);
+        this.handlemodel = this.handlemodel.bind(this);
         this.handleColor = this.handleColor.bind(this);
-        this.handlePlaca = this.handlePlaca.bind(this);
+        this.handlePlate = this.handlePlate.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
 
     }
@@ -59,32 +59,32 @@ class UpdateCar extends Component {
         this.setState({ open: false });
     };
 
-    handleMarca(e) {
-        this.setState({ marca: e.target.value });
+    handleBrand(e) {
+        this.setState({ brand: e.target.value });
     }
 
-    handleModelo(e) {
-        this.setState({ modelo: e.target.value });
+    handlemodel(e) {
+        this.setState({ model: e.target.value });
     }
     handleColor(e) {
         this.setState({ color: e.target.value });
     }
-    handlePlaca(e) {
-        this.setState({ placa: e.target.value });
+    handlePlate(e) {
+        this.setState({ plate: e.target.value });
     }
 
     async handleEdit() {
-        this.setState({ editCarro: false });
-        if (this.state.marca !== "" && this.state.modelo !== "" && this.state.color !== "" && this.state.placa !== "") {
+        this.setState({ editCar: false });
+        if (this.state.brand !== "" && this.state.model !== "" && this.state.color !== "" && this.state.plate !== "") {
             // sacar user token y username de localEstorage
             var userInfo = JSON.parse(localStorage.getItem('user'));
             // hacer el put
             await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateCarro/` + userInfo.username,
                 {
-                    placa: this.state.placa,
-                    marca: this.state.marca,
+                    plate: this.state.plate,
+                    brand: this.state.brand,
                     color: this.state.color,
-                    modelo: this.state.modelo
+                    model: this.state.model
                 },
                 {
                     headers: {
@@ -102,7 +102,7 @@ class UpdateCar extends Component {
                         });
                         this.props.updateListCar(); // actualizar lista de carros con la funcion componentDidmount de ModalListaCarros
                         this.setState({ open: false });
-                        this.setState({ editCarro: true });
+                        this.setState({ editCar: true });
                     } else {
                         this.setState({ open: false });
                         Swal.fire(
@@ -134,7 +134,7 @@ class UpdateCar extends Component {
             this.setState({ open: false });
         }
 
-        this.setState({ editCarro: true });
+        this.setState({ editCar: true });
     };
 
 
@@ -158,10 +158,10 @@ class UpdateCar extends Component {
                     <Fade in={this.state.open}>
                         <div className={classes.paper}>
                             <FormControl variant="outlined">
-                                <h2 id="transition-modal-marca">Marca: </h2>
-                                <TextField id="textfield-marca" label={this.state.marca} onChange={this.handleMarca} />
-                                <h2 id="transition-modal-modelo">Modelo: </h2>
-                                <TextField id="textfield-modelo" label={this.state.modelo} onChange={this.handleModelo} />
+                                <h2 id="transition-modal-brand">brand: </h2>
+                                <TextField id="textfield-brand" label={this.state.brand} onChange={this.handleBrand} />
+                                <h2 id="transition-modal-model">model: </h2>
+                                <TextField id="textfield-model" label={this.state.model} onChange={this.handlemodel} />
                                 <h2 id="transition-modal-color">Color: </h2>
                                 <FormControl variant="filled" >
                                     <InputLabel htmlFor="co">Color</InputLabel>
@@ -169,15 +169,15 @@ class UpdateCar extends Component {
                                         value={this.state.color}
                                         onChange={this.handleColor}
                                     >
-                                        {this.state.colores.map((option) => <MenuItem key={option.color} value={option.color}>{option.color}</MenuItem>)}
+                                        {this.state.colors.map((option) => <MenuItem key={option.color} value={option.color}>{option.color}</MenuItem>)}
                                     </Select>
                                 </FormControl>
-                                <h2 id="transition-modal-placa">Placa: </h2>
-                                <TextField disabled id="textfield-placa" label={this.state.placa} onChange={this.handlePlaca} />
+                                <h2 id="transition-modal-plate">plate: </h2>
+                                <TextField disabled id="textfield-plate" label={this.state.plate} onChange={this.handlePlate} />
 
                                 <br></br>
                                 {
-                                    this.state.editCarro ?
+                                    this.state.editCar ?
                                         <Button color="primary" variant="contained" className="submit" onClick={this.handleEdit}>
                                             Editar
                                         </Button>

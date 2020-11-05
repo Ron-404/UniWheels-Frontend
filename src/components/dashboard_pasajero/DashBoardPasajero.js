@@ -172,7 +172,7 @@ class DashBoardPasajero extends Component {
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    history.push('/dashboardConductor');
+                    history.push('/driverDashboard');
                 }
             })
         }

@@ -4,7 +4,7 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import DashBoardPasajero from './components/dashboard_pasajero/DashBoardPasajero';
-import DashBoardConductor from './components/dashboard_conductor/DashBoardConductor';
+import DriverDashboard from './components/driver_dashboard/DriverDashboard';
 import RegisterUser from './components/Register_user/RegisterUser';
 import Home from './components/home/Home';
 import Login from './components/login/login';
@@ -24,7 +24,7 @@ class App extends Component {
             <Route path='/' component={Home} exact ></Route>
             <Route path='/home' component={Home} exact ></Route>
             <Route path='/dashboardPasajero' component={DashBoardPasajero} exact ></Route>
-            <Route path='/dashboardConductor' component={DashBoardConductor} exact ></Route>
+            <Route path='/driverDashboard' component={DriverDashboard} exact ></Route>
             <Route path='/RegisterUser' component={RegisterUser} exact ></Route>
             <Route path='/login' component={Login} exact ></Route>
             <Route path="*" component={Home} />

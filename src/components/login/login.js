@@ -86,7 +86,7 @@ class Login extends React.Component {
             if (this.state.rol === 'pasajero') {
                 redirrect = '/dashboardPasajero';
             } else {
-                redirrect = '/dashboardConductor';
+                redirrect = '/driverDashboard';
             }
             let rol = this.state.rol;
             await axios.post('https://uniwheels-backend.herokuapp.com/auth/login', {
@@ -206,7 +206,7 @@ class Login extends React.Component {
                             <div id="boton-registrar">
                                 <HowToRegIcon className={classes.icon} />
                                 <Link color="secondary" className={classes.link} aria-current="page"
-                                    to={{ pathname: "/RegistrarUsuario" }}>
+                                    to={{ pathname: "/RegisterUser" }}>
                                     Registrate
                                 </Link>
                             </div>
