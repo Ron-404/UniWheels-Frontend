@@ -42,8 +42,8 @@ class Home extends Component {
                 this.state.isLogged ?
 
                   <div className="header-right">
-                    <a href="/dashboardConductor">Ser Conductor</a>
-                    <a href="/dashboardPasajero">Ser Pasajero</a>
+                    <a href="/driverDashboard">Ser Conductor</a>
+                    <a href="/passengerDashboard">Ser Pasajero</a>
                     <a href="#about">Acerca</a>
                   </div>
 
@@ -51,7 +51,7 @@ class Home extends Component {
 
                   <div className="header-right">
                     <a href="/login">Login</a>
-                    <a href="/RegistrarUsuario">Registro</a>
+                    <a href="/RegisterUser">Registro</a>
                     <a href="#about">Acerca</a>
                   </div>
               }

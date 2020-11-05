@@ -36,9 +36,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import logo from '../../logo.png';
-import Solicitudes from './Solicitudes';
-import ViajesOfrecidosConductores from "../dashboard_pasajero/ViajesOfrecidosConductores";
-import ModalViajePasajero from './viaje/ModalViajePasajero';
+import Requests from './Requests';
+import TripOfferedDriver from "./TripOfferedDriver";
+import PassengerTripModal from './trip/PassengerTripModal';
 
 import ProfileInfo from "../General/ProfileInfo";
 
@@ -58,12 +58,12 @@ class DashBoardPasajero extends Component {
             isViajesOpen: false,
 
             selectedIndex: false,
-            vista1: false,
-            vista2: false,
-            vista3: false,
-            vista4: false,
+            view1: false,
+            view2: false,
+            view3: false,
+            view4: false,
             open: false,
-            verPerfil: false,
+            viewProfile: false,
             userInfo:""
         }
 
@@ -153,11 +153,11 @@ class DashBoardPasajero extends Component {
         this.handleMobileMenuClose();
 
         if (index === 1) { //modal perfil usuario
-            if (this.state.verPerfil) {
-                await this.setState({ verPerfil: false });
-                this.setState({ verPerfil: true });
+            if (this.state.viewProfile) {
+                await this.setState({ viewProfile: false });
+                this.setState({ viewProfile: true });
             } else {
-                this.setState({ verPerfil: true });
+                this.setState({ viewProfile: true });
             }
         }
 
@@ -204,34 +204,34 @@ class DashBoardPasajero extends Component {
         this.setState({ selectedIndex: index })
         if (index === 0) {
             this.setState({
-                vista1: !this.state.vista1,
-                vista2: false,
-                vista3: false,
-                vista4: false,
+                view1: !this.state.view1,
+                view2: false,
+                view3: false,
+                view4: false,
             });
         }
         else if (index === 1) {
             this.setState({
-                vista2: !this.state.vista2,
-                vista1: false,
-                vista3: false,
-                vista4: false,
+                view2: !this.state.view2,
+                view1: false,
+                view3: false,
+                view4: false,
             });
         }
         else if (index === 2) {
             this.setState({
-                vista3: !this.state.vista3,
-                vista1: false,
-                vista2: false,
-                vista4: false,
+                view3: !this.state.view3,
+                view1: false,
+                view2: false,
+                view4: false,
             });
         }
         else if (index === 3) {
             this.setState({
-                vista4: !this.state.vista4,
-                vista1: false,
-                vista2: false,
-                vista3: false,
+                view4: !this.state.view4,
+                view1: false,
+                view2: false,
+                view3: false,
             });
         }
         this.handleDrawerClose();
@@ -257,7 +257,7 @@ class DashBoardPasajero extends Component {
 
     render() {
         const { classes } = this.props;
-        document.body.classList.add('dashBoardConductor');
+        document.body.classList.add('driverDashboard');
         return (
             <div className={classes.root}>
 
@@ -309,7 +309,7 @@ class DashBoardPasajero extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 1)}>Perfil</MenuItem>
-                                {this.state.verPerfil ? <ProfileInfo user={{ name: "Orlando", email: "orlando@hotmail.com", rating: 2 }} /> : null}
+                                {this.state.viewProfile ? <ProfileInfo user={{ name: "Orlando", email: "orlando@hotmail.com", rating: 2 }} /> : null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 2)}>Ser Conductor</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 3)}>Cerrar Sesion</MenuItem>
                             </Menu>
@@ -426,21 +426,21 @@ class DashBoardPasajero extends Component {
                     <div className={classes.toolbar} />
                     <Box>
                         <div>
-                            {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
+                            {!this.state.view1 && !this.state.view2 && !this.state.view3 && !this.state.view4 &&
                                 <div>
                                     <Typography variant="h3">
                                         Viajes Disponibles:
                                     </Typography>
-                                    <ViajesOfrecidosConductores />
+                                    <TripOfferedDriver />
                                 </div>}
                             <div>
-                                {this.state.vista1 &&
-                                    <Solicitudes />
+                                {this.state.view1 &&
+                                    <Requests />
                                 }
 
                             </div>
                             <div>
-                                {this.state.vista2 &&
+                                {this.state.view2 &&
                                     <div>
                                         <div>
                                             <Typography variant="h3">
@@ -448,19 +448,19 @@ class DashBoardPasajero extends Component {
                                             </Typography>
                                         </div>
                                         <div>
-                                            <ModalViajePasajero />
+                                            <PassengerTripModal />
                                         </div>
                                     </div>}
                             </div>
                             <div>
-                                {this.state.vista3 &&
+                                {this.state.view3 &&
                                     <Typography variant="h6">
                                         Vista 3
                                 </Typography>
                                 }
                             </div>
                             <div>
-                                {this.state.vista4 &&
+                                {this.state.view4 &&
                                     <Typography variant="h6" noWrap>
                                         Vista 4
                                 </Typography>

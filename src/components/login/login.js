@@ -84,7 +84,7 @@ class Login extends React.Component {
         let redirrect = "";
         if (this.state.rol && this.state.user && this.state.password) {
             if (this.state.rol === 'pasajero') {
-                redirrect = '/dashboardPasajero';
+                redirrect = '/passengerDashboard';
             } else {
                 redirrect = '/driverDashboard';
             }

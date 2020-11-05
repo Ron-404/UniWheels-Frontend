@@ -38,8 +38,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
 import GroupIcon from '@material-ui/icons/Group';
 import Link from '@material-ui/core/Link';
-import OfferJourney from './OfferJourney';
-import DriverJourneyModal from './journey/DriverJourneyModal';
+import OfferTrip from './OfferTrip';
+import DriverTripModal from './trip/DriverTripModal';
 import ProfileInfo from "../General/ProfileInfo";
 
 import logo from '../../logo.png';
@@ -52,8 +52,8 @@ class DriverDashboard extends Component {
         super(props);
         this.state = {
 
-            widthEl: null,
-            mobileMoreWidthEl: null,
+            anchorEl: null,
+            mobileMoreAnchorEl: null,
             isMenuOpen: false,
             isMobileMenuOpen: false,
             isCarsOpen: false,
@@ -131,12 +131,12 @@ class DriverDashboard extends Component {
     }
 
     handleProfileMenuOpen(event) {
-        this.setState({ widthEl: event.currentTarget, isMenuOpen: true });
+        this.setState({ anchorEl: event.currentTarget, isMenuOpen: true });
         this.handleMobileMenuClose();
     };
 
     handleMobileMenuClose() {
-        this.setState({ mobileMoreWidthEl: null, isMobileMenuOpen: false });
+        this.setState({ mobileMoreAnchorEl: null, isMobileMenuOpen: false });
     };
 
     async handleMenuClose(index) {
@@ -150,7 +150,7 @@ class DriverDashboard extends Component {
             buttonsStyling: true
         })
 
-        this.setState({ widthEl: null, isMenuOpen: false });
+        this.setState({ anchorEl: null, isMenuOpen: false });
         this.handleMobileMenuClose();
 
         if (index === 1) { //modal perfil usuario
@@ -173,7 +173,7 @@ class DriverDashboard extends Component {
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    history.push('/dashboardPasajero');
+                    history.push('/passengerDashboard');
                 }
             })
 
@@ -199,7 +199,7 @@ class DriverDashboard extends Component {
     };
 
     handleMobileMenuOpen(event) {
-        this.setState({ mobileMoreWidthEl: event.currentTarget, isMobileMenuOpen: true });
+        this.setState({ mobileMoreAnchorEl: event.currentTarget, isMobileMenuOpen: true });
     };
 
     handleListItemClick(index) {
@@ -303,7 +303,7 @@ class DriverDashboard extends Component {
                                 <AccountCircle />
                             </IconButton>
                             <Menu
-                                widthEl={this.state.widthEl}
+                                anchorEl={this.state.anchorEl}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 id={'primary - search - account - menu'}
                                 keepMounted
@@ -328,7 +328,7 @@ class DriverDashboard extends Component {
                                 <MoreIcon />
                             </IconButton>
                             <Menu
-                                widthEl={this.state.mobileMoreWidthEl}
+                                anchorEl={this.state.mobileMoreAnchorEl}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 id={'primary - search - account - menu - mobile'}
                                 keepMounted
@@ -437,7 +437,7 @@ class DriverDashboard extends Component {
                                         </Typography>
                                     </article>
                                     <div>
-                                        <DriverJourneyModal />
+                                        <DriverTripModal />
                                     </div>
                                 </div>}
                             <div>
@@ -447,7 +447,7 @@ class DriverDashboard extends Component {
                                 {this.state.page2 ? <CarListModal /> : null}
                             </div>
                             <div>
-                                {this.state.page3 ? <OfferJourney /> : null}
+                                {this.state.page3 ? <OfferTrip /> : null}
                             </div>
                             <div>
                                 {this.state.page4 ? <PassangerRequestModal /> : null}

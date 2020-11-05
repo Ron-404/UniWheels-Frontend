@@ -27,7 +27,7 @@ import UsersInfo from "../../General/UsersInfo";
 
 import { Box } from '@material-ui/core';
 
-class DriverJourneyModal extends Component {
+class DriverTripModal extends Component {
 
     constructor(props) {
         super(props);
@@ -200,4 +200,4 @@ var styles = theme => (
     });
 
 
-export default withStyles(styles, { withTheme: true })(DriverJourneyModal);
+export default withStyles(styles, { withTheme: true })(DriverTripModal);

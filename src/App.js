@@ -3,7 +3,7 @@ import './App.css';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import DashBoardPasajero from './components/dashboard_pasajero/DashBoardPasajero';
+import PassengerDashboard from './components/passenger_dashboard/PassengerDashboard';
 import DriverDashboard from './components/driver_dashboard/DriverDashboard';
 import RegisterUser from './components/Register_user/RegisterUser';
 import Home from './components/home/Home';
@@ -23,7 +23,7 @@ class App extends Component {
           <Switch>
             <Route path='/' component={Home} exact ></Route>
             <Route path='/home' component={Home} exact ></Route>
-            <Route path='/dashboardPasajero' component={DashBoardPasajero} exact ></Route>
+            <Route path='/passengerDashboard' component={PassengerDashboard} exact ></Route>
             <Route path='/driverDashboard' component={DriverDashboard} exact ></Route>
             <Route path='/RegisterUser' component={RegisterUser} exact ></Route>
             <Route path='/login' component={Login} exact ></Route>

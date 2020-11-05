@@ -1,5 +1,5 @@
 import React from 'react';
-import './OfferJourney.css';
+import './OfferTrip.css';
 import {
     withStyles,
     TextField,
@@ -67,7 +67,7 @@ function socketConnect(user) {
     return stompClient;
 }
 
-class OfferJourney extends React.Component {
+class OfferTrip extends React.Component {
 
     constructor(props) {
         super(props);
@@ -89,13 +89,13 @@ class OfferJourney extends React.Component {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
-
+        console.log("user :",userLocalestorage);
         // llamar socket
         this.stompClient = socketConnect(userLocalestorage);
 
 
         // sacar listas de universities
-        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getuniversities`,
+        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
             {
                 headers: {
                     Authorization: userLocalestorage.token //the token is a variable which holds the token
@@ -123,9 +123,10 @@ class OfferJourney extends React.Component {
 
         // sacar listas de cars
         var user = this.state.userInfo;
+        console.log(user);
         if( user !== ""){
             const username = user.username;
-            await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getcars/`+username,
+            await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/`+username,
             {
                 headers: {
                     Authorization: userLocalestorage.token //the token is a variable which holds the token
@@ -309,4 +310,4 @@ class OfferJourney extends React.Component {
     }
 }
 
-export default withStyles(styles)(OfferJourney);
+export default withStyles(styles)(OfferTrip);
