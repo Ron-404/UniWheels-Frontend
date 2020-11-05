@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import Car from "../CarImage"
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ActualizarCarro from './ActualizarCarro';
+import UpdateCar from './UpdateCar';
 import Swal from 'sweetalert2';
 
 class ModalListaCarros extends Component {
@@ -127,7 +127,7 @@ class ModalListaCarros extends Component {
 
                                 )
                             })}
-                            {this.state.edit ? <ActualizarCarro car={this.state.listaDeCarros[this.state.selectedCar]} updateListCar={this.componentDidMount} /> : null}
+                            {this.state.edit ? <UpdateCar car={this.state.listaDeCarros[this.state.selectedCar]} updateListCar={this.componentDidMount} /> : null}
                         </Grid>
                         :
                         <CircularProgress />

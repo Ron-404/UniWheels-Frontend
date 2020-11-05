@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Avatar, Button, CssBaseline, FormControl, Paper, Typography, TextField } from '@material-ui/core/';
 import LockIcon from '@material-ui/icons/LockOutlined';
-import './Registrar.css'
+import './Register.css'
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-class RegistrarUsuario extends Component {
+class RegisterUser extends Component {
   constructor(props) {
     super(props);
     this.state = { url: 'https://uniwheels-backend.herokuapp.com/', confirmReister: true, user: '', email: '', university: '', address: '', number: '', password: '', confirmPassword: '' }
@@ -119,4 +119,4 @@ class RegistrarUsuario extends Component {
     this.setState({ confirmReister: true });
   }
 }
-export default RegistrarUsuario;
+export default RegisterUser;
