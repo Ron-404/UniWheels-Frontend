@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './ModalRegistrarAutomovil.css';
+import './RegisterCarModal.css';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -13,17 +13,17 @@ import Car from "./CarImage"
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-class ModalRegistrarAutomovil extends Component {
+class RegisterCarModal extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      cargaMarcas: true,
-      registrarCarro: true,
+      loadbrands: true,
+      registerCar: true,
       'marca': '', 'modelo': '', 'color': '', 'placa': '',
-      marcas:
-        [{ marca: 'Ford' },
-        { marca: 'Nissan' }],
+      brands:
+        [{ brand: 'Ford' },
+        { brand: 'Nissan' }],
       modelos: [
         { modelo: 'Focus' },
         { modelo: 'Versa' }
@@ -43,12 +43,12 @@ class ModalRegistrarAutomovil extends Component {
   }
 
   async componentDidMount() {
-    // sacar marcas de carros
+    // sacar brands de carros
     await axios.get(`https://the-vehicles-api.herokuapp.com/brands/`)
       .then(res => {
-        const marcas = res.data;
-        this.setState({ marcas });
-        this.setState({ cargaMarcas: false });
+        const brands = res.data;
+        this.setState({ brands });
+        this.setState({ loadbrands: false });
       })
   }
 
@@ -70,7 +70,7 @@ class ModalRegistrarAutomovil extends Component {
 
 
   async handleSubmit() {
-    this.setState({ registrarCarro: false });
+    this.setState({ registerCar: false });
     // falta hacer validaciones de campos vacios
     if (!(this.state.placa &&
       this.state.marca.brand &&
@@ -81,7 +81,7 @@ class ModalRegistrarAutomovil extends Component {
         'Llene todos los campos por favor ',
         'error'
       )
-      this.setState({ registrarCarro: true });
+      this.setState({ registerCar: true });
     } else {
       // sacar user token y username de localEstorage
       var userInfo = JSON.parse(localStorage.getItem('user'));
@@ -106,14 +106,14 @@ class ModalRegistrarAutomovil extends Component {
               'su carro ha sido registrado exitosamente',
               'success'
             )
-            this.setState({ registrarCarro: true });
+            this.setState({ registerCar: true });
           } else {
             Swal.fire(
               'Registro Fallido',
               'error del servidor, vuelva a registrarlo',
               'error'
             )
-            this.setState({ registrarCarro: true });
+            this.setState({ registerCar: true });
           }
         }).catch(async function () {
           // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
@@ -154,7 +154,7 @@ class ModalRegistrarAutomovil extends Component {
             </FormControl>
           </p>
           <FormControl variant="filled" >
-            {this.state.cargaMarcas
+            {this.state.loadbrands
               ?
               <div >
                 <CircularProgress />
@@ -170,7 +170,7 @@ class ModalRegistrarAutomovil extends Component {
                     id: 'm',
                   }}
                 >
-                  {this.state.marcas.map((option) => <MenuItem key={option.id} value={option}>{option.brand}</MenuItem>)}
+                  {this.state.brands.map((option) => <MenuItem key={option.id} value={option}>{option.brand}</MenuItem>)}
 
                 </Select>
               </React.Fragment>
@@ -210,7 +210,7 @@ class ModalRegistrarAutomovil extends Component {
           </FormControl>
         </p>
 
-        {this.state.registrarCarro ?
+        {this.state.registerCar ?
           <Button onClick={() => { this.handleSubmit() }} variant="outlined" color="primary">
             Registrar
           </Button>
@@ -227,4 +227,4 @@ class ModalRegistrarAutomovil extends Component {
 
 }
 
-export default ModalRegistrarAutomovil;
+export default RegisterCarModal;

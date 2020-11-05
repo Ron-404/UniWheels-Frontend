@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
-import ModalListaCarros from './Carros/ModalListaCarros'
 
 import { withStyles } from "@material-ui/core/styles";
+
 import Swal from 'sweetalert2';
-import ModalRegistrarAutomovil from './ModalRegistrarAutomovil';
-import ModalSolicitudesPasajeros from './ModalSolicitudesPasajeros';
 
 import {
     Menu,
@@ -23,30 +21,30 @@ import {
     ListItemText,
     Box,
     Collapse,
+    Link,
 } from '@material-ui/core/';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
-import DriveEta from '@material-ui/icons/DriveEta';
-import Input from '@material-ui/icons/Input';
-import ListIcon from '@material-ui/icons/List';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import TelegramIcon from '@material-ui/icons/Telegram';
+
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import EmojiTransportationIcon from '@material-ui/icons/EmojiTransportation';
-import GroupIcon from '@material-ui/icons/Group';
-import Link from '@material-ui/core/Link';
-import OfrecerViaje from './OfrecerViaje';
-import ModalViajeConductor from './viaje/ModalViajeConductor';
-import InfoPerfil from "../Generales/infoPerfil";
-
 import logo from '../../logo.png';
+import Requests from './Requests';
+import TripOfferedDriver from "./TripOfferedDriver";
+import PassengerTripModal from './trip/PassengerTripModal';
+
+import ProfileInfo from "../General/ProfileInfo";
 
 import axios from 'axios';
 
-class DashBoardConductor extends Component {
+class DashBoardPasajero extends Component {
 
     constructor(props) {
         super(props);
@@ -56,16 +54,16 @@ class DashBoardConductor extends Component {
             mobileMoreAnchorEl: null,
             isMenuOpen: false,
             isMobileMenuOpen: false,
-            isCarsOpen: false,
-            isTravelsOpen: false,
+            isRequestsOpen: false,
+            isViajesOpen: false,
 
             selectedIndex: false,
-            vista1: false,
-            vista2: false,
-            vista3: false,
-            vista4: false,
+            view1: false,
+            view2: false,
+            view3: false,
+            view4: false,
             open: false,
-            verPerfil: false,
+            viewProfile: false,
             userInfo:""
         }
 
@@ -77,8 +75,8 @@ class DashBoardConductor extends Component {
         this.handleMobileMenuClose = this.handleMobileMenuClose.bind(this);
         this.handleMenuClose = this.handleMenuClose.bind(this);
         this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
-        this.handleClickCars = this.handleClickCars.bind(this);
-        this.handleClickTravels = this.handleClickTravels.bind(this);
+        this.handleClickRequests = this.handleClickRequests.bind(this);
+        this.handleClickRequestsViajes = this.handleClickRequestsViajes.bind(this);
     }
 
     async componentDidMount() {
@@ -96,11 +94,12 @@ class DashBoardConductor extends Component {
             // redireccionar a login
             window.location.replace("/login")
         }
+
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
         // sacar usuario si es valido, si no redirigirlo al login
-        await axios.get(`https://uniwheels-backend.herokuapp.com/auth/loggedUser/` + userLocalestorage.username,
+        await axios.get(`https://uniwheels-backend.herokuapp.com/auth/loggedUser/`+userLocalestorage.username,
             {
                 headers: {
                     Authorization: userLocalestorage.token //the token is a variable which holds the token
@@ -111,10 +110,10 @@ class DashBoardConductor extends Component {
                 const user = res.data;
                 Swal.fire({
                     icon: 'success',
-                    title: 'Bienvenido ' + user.nombreCompleto,
+                    title: 'Bienvenido '+user.nombreCompleto,
                     showConfirmButton: false,
                     timer: 1400
-                });
+                  });
             })
             .catch(async function () {
                 // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
@@ -154,18 +153,18 @@ class DashBoardConductor extends Component {
         this.handleMobileMenuClose();
 
         if (index === 1) { //modal perfil usuario
-            if (this.state.verPerfil) {
-                await this.setState({ verPerfil: false });
-                this.setState({ verPerfil: true });
+            if (this.state.viewProfile) {
+                await this.setState({ viewProfile: false });
+                this.setState({ viewProfile: true });
             } else {
-                this.setState({ verPerfil: true });
+                this.setState({ viewProfile: true });
             }
         }
 
         if (index === 2) { // cambio dashboard
             swalWithBootstrapButtons.fire({
-                title: 'Está seguro de ser pasajero?',
-                text: "como pasajero podra tomar viajes y llegar como a su destino!",
+                title: 'Está seguro de ser conductor?',
+                text: "como conductor podra ofrecer viajes o registrar su vehiculo!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si, Seguro!',
@@ -173,10 +172,9 @@ class DashBoardConductor extends Component {
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    history.push('/dashboardPasajero');
+                    history.push('/driverDashboard');
                 }
             })
-
         }
 
         if (index === 3) {
@@ -206,45 +204,47 @@ class DashBoardConductor extends Component {
         this.setState({ selectedIndex: index })
         if (index === 0) {
             this.setState({
-                vista1: !this.state.vista1,
-                vista2: false,
-                vista3: false,
-                vista4: false,
+                view1: !this.state.view1,
+                view2: false,
+                view3: false,
+                view4: false,
             });
         }
         else if (index === 1) {
             this.setState({
-                vista2: !this.state.vista2,
-                vista1: false,
-                vista3: false,
-                vista4: false,
+                view2: !this.state.view2,
+                view1: false,
+                view3: false,
+                view4: false,
             });
         }
         else if (index === 2) {
             this.setState({
-                vista3: !this.state.vista3,
-                vista1: false,
-                vista2: false,
-                vista4: false,
+                view3: !this.state.view3,
+                view1: false,
+                view2: false,
+                view4: false,
             });
         }
         else if (index === 3) {
             this.setState({
-                vista4: !this.state.vista4,
-                vista1: false,
-                vista2: false,
-                vista3: false,
+                view4: !this.state.view4,
+                view1: false,
+                view2: false,
+                view3: false,
             });
         }
         this.handleDrawerClose();
 
     };
-    handleClickCars() {
-        this.setState({ isCarsOpen: !this.state.isCarsOpen })
+
+    handleClickRequests = () => {
+
+        this.setState({ isRequestsOpen: !this.state.isRequestsOpen });
     }
 
-    handleClickTravels() {
-        this.setState({ isTravelsOpen: !this.state.isTravelsOpen })
+    handleClickRequestsViajes() {
+        this.setState({ isViajesOpen: !this.state.isViajesOpen })
     }
 
     handleDrawerOpen() {
@@ -257,10 +257,10 @@ class DashBoardConductor extends Component {
 
     render() {
         const { classes } = this.props;
-
+        document.body.classList.add('driverDashboard');
         return (
-            <Box m="auto">
             <div className={classes.root}>
+
                 <CssBaseline />
                 <AppBar
                     position="fixed"
@@ -278,7 +278,6 @@ class DashBoardConductor extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
-
                         <img src={logo} width="40px" height="40px" margin="auto" alt="Logo" />
 
                         <Typography variant="h6" noWrap href="/home">
@@ -288,8 +287,6 @@ class DashBoardConductor extends Component {
                                 </div>
                             </Link>
                         </Typography>
-
-
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <IconButton
@@ -312,8 +309,8 @@ class DashBoardConductor extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 1)}>Perfil</MenuItem>
-                                {this.state.verPerfil ? <InfoPerfil /> : null}
-                                <MenuItem onClick={this.handleMenuClose.bind(this, 2)}>Ser Pasajero</MenuItem>
+                                {this.state.viewProfile ? <ProfileInfo user={{ name: "Orlando", email: "orlando@hotmail.com", rating: 2 }} /> : null}
+                                <MenuItem onClick={this.handleMenuClose.bind(this, 2)}>Ser Conductor</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 3)}>Cerrar Sesion</MenuItem>
                             </Menu>
                         </div>
@@ -374,91 +371,105 @@ class DashBoardConductor extends Component {
                     </div>
                     <Divider />
                     <List>
-                        <Divider />
-                        <ListItem button onClick={this.handleClickCars}>
+                        <ListItem button onClick={this.handleClickRequests}>
                             <ListItemIcon>
-                                <DriveEta />
+                                <TelegramIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Mis Carros" />
-                            {this.state.isCarsOpen ? <ExpandLess /> : <ExpandMore />}
+                            <ListItemText primary="Mis Solicitudes" />
+                            {this.state.isRequestsOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                        <Collapse in={this.state.isCarsOpen} timeout="auto" unmountOnExit>
+                        <Collapse in={this.state.isRequestsOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                {['Registrar Carro', 'Ver mis Carros'].map((text, index) => (
-                                    <ListItem
-                                        className={classes.nested}
-                                        button key={text}
-                                        selected={this.state.selectedIndex === index}
-                                        onClick={this.handleListItemClick.bind(this, index)}
-                                    >
-                                        <ListItemIcon>{index % 2 === 0 ? <Input /> : <ListIcon />}</ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                ))}
+                                <ListItem
+                                    className={classes.nested}
+                                    button
+                                    selected={this.state.selectedIndex === 0}
+                                    onClick={this.handleListItemClick.bind(this, 0)}
+                                >
+                                    <ListItemIcon>
+                                        <CheckCircleOutlineIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Activas" />
+                                </ListItem>
                             </List>
                         </Collapse>
-                        <Divider />
-                        <ListItem button onClick={this.handleClickTravels}>
+
+                        <ListItem button onClick={this.handleClickRequestsViajes}>
                             <ListItemIcon>
-                                <GroupIcon />
+                                <EmojiTransportationIcon />
                             </ListItemIcon>
                             <ListItemText primary="Mis Viajes" />
-                            {this.state.isTravelsOpen ? <ExpandLess /> : <ExpandMore />}
+                            {this.state.isViajesOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                        <Collapse in={this.state.isTravelsOpen} timeout="auto" unmountOnExit>
+                        <Collapse in={this.state.isViajesOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                {['Ofrecer Viaje', 'Solcitudes'].map((text, index) => (
-                                    <ListItem
-                                        className={classes.nested}
-                                        button key={text}
-                                        selected={this.state.selectedIndex === index + 2}
-                                        onClick={this.handleListItemClick.bind(this, index + 2)}
-                                    >
-                                        <ListItemIcon>{index % 2 === 0 ? <EmojiTransportationIcon /> : <ListIcon />}</ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                ))}
+                                <ListItem
+                                    className={classes.nested}
+                                    button
+                                    selected={this.state.selectedIndex === 1}
+                                    onClick={this.handleListItemClick.bind(this, 1)}
+                                >
+                                    <ListItemIcon>
+                                        <CheckCircleOutlineIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Actual" />
+                                </ListItem>
                             </List>
                         </Collapse>
                     </List>
                 </Drawer>
-                <Box m="auto">
-                <main className={classes.content}>
+                <main
+                    className={clsx(classes.content, {
+                        [classes.contentShift]: this.state.open,
+                    })}
+                >
                     <div className={classes.toolbar} />
                     <Box>
-
                         <div>
-
-                            {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
+                            {!this.state.view1 && !this.state.view2 && !this.state.view3 && !this.state.view4 &&
                                 <div>
-                                    <article>
-                                        <Typography variant="h3">
-                                            Viaje Actual:
-                                        </Typography>
-                                    </article>
-                                    <div>
-                                        <ModalViajeConductor />
-                                    </div>
+                                    <Typography variant="h3">
+                                        Viajes Disponibles:
+                                    </Typography>
+                                    <TripOfferedDriver />
                                 </div>}
                             <div>
-                                {this.state.vista1 ? <ModalRegistrarAutomovil /> : null}
-                            </div>
-                            <div>
-                                {this.state.vista2 ? <ModalListaCarros /> : null}
-                            </div>
-                            <div>
-                                {this.state.vista3 ? <OfrecerViaje /> : null}
-                            </div>
-                            <div>
-                                {this.state.vista4 ? <ModalSolicitudesPasajeros /> : null}
-                            </div>
+                                {this.state.view1 &&
+                                    <Requests />
+                                }
 
+                            </div>
+                            <div>
+                                {this.state.view2 &&
+                                    <div>
+                                        <div>
+                                            <Typography variant="h3">
+                                                Viaje Actual:
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <PassengerTripModal />
+                                        </div>
+                                    </div>}
+                            </div>
+                            <div>
+                                {this.state.view3 &&
+                                    <Typography variant="h6">
+                                        Vista 3
+                                </Typography>
+                                }
+                            </div>
+                            <div>
+                                {this.state.view4 &&
+                                    <Typography variant="h6" noWrap>
+                                        Vista 4
+                                </Typography>
+                                }
+                            </div>
                         </div>
                     </Box>
                 </main>
-                </Box>
             </div>
-            </Box>
 
 
         )
@@ -470,21 +481,6 @@ const drawerWidth = 240;
 const styles = theme => ({
     root: {
         display: 'flex',
-    },
-    grow: {
-        flexGrow: 1,
-    },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -502,14 +498,7 @@ const styles = theme => ({
         }),
     },
     menuButton: {
-        marginRight: 36,
-    },
-    menuLogo: {
-        position: "relative",
-    },
-    menuTitle: {
-        marginLeft: "5px",
-        color: "#FFFFFF",
+        marginRight: theme.spacing(2),
     },
     hide: {
         display: 'none',
@@ -517,6 +506,36 @@ const styles = theme => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+    menuTitle: {
+        marginLeft: "5px",
+        color: "#FFFFFF"
     },
     drawerOpen: {
         width: drawerWidth,
@@ -565,4 +584,4 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles, { withTheme: true })(DashBoardConductor);
+export default withStyles(styles, { withTheme: true })(DashBoardPasajero);

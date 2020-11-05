@@ -21,13 +21,13 @@ import Star from '@material-ui/icons/Star';
 import Divider from '@material-ui/core/Divider';
 import ReactStars from "react-rating-stars-component";
 
-import MapaViajeInicioDestino from "./MapaViajeInicioDestino";
+import TravelMap from "./TravelMap";
 
-import InfoUsuarios from "../../Generales/InfoUsuarios";
+import UsersInfo from "../../General/UsersInfo";
 
-import { Box } from '@material-ui/core'
+import { Box } from '@material-ui/core';
 
-class ModalViajeConductor extends Component {
+class DriverTripModal extends Component {
 
     constructor(props) {
         super(props);
@@ -85,7 +85,7 @@ class ModalViajeConductor extends Component {
                                         action={this.renderModalInfoPersona}
                                         title={
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                Conductor: <InfoUsuarios user={viaje.conductor} />
+                                                Conductor: <UsersInfo user={viaje.conductor} />
                                                 <br />
                                             Estado: En curso
                                         </Typography>
@@ -94,7 +94,7 @@ class ModalViajeConductor extends Component {
 
                                     <CardContent>
                                         <div>
-                                            <MapaViajeInicioDestino />
+                                            <TravelMap />
                                         </div>
 
 
@@ -200,4 +200,4 @@ var styles = theme => (
     });
 
 
-export default withStyles(styles, { withTheme: true })(ModalViajeConductor);
+export default withStyles(styles, { withTheme: true })(DriverTripModal);

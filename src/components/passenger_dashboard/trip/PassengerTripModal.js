@@ -16,9 +16,9 @@ import Star from '@material-ui/icons/Star';
 import Divider from '@material-ui/core/Divider';
 import ReactStars from "react-rating-stars-component";
 import MapRouting from "../MapRouting";
-import InfoUsuarios from "../../Generales/InfoUsuarios";
+import UsersInfo from "../../General/UsersInfo";
 
-class ModalViajePasajero extends Component {
+class PassengerTripModal extends Component {
 
     constructor(props) {
         super(props);
@@ -46,11 +46,11 @@ class ModalViajePasajero extends Component {
 
     render() {
         const { classes } = this.props;
-        const viaje = {
-            viajeCurso: { inicio: "ECI", destino: "Prado", estado: "En curso" },
-            conductor: { name: "Santiago Carrillo", email: "sancarbar@gmail", rating: 4 },
+        const trip = {
+            tripInProgress: { from: "ECI", to: "Prado", stateTrip: "En curso" },
+            driver: { name: "Santiago Carrillo", email: "sancarbar@gmail", rating: 4 },
             dueDate: new Date().getDay() + "/" + new Date().getMonth() + "/" + new Date().getFullYear(),
-            pasajeros:
+            passengers:
                 [
                     { name: "andres Vasquez", email: "avasquez@gmail", rating: 4 },
                     { name: "pasajero prueba", email: "prueba@gmail", rating: 3 },
@@ -71,7 +71,7 @@ class ModalViajePasajero extends Component {
                                     action={this.renderModalInfoPersona}
                                     title={
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Conductor: <InfoUsuarios user={viaje.conductor} />
+                                            Conductor: <UsersInfo user={trip.driver} />
                                             <br />
                                             Estado: En curso
                                         </Typography>
@@ -83,15 +83,15 @@ class ModalViajePasajero extends Component {
                                         <MapRouting ini={{lat:4.782659,lng:-74.041970}} des={{lat:4.749564,lng:-74.042032}} />
                                     </div>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                        Origen: {viaje.viajeCurso.inicio}
+                                        Origen: {trip.tripInProgress.from}
                                         <br />
-                                        Destino: {viaje.viajeCurso.destino}
+                                        Destino: {trip.tripInProgress.to}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="span">
-                                        {viaje.dueDate}
+                                        {trip.dueDate}
                                     </Typography>
                                     </CardContent>
-                                {viaje.viajeCurso.estado === "finalizado"  && 
+                                {trip.tripInProgress.stateTrip === "finalizado"  && 
                                 
                                     <IconButton edge="end" aria-label="delete">
                                         <Star />
@@ -105,7 +105,7 @@ class ModalViajePasajero extends Component {
                                         Pasajeros:
                                     </Typography>
                                     <List>
-                                        {viaje.pasajeros.map((pasajero, index) => {
+                                        {trip.passengers.map((pasajero, index) => {
                                             return (
                                                 <div key={index}>
                                                     <Divider />
@@ -163,4 +163,4 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles, { withTheme: true })(ModalViajePasajero);
+export default withStyles(styles, { withTheme: true })(PassengerTripModal);

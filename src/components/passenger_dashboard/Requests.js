@@ -21,8 +21,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(nombre, carro, origen, destino, precio) {
-  return { nombre, carro, origen, destino, precio };
+function createData(name, car, from, to, price) {
+  return { name, car, from, to, price };
 }
 
 const rows = [
@@ -221,19 +221,19 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.nombre);
+      const newSelecteds = rows.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, nombre) => {
-    const selectedIndex = selected.indexOf(nombre);
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, nombre);
+      newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -261,7 +261,7 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (nombre) => selected.indexOf(nombre) !== -1;
+  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -289,17 +289,17 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.nombre);
+                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.nombre)}
+                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.nombre}
+                      key={row.name}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -309,12 +309,12 @@ export default function EnhancedTable() {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.nombre}
+                        {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.carro}</TableCell>
-                      <TableCell align="right">{row.origen}</TableCell>
-                      <TableCell align="right">{row.destino}</TableCell>
-                      <TableCell align="right">{row.precio}</TableCell>
+                      <TableCell align="right">{row.car}</TableCell>
+                      <TableCell align="right">{row.from}</TableCell>
+                      <TableCell align="right">{row.to}</TableCell>
+                      <TableCell align="right">{row.price}</TableCell>
                     </TableRow>
                   );
                 })}

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import CardActionArea from '@material-ui/core/CardActionArea';
 
-class InfoUsuarios extends Component {
+class UsersInfo extends Component {
 
     constructor(props) {
         super(props);
@@ -115,4 +115,4 @@ const TransitionsModal = ((props) => {
 
 
 
-export default InfoUsuarios;
+export default UsersInfo;

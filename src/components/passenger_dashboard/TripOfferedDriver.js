@@ -13,10 +13,10 @@ import MapRouting from "./MapRouting";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import axios from 'axios';
-import InfoUsuarios from "../Generales/InfoUsuarios";
+import UsersInfo from "../General/UsersInfo";
 
 
-var viajes = []
+var trips = []
 
 const placesIni = [
     {lat:4.782759,lng: -74.041757},
@@ -56,14 +56,14 @@ function socketConnect(user) {
         stompClient.subscribe("/uniwheels/conductores",function(response){
             let data=response.body;
             console.log("connected to: " + data);
-            viajes = data;
-            console.log("vaijes" + viajes);
+            trips = data;
+            console.log("vaijes" + trips);
         })
     });
     return stompClient;
 }
 
-class ViajesOfrecidosConductores extends Component {
+class TripOfferedDriver extends Component {
 
     constructor(props) {
         super(props);
@@ -95,7 +95,7 @@ class ViajesOfrecidosConductores extends Component {
 
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={2}>
-                        {viajes.map((viaje, index) => {
+                        {trips.map((trip, index) => {
                             return (
                                 <Grid key={index} item>
                                     <Card className={classes.root}>
@@ -104,7 +104,7 @@ class ViajesOfrecidosConductores extends Component {
                                             action = {this.renderModalInfoPersona}
                                             title={
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    Conductor: <InfoUsuarios user={viaje.conductor}/>
+                                                    Conductor: <UsersInfo user={trip.conductor}/>
                                                 </Typography>
                                             }
                                         />
@@ -114,12 +114,12 @@ class ViajesOfrecidosConductores extends Component {
                                             <MapRouting ini ={placesIni[0]} des={placesDes[index]}/>
 
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                inicio: {viaje.viaje.inicio}
+                                                inicio: {trip.trip.inicio}
                                                 <br />
-                                                    destino: {viaje.viaje.destino}
+                                                    destino: {trip.trip.destino}
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                {viaje.dueDate}
+                                                {trip.dueDate}
                                             </Typography>
 
                                             <Button className={classes.boton} variant="contained" size="small" >
@@ -159,5 +159,5 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles, { withTheme: true })(ViajesOfrecidosConductores);
+export default withStyles(styles, { withTheme: true })(TripOfferedDriver);
 

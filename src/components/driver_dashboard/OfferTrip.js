@@ -1,5 +1,5 @@
 import React from 'react';
-import './OfrecerViaje.css';
+import './OfferTrip.css';
 import {
     withStyles,
     TextField,
@@ -31,7 +31,7 @@ const styles = theme => ({
     },
 });
 
-const zonas = [
+const zones = [
     { id: "1", name: "1 Salidas Norte de Bogotá" },
     { id: "2", name: "2 Suba Occidental" },
     { id: "3", name: "3 Suba Oriental" },
@@ -67,16 +67,16 @@ function socketConnect(user) {
     return stompClient;
 }
 
-class OfrecerViaje extends React.Component {
+class OfferTrip extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { clientConnected: false, messages: [], origen: '', destino: '', precio: 0, cargaUniversidades: false, universidades: [], carros: [],carroActual: "", userInfo: "", ruta:""};
-        this.handleOrigenChange = this.handleOrigenChange.bind(this);
-        this.handleDestinoChange = this.handleDestinoChange.bind(this);
-        this.handlePrecioChange = this.handlePrecioChange.bind(this);
+        this.state = { clientConnected: false, messages: [], from: '', to: '', price: 0, loadUniversities: false, universities: [], cars: [],currentCar: "", userInfo: "", route:""};
+        this.handleFromChange = this.handleFromChange.bind(this);
+        this.handleToChange = this.handleToChange.bind(this);
+        this.handlePriceChange = this.handlePriceChange.bind(this);
         this.handleCarroChange = this.handleCarroChange.bind(this);
-        this.handleRutaChange = this.handleRutaChange.bind(this);
+        this.handleRouteChange = this.handleRouteChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.stompClient = null;
     }
@@ -89,12 +89,12 @@ class OfrecerViaje extends React.Component {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
-
+        console.log("user :",userLocalestorage);
         // llamar socket
         this.stompClient = socketConnect(userLocalestorage);
 
 
-        // sacar listas de universidades
+        // sacar listas de universities
         await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
             {
                 headers: {
@@ -103,9 +103,9 @@ class OfrecerViaje extends React.Component {
             }
         )
             .then(res => {
-                const universidades = res.data;
-                this.setState({ universidades });
-                this.setState({ cargaUniversidades: true });
+                const universities = res.data;
+                this.setState({ universities });
+                this.setState({ loadUniversities: true });
             })
             .catch(async function () {
                 // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
@@ -121,8 +121,9 @@ class OfrecerViaje extends React.Component {
             });
 
 
-        // sacar listas de carros
+        // sacar listas de cars
         var user = this.state.userInfo;
+        console.log(user);
         if( user !== ""){
             const username = user.username;
             await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/`+username,
@@ -133,9 +134,9 @@ class OfrecerViaje extends React.Component {
             }
         )
             .then(res => {
-                const carros = res.data;
-                this.setState({ carros : carros });
-                if(carros.length === 0){
+                const cars = res.data;
+                this.setState({ cars : cars });
+                if(cars.length === 0){
                     alert("Debes registrar un carro para iniciar un viaje");
                 }
                     
@@ -159,11 +160,11 @@ class OfrecerViaje extends React.Component {
 
     send = () => {
 
-        if(this.state.destino != "" && this.state.origen != "" && this.state.precio != ""
-            && this.state.userInfo != "" && this.state.carroActual !== "" && this.state.ruta !== ""){
+        if(this.state.to != "" && this.state.from != "" && this.state.price != ""
+            && this.state.userInfo != "" && this.state.currentCar !== "" && this.state.route !== ""){
                 console.log("username" + userLocalestorage.username);
             if (this.stompClient != null) {
-                this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: this.state.ruta, precio: this.state.precio , origen: this.state.origen , destino: this.state.destino , carro: this.state.carroActual }));
+                this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ route: this.state.route, price: this.state.price , from: this.state.from , to: this.state.to , carro: this.state.currentCar }));
                 //Mostrar notificación de viaje iniciado
             }
         }
@@ -177,42 +178,42 @@ class OfrecerViaje extends React.Component {
 
     }
 
-    handleOrigenChange(e) {
+    handleFromChange(e) {
         this.setState({
-            origen: e.target.value
+            from: e.target.value
         });
     };
 
-    handleDestinoChange(e) {
+    handleToChange(e) {
         this.setState({
-            destino: e.target.value
+            to: e.target.value
         });
     };
 
-    handlePrecioChange(e) {
+    handlePriceChange(e) {
         this.setState({
-            precio: e.target.value
+            price: e.target.value
         });
     };
 
     handleCarroChange(e){
         this.setState({
-            carroActual: e.target.value
+            currentCar: e.target.value
         });
     };
 
-    handleRutaChange(e){
+    handleRouteChange(e){
         this.setState({
-            ruta: e.target.value
+            route: e.target.value
         });
     };
 
     handleSubmit(e) {
         e.preventDefault();
-        if (this.state.precio < 0 || this.state.origen === this.state.destino) {
+        if (this.state.price < 0 || this.state.from === this.state.to) {
             alert("Los datos ingresados son incorrectos");
         }
-        else if(this.state.carroActual === ""){
+        else if(this.state.currentCar === ""){
             alert("Debe seleccionar un carro");
         }
         else {
@@ -231,7 +232,7 @@ class OfrecerViaje extends React.Component {
                 {this.state.clientConnected && console.log("connect: ", this.state.clientConnected)}
 
                 <Grid item xs={12} sm={6} id="zonamapa">
-                    <iframe id="mapazona" title="zonas" src="https://www.google.com/maps/d/embed?mid=1eCm1IraFBJkNpkpOQ-DnlR7ePFC1KbZT" width="640" height="480"></iframe>
+                    <iframe id="mapazona" title="zones" src="https://www.google.com/maps/d/embed?mid=1eCm1IraFBJkNpkpOQ-DnlR7ePFC1KbZT" width="640" height="480"></iframe>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <form onSubmit={this.handleSubmit} >
@@ -241,16 +242,16 @@ class OfrecerViaje extends React.Component {
                         <div className="text OfrecerViaje">
                             <div className="text-form-cond OfrecerViaje">
                             <TextField variant="outlined" id="Ruta" label="Nombre de la ruta" type="text"
-                                    onChange={this.handleRutaChange} fullWidth autoFocus required />
+                                    onChange={this.handleRouteChange} fullWidth autoFocus required />
                             </div>
                             <br></br>
                             {
-                                this.state.cargaUniversidades ?
+                                this.state.loadUniversities ?
 
                                     <div className="text-form-cond OfrecerViaje">
                                         <TextField id="select" label="¿En que universidad estás?" select required fullWidth
-                                            onChange={this.handleOrigenChange}>
-                                            {this.state.universidades.map((universidad, index) => (<MenuItem key={index} value={universidad.nombre}>{universidad.nombre}</MenuItem>))}
+                                            onChange={this.handleFromChange}>
+                                            {this.state.universities.map((universidad, index) => (<MenuItem key={index} value={universidad.nombre}>{universidad.nombre}</MenuItem>))}
                                         </TextField>
                                     </div>
 
@@ -262,12 +263,12 @@ class OfrecerViaje extends React.Component {
                             <br></br>
 
                             {
-                                this.state.carros.length > 0 ?
+                                this.state.cars.length > 0 ?
 
                                     <div className="text-form-cond OfrecerViaje">
                                         <TextField id="select" label="¿Qué carro vas a usar?" select required fullWidth
                                             onChange={this.handleCarroChange}>
-                                            {this.state.carros.map((carro, index) => (<MenuItem key={index} value={carro.marca +" "+ carro.modelo}>{carro.marca +" "+ carro.modelo}</MenuItem>))}
+                                            {this.state.cars.map((carro, index) => (<MenuItem key={index} value={carro.marca +" "+ carro.modelo}>{carro.marca +" "+ carro.modelo}</MenuItem>))}
                                         </TextField>
                                     </div>
 
@@ -281,15 +282,15 @@ class OfrecerViaje extends React.Component {
                             <br></br>
                             <div className="text-form-cond OfrecerViaje">
                                 <TextField id="otlined-select" label="¿Para donde vás?" select required fullWidth
-                                    onChange={this.handleDestinoChange}>
-                                    {zonas.map((zona) => (<MenuItem value={zona.id}>{zona.name}</MenuItem>))}
+                                    onChange={this.handleToChange}>
+                                    {zones.map((zona) => (<MenuItem value={zona.id}>{zona.name}</MenuItem>))}
                                 </TextField>
                             </div>
                             <br></br>
                             <br></br>
                             <div className="text-form-cond">
                                 <TextField id="outlined-number" label="Precio" type="number" InputLabelProps={{ shrink: true, }}
-                                    variant="outlined" onChange={this.handlePrecioChange} fullWidth autoFocus
+                                    variant="outlined" onChange={this.handlePriceChange} fullWidth autoFocus
                                     required />
                             </div>
                             <br></br>
@@ -309,4 +310,4 @@ class OfrecerViaje extends React.Component {
     }
 }
 
-export default withStyles(styles)(OfrecerViaje);
+export default withStyles(styles)(OfferTrip);
