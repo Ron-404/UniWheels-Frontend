@@ -40,7 +40,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import Link from '@material-ui/core/Link';
 import OfrecerViaje from './OfrecerViaje';
 import ModalViajeConductor from './viaje/ModalViajeConductor';
-import InfoPerfil from "../Generales/infoPerfil";
+import ProfileInfo from "../General/ProfileInfo";
 
 import logo from '../../logo.png';
 
@@ -60,12 +60,12 @@ class DashBoardConductor extends Component {
             isTravelsOpen: false,
 
             selectedIndex: false,
-            vista1: false,
-            vista2: false,
-            vista3: false,
-            vista4: false,
+            page1: false,
+            page2: false,
+            page3: false,
+            page4: false,
             open: false,
-            verPerfil: false,
+            viewProfile: false,
             userInfo:""
         }
 
@@ -154,11 +154,11 @@ class DashBoardConductor extends Component {
         this.handleMobileMenuClose();
 
         if (index === 1) { //modal perfil usuario
-            if (this.state.verPerfil) {
-                await this.setState({ verPerfil: false });
-                this.setState({ verPerfil: true });
+            if (this.state.viewProfile) {
+                await this.setState({ viewProfile: false });
+                this.setState({ viewProfile: true });
             } else {
-                this.setState({ verPerfil: true });
+                this.setState({ viewProfile: true });
             }
         }
 
@@ -206,34 +206,34 @@ class DashBoardConductor extends Component {
         this.setState({ selectedIndex: index })
         if (index === 0) {
             this.setState({
-                vista1: !this.state.vista1,
-                vista2: false,
-                vista3: false,
-                vista4: false,
+                page1: !this.state.page1,
+                page2: false,
+                page3: false,
+                page4: false,
             });
         }
         else if (index === 1) {
             this.setState({
-                vista2: !this.state.vista2,
-                vista1: false,
-                vista3: false,
-                vista4: false,
+                page2: !this.state.page2,
+                page1: false,
+                page3: false,
+                page4: false,
             });
         }
         else if (index === 2) {
             this.setState({
-                vista3: !this.state.vista3,
-                vista1: false,
-                vista2: false,
-                vista4: false,
+                page3: !this.state.page3,
+                page1: false,
+                page2: false,
+                page4: false,
             });
         }
         else if (index === 3) {
             this.setState({
-                vista4: !this.state.vista4,
-                vista1: false,
-                vista2: false,
-                vista3: false,
+                page4: !this.state.page4,
+                page1: false,
+                page2: false,
+                page3: false,
             });
         }
         this.handleDrawerClose();
@@ -312,7 +312,7 @@ class DashBoardConductor extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 1)}>Perfil</MenuItem>
-                                {this.state.verPerfil ? <InfoPerfil /> : null}
+                                {this.state.viewProfile ? <ProfileInfo /> : null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 2)}>Ser Pasajero</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 3)}>Cerrar Sesion</MenuItem>
                             </Menu>
@@ -429,7 +429,7 @@ class DashBoardConductor extends Component {
 
                         <div>
 
-                            {!this.state.vista1 && !this.state.vista2 && !this.state.vista3 && !this.state.vista4 &&
+                            {!this.state.page1 && !this.state.page2 && !this.state.page3 && !this.state.page4 &&
                                 <div>
                                     <article>
                                         <Typography variant="h3">
@@ -441,16 +441,16 @@ class DashBoardConductor extends Component {
                                     </div>
                                 </div>}
                             <div>
-                                {this.state.vista1 ? <ModalRegistrarAutomovil /> : null}
+                                {this.state.page1 ? <ModalRegistrarAutomovil /> : null}
                             </div>
                             <div>
-                                {this.state.vista2 ? <ModalListaCarros /> : null}
+                                {this.state.page2 ? <ModalListaCarros /> : null}
                             </div>
                             <div>
-                                {this.state.vista3 ? <OfrecerViaje /> : null}
+                                {this.state.page3 ? <OfrecerViaje /> : null}
                             </div>
                             <div>
-                                {this.state.vista4 ? <ModalSolicitudesPasajeros /> : null}
+                                {this.state.page4 ? <ModalSolicitudesPasajeros /> : null}
                             </div>
 
                         </div>

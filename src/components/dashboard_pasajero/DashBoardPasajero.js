@@ -40,7 +40,7 @@ import Solicitudes from './Solicitudes';
 import ViajesOfrecidosConductores from "../dashboard_pasajero/ViajesOfrecidosConductores";
 import ModalViajePasajero from './viaje/ModalViajePasajero';
 
-import InfoPerfil from "../Generales/infoPerfil";
+import ProfileInfo from "../General/ProfileInfo";
 
 import axios from 'axios';
 
@@ -309,7 +309,7 @@ class DashBoardPasajero extends Component {
                                 onClose={this.handleMenuClose}
                             >
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 1)}>Perfil</MenuItem>
-                                {this.state.verPerfil ? <InfoPerfil user={{ name: "Orlando", email: "orlando@hotmail.com", rating: 2 }} /> : null}
+                                {this.state.verPerfil ? <ProfileInfo user={{ name: "Orlando", email: "orlando@hotmail.com", rating: 2 }} /> : null}
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 2)}>Ser Conductor</MenuItem>
                                 <MenuItem onClick={this.handleMenuClose.bind(this, 3)}>Cerrar Sesion</MenuItem>
                             </Menu>

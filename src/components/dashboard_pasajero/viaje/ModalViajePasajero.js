@@ -16,7 +16,7 @@ import Star from '@material-ui/icons/Star';
 import Divider from '@material-ui/core/Divider';
 import ReactStars from "react-rating-stars-component";
 import MapRouting from "../MapRouting";
-import InfoUsuarios from "../../Generales/InfoUsuarios";
+import UsersInfo from "../../General/UsersInfo";
 
 class ModalViajePasajero extends Component {
 
@@ -71,7 +71,7 @@ class ModalViajePasajero extends Component {
                                     action={this.renderModalInfoPersona}
                                     title={
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Conductor: <InfoUsuarios user={viaje.conductor} />
+                                            Conductor: <UsersInfo user={viaje.conductor} />
                                             <br />
                                             Estado: En curso
                                         </Typography>

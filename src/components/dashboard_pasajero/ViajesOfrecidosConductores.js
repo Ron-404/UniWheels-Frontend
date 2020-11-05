@@ -13,7 +13,7 @@ import MapRouting from "./MapRouting";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import axios from 'axios';
-import InfoUsuarios from "../Generales/InfoUsuarios";
+import UsersInfo from "../General/UsersInfo";
 
 
 var viajes = []
@@ -104,7 +104,7 @@ class ViajesOfrecidosConductores extends Component {
                                             action = {this.renderModalInfoPersona}
                                             title={
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    Conductor: <InfoUsuarios user={viaje.conductor}/>
+                                                    Conductor: <UsersInfo user={viaje.conductor}/>
                                                 </Typography>
                                             }
                                         />
