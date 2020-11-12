@@ -16,7 +16,7 @@ import axios from 'axios';
 import UsersInfo from "../General/UsersInfo";
 
 
-var trips = []
+//var trips = [];
 
 const placesIni = [
     {lat:4.782759,lng: -74.041757},
@@ -46,22 +46,10 @@ const placesDes = [
 const userLocalestorage = JSON.parse(localStorage.getItem('user'));
 var stompClient;
 
-function socketConnect(user) {
-    console.log("Connecting to WebSocket... ");
-    let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
-    stompClient = Stomp.over(socket);
-    const header = { Authorization: user.token };
-    stompClient.connect(header, function (frame) {
-        console.log("connected to: " + frame);
-        stompClient.subscribe("/uniwheels/conductores",function(response){
-            let data=response.body;
-            console.log("connected to: " + data);
-            trips = data;
-            console.log("vaijes" + trips);
-        })
-    });
-    return stompClient;
-}
+
+//trips.push([{conductor:"" ,inicio:"" ,destino:"" , name:"", dueDate: new Date()}]);
+//console.log("tipo de trips:",typeof(trips));
+
 
 class TripOfferedDriver extends Component {
 
@@ -69,42 +57,75 @@ class TripOfferedDriver extends Component {
         super(props);
         this.state = {
             open: false,
+            userInfo: "",
+            trips: [],
             shape: []
         }
+        this.stompClient = null;
+        this.handleOfferTrips = this.handleOfferTrips.bind(this);
+        this.socketConnect = this.socketConnect.bind(this);
     }
 
+
     async componentDidMount(){
-         // sacar info usuario localestorage
-         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
-         this.setState({ userInfo: userLocalestorage })
+        // sacar info usuario localestorage
+        this.setState({ userInfo: userLocalestorage });
 
         // llamar socket
-        this.stompClient = socketConnect(userLocalestorage);
-
+        this.stompClient = this.socketConnect(userLocalestorage);
+        
+        console.log("Trips: ...");
+        console.log(this.state.trips);
         //Send inicial para traer los viajes que ya están 
         if (this.stompClient != null) {
-            //this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ ruta: "", precio: "" , origen: "" , destino: "", carro: "" }));
+            console.log("Este es el SEND inicial");
+            //this.stompClient.send("/wss/offerTravel."+ userLocalestorage.username,{},JSON.stringify({ route: "", price: "" , from: "" , to: "", car: "" }));
         }
     }
 
-
+    socketConnect(user){
+        console.log("Connecting to WebSocket... ");
+        let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
+        stompClient = Stomp.over(socket);
+        const header = { Authorization: user.token };
+        stompClient.connect(header, function (frame) {
+            console.log("connected to: " + frame);
+            stompClient.subscribe("/uniwheels/drivers",this.handleOfferTrips);
+        });
+        
+        return stompClient;
+    }
+    
+    
+    handleOfferTrips(response){
+        let data = response.body;
+        console.log("connected to: " + data);
+        //trips.push(JSON.parse(data));
+        this.setState({trips : data});
+        console.log("trips: ",typeof(this.state.trips));
+        console.log(this.state.trips);
+    }
+    
+      
     render() {
         const { classes } = this.props;
+        //var lista = this.state.trips;
         return (
             <Grid container className={classes.gridContainer} spacing={2}>
-
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={2}>
-                        {trips.map((trip, index) => {
+                        { 
+                            this.state.trips.map((trip, index) => {
                             return (
                                 <Grid key={index} item>
+                                    {console.log("trips: ",trip)}
                                     <Card className={classes.root}>
                                     
                                         <CardHeader
                                             action = {this.renderModalInfoPersona}
                                             title={
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    Conductor: <UsersInfo user={trip.conductor}/>
+                                                    Conductor: {trip.name}
                                                 </Typography>
                                             }
                                         />
@@ -114,9 +135,9 @@ class TripOfferedDriver extends Component {
                                             <MapRouting ini ={placesIni[0]} des={placesDes[index]}/>
 
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                inicio: {trip.trip.inicio}
+                                                Inicio: {trip.inicio}
                                                 <br />
-                                                    destino: {trip.trip.destino}
+                                                Destino: {trip.destino}
                                             </Typography>
                                             <Typography variant="body2" color="textSecondary" component="p">
                                                 {trip.dueDate}
@@ -130,7 +151,8 @@ class TripOfferedDriver extends Component {
                                     </Card>
                                 </Grid>
                             )
-                        })}
+                        }                         
+                        )}
                     </Grid>
                 </Grid>
             </Grid>

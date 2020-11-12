@@ -59,9 +59,9 @@ function socketConnect(user) {
     const header = { Authorization: user.token };
     stompClient.connect(header, function (frame) {
         console.log("connected to: " + frame);
-        stompClient.subscribe("/uniwheels/conductores",function(response){
-            let data=response.body;
-            console.log("connected to: " + data);
+        stompClient.subscribe("/uniwheels/drivers",function(response){
+            let data = response.body;
+            console.log("Data: " + data);
         })
     });
     return stompClient;
@@ -75,7 +75,7 @@ class OfferTrip extends React.Component {
         this.handleFromChange = this.handleFromChange.bind(this);
         this.handleToChange = this.handleToChange.bind(this);
         this.handlePriceChange = this.handlePriceChange.bind(this);
-        this.handleCarroChange = this.handleCarroChange.bind(this);
+        this.handleCarChange = this.handleCarChange.bind(this);
         this.handleRouteChange = this.handleRouteChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.stompClient = null;
@@ -88,7 +88,7 @@ class OfferTrip extends React.Component {
     async componentDidMount() {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
-        this.setState({ userInfo: userLocalestorage })
+        this.setState({ userInfo: userLocalestorage });
         console.log("user :",userLocalestorage);
         // llamar socket
         this.stompClient = socketConnect(userLocalestorage);
@@ -158,13 +158,13 @@ class OfferTrip extends React.Component {
         
     }
 
-    send = () => {
+    send = () => {  
 
         if(this.state.to != "" && this.state.from != "" && this.state.price != ""
             && this.state.userInfo != "" && this.state.currentCar !== "" && this.state.route !== ""){
                 console.log("username" + userLocalestorage.username);
             if (this.stompClient != null) {
-                this.stompClient.send("/wss/ofrecerViaje/" + userLocalestorage.username, {}, JSON.stringify({ route: this.state.route, price: this.state.price , from: this.state.from , to: this.state.to , carro: this.state.currentCar }));
+                this.stompClient.send("/wss/offerTravel."+userLocalestorage.username,{}, JSON.stringify({ route: this.state.route, price: this.state.price , from: this.state.from , to: this.state.to , car: this.state.currentCar }));
                 //Mostrar notificación de viaje iniciado
             }
         }
@@ -196,7 +196,7 @@ class OfferTrip extends React.Component {
         });
     };
 
-    handleCarroChange(e){
+    handleCarChange(e){
         this.setState({
             currentCar: e.target.value
         });
@@ -267,8 +267,8 @@ class OfferTrip extends React.Component {
 
                                     <div className="text-form-cond OfrecerViaje">
                                         <TextField id="select" label="¿Qué carro vas a usar?" select required fullWidth
-                                            onChange={this.handleCarroChange}>
-                                            {this.state.cars.map((carro, index) => (<MenuItem key={index} value={carro.marca +" "+ carro.modelo}>{carro.marca +" "+ carro.modelo}</MenuItem>))}
+                                            onChange={this.handleCarChange}>
+                                            {this.state.cars.map((car, index) => (<MenuItem key={index} value={car.marca +" "+ car.modelo}>{car.marca +" "+ car.modelo}</MenuItem>))}
                                         </TextField>
                                     </div>
 
