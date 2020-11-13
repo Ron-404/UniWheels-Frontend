@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SockJsClient from 'react-stomp'; 
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -10,13 +11,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import MapRouting from "./MapRouting";
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
-import axios from 'axios';
-import UsersInfo from "../General/UsersInfo";
-
-
-//var trips = [];
 
 const placesIni = [
     {lat:4.782759,lng: -74.041757},
@@ -44,12 +38,6 @@ const placesDes = [
 ]
 
 const userLocalestorage = JSON.parse(localStorage.getItem('user'));
-var stompClient;
-
-
-//trips.push([{conductor:"" ,inicio:"" ,destino:"" , name:"", dueDate: new Date()}]);
-//console.log("tipo de trips:",typeof(trips));
-
 
 class TripOfferedDriver extends Component {
 
@@ -61,57 +49,34 @@ class TripOfferedDriver extends Component {
             trips: [],
             shape: []
         }
-        this.stompClient = null;
         this.handleOfferTrips = this.handleOfferTrips.bind(this);
-        this.socketConnect = this.socketConnect.bind(this);
     }
 
 
     async componentDidMount(){
         // sacar info usuario localestorage
         this.setState({ userInfo: userLocalestorage });
-
-        // llamar socket
-        this.stompClient = this.socketConnect(userLocalestorage);
-        
-        console.log("Trips: ...");
-        console.log(this.state.trips);
-        //Send inicial para traer los viajes que ya están 
-        if (this.stompClient != null) {
-            console.log("Este es el SEND inicial");
-            //this.stompClient.send("/wss/offerTravel."+ userLocalestorage.username,{},JSON.stringify({ route: "", price: "" , from: "" , to: "", car: "" }));
-        }
-    }
-
-    socketConnect(user){
-        console.log("Connecting to WebSocket... ");
-        let socket = new SockJS("https://uniwheels-backend.herokuapp.com/wss");
-        stompClient = Stomp.over(socket);
-        const header = { Authorization: user.token };
-        stompClient.connect(header, function (frame) {
-            console.log("connected to: " + frame);
-            stompClient.subscribe("/uniwheels/drivers",this.handleOfferTrips);
-        });
-        
-        return stompClient;
     }
     
     
     handleOfferTrips(response){
-        let data = response.body;
-        console.log("connected to: " + data);
-        //trips.push(JSON.parse(data));
-        this.setState({trips : data});
-        console.log("trips: ",typeof(this.state.trips));
-        console.log(this.state.trips);
+        console.log("response " + response);
+        this.setState({trips : response});
     }
     
       
     render() {
         const { classes } = this.props;
-        //var lista = this.state.trips;
         return (
             <Grid container className={classes.gridContainer} spacing={2}>
+                <SockJsClient
+                    url='https://uniwheels-backend.herokuapp.com/wss'
+                    topics={['/uniwheels/drivers']}
+                    onConnect={console.log("Connection established!")}
+                    onDisconnect={console.log("Disconnected!")}
+                    onMessage={(response) => this.handleOfferTrips(response)}
+                    debug={true}
+                />
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={2}>
                         { 
