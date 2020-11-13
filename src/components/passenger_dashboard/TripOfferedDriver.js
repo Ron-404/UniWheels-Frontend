@@ -103,7 +103,7 @@ class TripOfferedDriver extends Component {
                                             action = {this.renderModalInfoPersona}
                                             title={
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    Conductor: {trip.name}
+                                                    Conductor: {trip.username}
                                                 </Typography>
                                             }
                                         />
