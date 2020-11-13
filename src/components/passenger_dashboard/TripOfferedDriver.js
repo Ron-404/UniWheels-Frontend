@@ -56,14 +56,26 @@ class TripOfferedDriver extends Component {
     async componentDidMount(){
         // sacar info usuario localestorage
         this.setState({ userInfo: userLocalestorage });
+
+        setTimeout( () =>{
+            try {
+                this.sendMessage();
+            } catch (e) {
+                this.componentDidMount()
+            }
+          }, 200)
+
     }
-    
-    
+
     handleOfferTrips(response){
         console.log("response " + response);
         this.setState({trips : response});
     }
     
+    //traer viajes actuales
+    sendMessage = () => {
+        this.clientRef.sendMessage('/wss/offerTravel.prueba', JSON.stringify({}));
+      }
       
     render() {
         const { classes } = this.props;
@@ -75,6 +87,7 @@ class TripOfferedDriver extends Component {
                     onConnect={console.log("Connection established!")}
                     onDisconnect={console.log("Disconnected!")}
                     onMessage={(response) => this.handleOfferTrips(response)}
+                    ref={ (client) => { this.clientRef = client }}
                     debug={true}
                 />
                 <Grid item xs={12}>

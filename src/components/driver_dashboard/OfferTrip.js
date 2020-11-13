@@ -160,8 +160,8 @@ class OfferTrip extends React.Component {
 
     send = () => {  
 
-        if(this.state.to != "" && this.state.from != "" && this.state.price != ""
-            && this.state.userInfo != "" && this.state.currentCar !== "" && this.state.route !== ""){
+        if(this.state.to !== "" && this.state.from !== "" && this.state.price !== ""
+            && this.state.userInfo !== "" && this.state.currentCar !== "" && this.state.route !== ""){
                 console.log("username" + userLocalestorage.username);
             if (this.stompClient != null) {
                 this.stompClient.send("/wss/offerTravel."+userLocalestorage.username,{}, JSON.stringify({ route: this.state.route, price: this.state.price , from: this.state.from , to: this.state.to , car: this.state.currentCar }));
