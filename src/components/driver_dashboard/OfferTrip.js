@@ -73,7 +73,6 @@ class OfferTrip extends React.Component {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage });
-        console.log("user :", userLocalestorage);
 
         // sacar listas de universities
         await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
@@ -104,7 +103,6 @@ class OfferTrip extends React.Component {
 
         // sacar listas de cars
         var user = this.state.userInfo;
-        console.log(user);
         if (user !== "") {
             const username = user.username;
             await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/` + username,
@@ -159,7 +157,6 @@ class OfferTrip extends React.Component {
     };
 
     handleOfferTrip(response) {
-        console.log("response " + response);
         this.setState({ messages: response });
     }
 
@@ -190,7 +187,6 @@ class OfferTrip extends React.Component {
         var userLocalestorage = JSON.parse(localStorage.getItem('user'));
         if (this.state.to !== "" && this.state.from !== "" && this.state.price !== ""
             && this.state.userInfo !== "" && this.state.currentCar !== "" && this.state.route !== "") {
-            console.log("username" + userLocalestorage.username);
             try {                  
                 this.clientRef.sendMessage(`/wss/offerTravel.${userLocalestorage.username}`, JSON.stringify({ ruta: this.state.route, precio: this.state.price, origen: [this.state.fromAll.lat, this.state.fromAll.lng, this.state.from, this.state.districtFrom], destino: [this.state.toAll.lat,this.state.toAll.lng, this.state.to,this.state.districtTo], carro: this.state.currentCar }));
             } catch (error) {
@@ -214,17 +210,13 @@ class OfferTrip extends React.Component {
     receiveInfoTo = (to,latLng) => {
         this.setState({to: to.label.replace(to.postalCode,"")})
         this.setState({toAll: latLng})
-        this.setState({districtAll: to.district})
-        console.log("latLng: ",latLng)
-        console.log("to: ",to)
+        this.setState({districtTo: to.district})
     }
 
     receiveInfoFrom = (from,latLng) => {
         this.setState({from: from.label.replace(from.postalCode,"")}) 
         this.setState({fromAll: latLng})
         this.setState({districtFrom: from.district})
-        console.log("from: ",from)
-        console.log("latlng: ",latLng)
     }
 
     render() {
@@ -241,7 +233,6 @@ class OfferTrip extends React.Component {
                         ref={(client) => { this.clientRef = client }}
                         debug={true}
                     />
-                    {this.state.clientConnected && console.log("connect: ", this.state.clientConnected)}
 
                     <Box m="auto">
                         <Typography variant="h6" noWrap href="/home">
