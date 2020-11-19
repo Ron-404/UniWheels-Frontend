@@ -75,7 +75,7 @@ class TripOfferedDriver extends Component {
     //traer viajes actuales
     sendMessage = () => {
         this.clientRef.sendMessage('/wss/offerTravel.prueba', JSON.stringify({}));
-      }
+    }
       
     render() {
         const { classes } = this.props;
