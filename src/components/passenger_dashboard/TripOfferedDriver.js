@@ -107,20 +107,17 @@ class TripOfferedDriver extends Component {
                                                 </Typography>
                                             }
                                         />
-                                    
+                                        
                                         <CardContent>
-
-                                            <MapRouting ini ={placesIni[0]} des={placesDes[index]}/>
-
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                Inicio: {trip.inicio}
+                                            <MapRouting ini ={{lat:trip.direccionInicio[0],lng: trip.direccionInicio[1]}} des={{lat:trip.direccionFin[0],lng: trip.direccionFin[1]}}/>
+                                            <br />
+                                            <Typography gutterBottom variant="h8" component="h3">
+                                                Inicio: {trip.direccionInicio[3]} - {trip.direccionInicio[2]} 
                                                 <br />
-                                                Destino: {trip.destino}
+                                                Destino: {trip.direccionFin[3]} - {trip.direccionFin[2]} 
+                                                <br />
+                                                Precio: ${trip.precio}
                                             </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                {trip.dueDate}
-                                            </Typography>
-
                                             <Button className={classes.boton} variant="contained" size="small" >
                                                 Solicitar Ahora
                                             </Button>
@@ -141,7 +138,7 @@ class TripOfferedDriver extends Component {
 const styles = theme => ({
     root: {
         width: 300,
-        height: 470,
+        height: 480,
         marginBottom: "50px",
         backgroundColor: "#FF5733"
     },
