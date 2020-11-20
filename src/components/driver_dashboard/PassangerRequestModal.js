@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import './PassangerRequestModal.css';
+import SockJsClient from 'react-stomp';
+import Swal from 'sweetalert2';
 
 class PassangerRequestModal extends Component{
 
@@ -23,7 +25,7 @@ class RowPas extends Component {
     constructor(props){
         super(props);
         this.state = {
-           stateBoton: 'acept',row:props.crow
+           stateBoton: 'acept',row:props.crow,messages: ""
         }
         this.key=props.keys;
     }
@@ -34,6 +36,7 @@ class RowPas extends Component {
         row.estado='waiting to be picked up';
         this.setState({row});
         this.setState({stateBoton:'picked up'});
+        this.sendTrue();
       }else if(this.state.stateBoton==='picked up'){
         row.estado='In the car';
         this.setState({row});
@@ -45,6 +48,40 @@ class RowPas extends Component {
       row.estado='searching driver';
       this.setState({row});
       this.setState({stateBoton:'acept'});
+      this.sendFalse();
+    }
+
+    sendTrue = () => {
+        var userLocalestorage = JSON.parse(localStorage.getItem('user'));
+        try {
+            this.clientRef.sendMessage(`/wss/acceptOrRejectPassenger.${this.state.row.name}`, JSON.stringify({ usuario:userLocalestorage.username,estado: true}));
+        } catch (error) {
+            Swal.fire(
+                'Error al aceptar o rechazar el pasajero',
+                'Error socket, no hay conexion',
+                'error'
+            )
+            }
+    }
+
+    handleOfferTrip(response) {
+        this.setState({ messages: response });
+    }
+
+    sendFalse = () => {
+        var userLocalestorage = JSON.parse(localStorage.getItem('user'));
+        try {     
+            console.log(this.state.row.name);
+            console.log(userLocalestorage);
+            console.log(this.state.statePassanger);
+            this.clientRef.sendMessage(`/wss/acceptOrRejectPassenger.${this.state.row.name}`, JSON.stringify({ usuario:userLocalestorage.username,estado: false}));
+        } catch (error) {
+            Swal.fire(
+                'Error al aceptar o rechazar el pasajero',
+                'Error socket, no hay conexion',
+                'error'
+            )
+        }
     }
 
     render(){
@@ -59,7 +96,15 @@ class RowPas extends Component {
         let row=this.state.row;
         return (
           <TableRow key={row.name}>
-
+            <SockJsClient
+                url='https://uniwheels-backend.herokuapp.com/wss'
+                topics={['/uniwheels/acceptOrRejectPassenger']}
+                onConnect={console.log("Connection established!")}
+                onDisconnect={console.log("Disconnected!")}
+                onMessage={(response) => this.handleOfferTrip(response)}
+                ref={(client) => { this.clientRef = client }}
+                debug={true}
+            />
             <TableCell component="th" scope="row">
               {row.name}
             </TableCell>
