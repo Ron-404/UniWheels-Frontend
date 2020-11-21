@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import Car from "../CarImage"
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -28,7 +29,7 @@ class CarListModal extends Component {
         }
     }
 
-    componentDidMount= async () => {
+    componentDidMount = async () => {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
@@ -84,7 +85,11 @@ class CarListModal extends Component {
         const { classes } = this.props;
         return (
             <Grid container className={classes.gridContainer} spacing={2}>
-
+                <Box m="auto">
+                    <Typography color='initial' variant="h2">
+                        <strong>Mis Carros:</strong>
+                    </Typography>
+                </Box>
                 <Grid item xs={12}>
                     {this.state.cargarListaCarros ?
 

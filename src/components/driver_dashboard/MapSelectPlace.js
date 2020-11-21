@@ -9,12 +9,17 @@ export default class MapSelectPlace extends Component {
         this.state = {
             map: null,
             lugar: this.props.lugar,
-            to: {lat:this.props.lugar.lat,lng:this.props.lugar.lng},
-            from: {lat:this.props.lugar.lat,lng:this.props.lugar.lng}
+            to: { lat: this.props.lugar.lat, lng: this.props.lugar.lng },
+            from: { lat: this.props.lugar.lat, lng: this.props.lugar.lng },
+            route: "",
+            width: "auto"
         };
     }
 
-
+    // resize box
+    updateDimensions = () => {
+        this.setState({ width: "auto" });
+    };
 
     addDraggableMarker1 = (map, behavior, platform, ui) => {
         const lugar = this.state.lugar;
@@ -49,16 +54,15 @@ export default class MapSelectPlace extends Component {
 
                     // Create a polyline to display the route:
                     let routeLine = new H.map.Polyline(linestring, {
-                        style: { strokeColor: 'blue', lineWidth: 3 }
+                        style: { strokeColor: 'black', lineWidth: 5 }
                     });
-
-                    // Add the route polyline and the two markers to the map:
+                    // save route
+                    this.setState({ route: routeLine })
+                    // Add the route polyline to the map:
                     map.addObject(routeLine);
-
-
                 });
             }
-        };
+        }.bind(this);
 
         // Get an instance of the routing service version 8:
         var router = platform.getRoutingService(null, 8);
@@ -87,6 +91,7 @@ export default class MapSelectPlace extends Component {
                 // eslint-disable-next-line
                 pointer = ev.currentPointer;
             if (target instanceof H.map.Marker) {
+                if (this.state.route) { map.removeObject(this.state.route) } //delete old route
                 // get address
                 service.reverseGeocode({
                     at: `${target.b.lat},${target.b.lng}`
@@ -94,10 +99,10 @@ export default class MapSelectPlace extends Component {
                     result.items.forEach((item) => {
                         if (target.data === "marker") {
                             this.setState({ from: { lat: target.b.lat, lng: target.b.lng } });
-                            this.props.receiveInfoFrom(item.address,{ lat: String(target.b.lat), lng: String(target.b.lng) })
+                            this.props.receiveInfoFrom(item.address, { lat: String(target.b.lat), lng: String(target.b.lng) })
                         } else {
                             this.setState({ to: { lat: target.b.lat, lng: target.b.lng } });
-                            this.props.receiveInfoTo(item.address,{ lat: String(target.b.lat), lng: String(target.b.lng) })
+                            this.props.receiveInfoTo(item.address, { lat: String(target.b.lat), lng: String(target.b.lng) })
                         }
                         var routingParameters = {
                             'routingMode': 'fast',
@@ -136,6 +141,10 @@ export default class MapSelectPlace extends Component {
     }
 
     componentDidMount() {
+        // resize map automatic
+        window.addEventListener('resize', this.updateDimensions);
+        window.onresize = this.updateDimensions;
+
         const H = window.H;
         const platform = new H.service.Platform({
             apikey: "t5F4KkchItOSCKZO3wWCQIKtAoIjmaZforgZxkdGKaw"
@@ -148,7 +157,7 @@ export default class MapSelectPlace extends Component {
             defaultLayers.raster.normal.map,
             {
                 center: { lat: 4.782659, lng: -74.041970 },
-                zoom: 10,
+                zoom: 12,
                 pixelRatio: window.devicePixelRatio || 1
             }
         );
@@ -174,9 +183,10 @@ export default class MapSelectPlace extends Component {
 
     componentWillUnmount(props) {
         this.setState({ map: null });
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {
-        return <div ref={this.mapRef} style={{ height: "400px", width: "400px" }} />;
+        return <div ref={this.mapRef} style={{ height: "400px", width: this.state.width }} />;
     }
 }

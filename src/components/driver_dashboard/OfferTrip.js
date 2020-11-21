@@ -1,11 +1,9 @@
 import React from 'react';
-import './OfferTrip.css';
 import {
     withStyles,
     TextField,
     MenuItem,
     Button,
-    Grid,
     CircularProgress,
     Box,
     Typography
@@ -60,46 +58,16 @@ class OfferTrip extends React.Component {
         super(props);
         this.state = {
             lugar: { lat: "4.782775", lng: "-74.041645" },
-            clientConnected: false, messages: "", from: '',fromAll:'',districtFrom:'', to: '',toAll:'',districtTo:'', price: 0, loadUniversities: false, universities: [], cars: [], currentCar: "", userInfo: "", route: ""
+            onPressSend:false,
+            clientConnected: false, messages: "", from: '', fromAll: '', districtFrom: '', to: '', toAll: '', districtTo: '', price: 0, universities: [], cars: [], currentCar: "", userInfo: "", route: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // HACK delete styles
-    componentWillUnmount() {
-        document.body.classList.remove("OfrecerViaje");
-    }
     async componentDidMount() {
         // sacar info usuario localestorage
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage });
-
-        // sacar listas de universities
-        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getUniversidades`,
-            {
-                headers: {
-                    Authorization: userLocalestorage.token //the token is a variable which holds the token
-                }
-            }
-        )
-            .then(res => {
-                const universities = res.data;
-                this.setState({ universities });
-                this.setState({ loadUniversities: true });
-            })
-            .catch(async function () {
-                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
-                await Swal.fire(
-                    'Sesion Finalizada',
-                    'Vuelva a loguearse',
-                    'error'
-                )
-                //clear local estorage
-                localStorage.clear();
-                // redireccionar a login
-                window.location.replace("/login")
-            });
-
 
         // sacar listas de cars
         var user = this.state.userInfo;
@@ -132,9 +100,7 @@ class OfferTrip extends React.Component {
                     // redireccionar a login
                     window.location.replace("/login")
                 });
-
         }
-
     }
 
     handleAll = (e) => {
@@ -163,21 +129,23 @@ class OfferTrip extends React.Component {
     componentDidUpdate() {
         // Uso tipico (no olvides de comparar las props):
         if (this.state.messages !== "") {
-
-            if (this.state.messages === "The driver selected is not available") {
-                this.setState({messages: ""})
-                Swal.fire(
-                    'Error',
-                    'Usted ya tiene un viaje en proceso',
-                    'warning'
-                )
-            } else {
-                this.setState({messages: ""})
-                Swal.fire(
-                    'Viaje Registrado!',
-                    'ahora podra esperar a sus pasajeros',
-                    'success'
-                )
+            if(this.state.onPressSend){
+                this.setState({onPressSend:false})
+                if (this.state.messages === "The driver selected is not available") {
+                    this.setState({ messages: "" })
+                    Swal.fire(
+                        'Error',
+                        'Usted ya tiene un viaje en proceso',
+                        'warning'
+                    )
+                } else {
+                    this.setState({ messages: "" })
+                    Swal.fire(
+                        'Viaje Registrado!',
+                        'ahora podra esperar a sus pasajeros',
+                        'success'
+                    )
+                }
             }
         }
     }
@@ -187,8 +155,9 @@ class OfferTrip extends React.Component {
         var userLocalestorage = JSON.parse(localStorage.getItem('user'));
         if (this.state.to !== "" && this.state.from !== "" && this.state.price !== ""
             && this.state.userInfo !== "" && this.state.currentCar !== "" && this.state.route !== "") {
-            try {                  
-                this.clientRef.sendMessage(`/wss/offerTravel.${userLocalestorage.username}`, JSON.stringify({ ruta: this.state.route, precio: this.state.price, origen: [this.state.fromAll.lat, this.state.fromAll.lng, this.state.from, this.state.districtFrom], destino: [this.state.toAll.lat,this.state.toAll.lng, this.state.to,this.state.districtTo], carro: this.state.currentCar }));
+            try {
+                this.setState({onPressSend:true})
+                this.clientRef.sendMessage(`/wss/offerTravel.${userLocalestorage.username}`, JSON.stringify({ ruta: this.state.route, precio: this.state.price, origen: [this.state.fromAll.lat, this.state.fromAll.lng, this.state.from, this.state.districtFrom], destino: [this.state.toAll.lat, this.state.toAll.lng, this.state.to, this.state.districtTo], carro: this.state.currentCar }));
             } catch (error) {
                 Swal.fire(
                     'Error al registrar',
@@ -207,110 +176,113 @@ class OfferTrip extends React.Component {
 
     }
 
-    receiveInfoTo = (to,latLng) => {
-        this.setState({to: to.label.replace(to.postalCode,"")})
-        this.setState({toAll: latLng})
-        this.setState({districtTo: to.district})
+    receiveInfoTo = (to, latLng) => {
+        this.setState({ to: to.label.replace(to.postalCode, "") })
+        this.setState({ toAll: latLng })
+        this.setState({ districtTo: to.district })
     }
 
-    receiveInfoFrom = (from,latLng) => {
-        this.setState({from: from.label.replace(from.postalCode,"")}) 
-        this.setState({fromAll: latLng})
-        this.setState({districtFrom: from.district})
+    receiveInfoFrom = (from, latLng) => {
+        this.setState({ from: from.label.replace(from.postalCode, "") })
+        this.setState({ fromAll: latLng })
+        this.setState({ districtFrom: from.district })
     }
 
     render() {
-        document.body.classList.add('OfrecerViaje');
         return (
-            <Box m="auto">
-                <Grid container>
-                    <SockJsClient
-                        url='https://uniwheels-backend.herokuapp.com/wss'
-                        topics={['/uniwheels/drivers']}
-                        onConnect={console.log("Connection established!")}
-                        onDisconnect={console.log("Disconnected!")}
-                        onMessage={(response) => this.handleOfferTrip(response)}
-                        ref={(client) => { this.clientRef = client }}
-                        debug={true}
-                    />
 
-                    <Box m="auto">
-                        <Typography variant="h6" noWrap href="/home">
-                            Arrastre y escoja su inicio y destino en el mapa:
-                        </Typography>
-                        <MapSelectPlace lugar={this.state.lugar} receiveInfoTo={this.receiveInfoTo} receiveInfoFrom={this.receiveInfoFrom} />
-                    </Box>
-                    <Box m="auto">
-                        <form onSubmit={this.handleSubmit}>
+            <React.Fragment>
+                <SockJsClient
+                    url='https://uniwheels-backend.herokuapp.com/wss'
+                    topics={['/uniwheels/drivers']}
+                    onConnect={console.log("Connection established!")}
+                    onDisconnect={console.log("Disconnected!")}
+                    onMessage={(response) => this.handleOfferTrip(response)}
+                    ref={(client) => { this.clientRef = client }}
+                    debug={true}
+                />
+
+                <Box m="auto">
+                    <Typography color='initial' variant="h2">
+                        <strong>Arrastre y escoja su inicio y destino en el mapa:</strong>
+                    </Typography>
+                    <Typography variant="h5">
+                        <strong>inicio:</strong> {this.state.from}
+                    </Typography>
+                    <Typography variant="h5">
+                        <strong>destino:</strong> {this.state.to}
+                    </Typography>
+                </Box>
+                <Box m="auto">
+                    <MapSelectPlace lugar={this.state.lugar} receiveInfoTo={this.receiveInfoTo} receiveInfoFrom={this.receiveInfoFrom} />
+                </Box>
+                <Box m="auto">
+                    <form onSubmit={this.handleSubmit}>
+                        <br></br>
+                        <h2>Mi viaje</h2>
+                        <br></br>
+                        <div>
+                            <div>
+                                <TextField name="route" value={this.state.route} variant="outlined" id="Ruta" label="Nombre de la ruta" type="text"
+                                    onChange={this.handleAll} fullWidth autoFocus required />
+                            </div>
                             <br></br>
-                            <h2>Mi viaje</h2>
+
+
+                            <div>
+                                <TextField disabled={true} name="from" value={this.state.from} variant="outlined" id="From" label="Inicio" type="text"
+                                    onChange={this.handleAll} fullWidth autoFocus required />
+                            </div>
+
+
+
                             <br></br>
-                            <div className="text OfrecerViaje">
-                                <div className="text-form-cond OfrecerViaje">
-                                    <TextField name="route" value={this.state.route} variant="outlined" id="Ruta" label="Nombre de la ruta" type="text"
+
+                            {
+                                this.state.cars.length > 0 ?
+
+                                    <div>
+                                        <TextField variant="outlined" name="currentCar" value={this.state.currentCar} id="car" label="¿Qué carro vas a usar?" select required fullWidth
+                                            onChange={this.handleAll}>
+                                            {this.state.cars.map((car, index) => (<MenuItem key={index} value={car.marca + " " + car.modelo}>{car.marca + " " + car.modelo}</MenuItem>))}
+                                        </TextField>
+                                    </div>
+
+                                    :
+
+                                    <CircularProgress />
+                            }
+
+
+
+                            <br></br>
+                            <div>
+                                <div>
+                                    <TextField disabled={true} name="to" value={this.state.to} variant="outlined" id="to" label="Destino" type="text"
                                         onChange={this.handleAll} fullWidth autoFocus required />
                                 </div>
-                                <br></br>
-                                {
-                                    this.state.loadUniversities ?
-
-                                        <div className="text-form-cond OfrecerViaje">
-                                            <TextField disabled={true} name="from" value={this.state.from} variant="outlined" id="From" label="Inicio" type="text"
-                                                onChange={this.handleAll} fullWidth autoFocus required />
-                                        </div>
-
-                                        :
-
-                                        <CircularProgress />
-                                }
-
-                                <br></br>
-
-                                {
-                                    this.state.cars.length > 0 ?
-
-                                        <div className="text-form-cond OfrecerViaje">
-                                            <TextField name="currentCar" value={this.state.currentCar} id="car" label="¿Qué carro vas a usar?" select required fullWidth
-                                                onChange={this.handleAll}>
-                                                {this.state.cars.map((car, index) => (<MenuItem key={index} value={car.marca + " " + car.modelo}>{car.marca + " " + car.modelo}</MenuItem>))}
-                                            </TextField>
-                                        </div>
-
-                                        :
-
-                                        <CircularProgress />
-                                }
-
-
-
-                                <br></br>
-                                <div className="text-form-cond OfrecerViaje">
-                                    <div className="text-form-cond OfrecerViaje">
-                                        <TextField disabled={true} name="to" value={this.state.to} variant="outlined" id="to" label="Destino" type="text"
-                                            onChange={this.handleAll} fullWidth autoFocus required />
-                                    </div>
-                                </div>
-                                <br></br>
-                                <br></br>
-                                <div className="text-form-cond">
-                                    <TextField name="price" value={this.state.price} id="outlined-number" label="Precio" type="number" InputLabelProps={{ shrink: true, }}
-                                        variant="outlined" onChange={this.handleAll} fullWidth autoFocus
-                                        required />
-                                </div>
-                                <br></br>
                             </div>
+                            <br></br>
+                            <br></br>
                             <div>
-                                <Button onClick={this.send} color="primary" variant="contained" className="submit">
-                                    Iniciar
-                            </Button>
+                                <TextField name="price" value={this.state.price} id="outlined-number" label="Precio" type="number" InputLabelProps={{ shrink: true, }}
+                                    variant="outlined" onChange={this.handleAll} fullWidth autoFocus
+                                    required />
                             </div>
                             <br></br>
-                            <br></br>
-                        </form>
-                    </Box>
+                        </div>
+                        <div>
+                            <Button onClick={this.send} color="primary" variant="contained">
+                                Iniciar
+                            </Button>
+                        </div>
+                        <br></br>
+                        <br></br>
+                    </form>
+                </Box>
 
-                </Grid>
-            </Box>
+            </React.Fragment>
+
         );
     }
 }
