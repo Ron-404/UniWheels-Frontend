@@ -56,7 +56,7 @@ export default class TravelMap extends Component {
 
           // Create a polyline to display the route:
           let routeLine = new H.map.Polyline(linestring, {
-            style: { strokeColor: 'blue', lineWidth: 3 }
+            style: { strokeColor: 'black', lineWidth: 3 }
           });
 
           // Create a marker for the start point:
@@ -106,6 +106,6 @@ export default class TravelMap extends Component {
 
 
   render() {
-    return <Box m="auto" ref={this.mapRef} style={{ height: "250px",width:this.state.width}} />;
+    return <Box m="auto" ref={this.mapRef} style={{ height: "400px",width:this.state.width}} />;
   }
 }

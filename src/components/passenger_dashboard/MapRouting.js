@@ -56,7 +56,7 @@ export default class MapRouting extends Component {
 
           // Create a polyline to display the route:
           let routeLine = new H.map.Polyline(linestring, {
-            style: { strokeColor: 'blue', lineWidth: 3 }
+            style: { strokeColor: 'black', lineWidth: 3 }
           });
 
           // Create a marker for the start point:

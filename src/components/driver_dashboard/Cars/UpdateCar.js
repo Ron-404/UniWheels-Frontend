@@ -14,6 +14,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Box from '@material-ui/core/Box';
+
 import axios from 'axios';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -26,10 +28,10 @@ class UpdateCar extends Component {
             name: false,
             open: true,
             car: this.props.car,
-            brand: this.props.car.brand,
-            model: this.props.car.model,
+            brand: this.props.car.marca,
+            model: this.props.car.modelo,
             color: this.props.car.color,
-            plate: this.props.car.plate,
+            plate: this.props.car.placa,
             editCar: true,
             colors: [
                 { color: 'blanco', id: "#AAAAAA" },
@@ -81,10 +83,10 @@ class UpdateCar extends Component {
             // hacer el put
             await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateCarro/` + userInfo.username,
                 {
-                    plate: this.state.plate,
-                    brand: this.state.brand,
+                    placa: this.state.plate,
+                    marca: this.state.brand,
                     color: this.state.color,
-                    model: this.state.model
+                    modelo: this.state.model
                 },
                 {
                     headers: {
@@ -155,6 +157,7 @@ class UpdateCar extends Component {
                         timeout: 500,
                     }}
                 >
+                    
                     <Fade in={this.state.open}>
                         <div className={classes.paper}>
                             <FormControl variant="outlined">
@@ -185,6 +188,7 @@ class UpdateCar extends Component {
                                         <CircularProgress />
                                 }
                             </FormControl>
+                            
                         </div>
                     </Fade>
                 </Modal>

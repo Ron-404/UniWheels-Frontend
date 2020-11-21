@@ -118,7 +118,7 @@ class ProfileInfo extends Component {
               'Registro Fallido',
               'error del servidor, vuelva a intentarlo',
               'error'
-          )
+            )
             this.setState({ open: false });
           }
         }).catch(async error => {
@@ -196,7 +196,7 @@ class ProfileInfo extends Component {
             <center>
               <Box m="auto">
                 <div className={classes.paper}>
-                  <Grid container spacing={0}>
+                  <Grid container>
                     <Grid item xs={12} sm={6}>
                       <h2 id="transition-modal-title">Nombre: </h2>
                       {!this.state.edit ? this.state.name :
@@ -274,7 +274,7 @@ class ProfileInfo extends Component {
                                 label="Password"
                                 id="outlined-adornment-password-login"
                                 error={this.state.password !== this.state.confirPass}
-                                helperText={this.state.password !== this.state.confirPass ? "Error la contraseña no coincide con la confirmada" :  "no ingresar nada si no la va a cambiar"}
+                                helperText={this.state.password !== this.state.confirPass ? "Error la contraseña no coincide con la confirmada" : "no ingresar nada si no la va a cambiar"}
                                 type={this.state.showPassword ? 'text' : 'password'}
                                 value={this.state.password}
                                 name="password"
@@ -327,17 +327,23 @@ class ProfileInfo extends Component {
 
                           </Grid>
                           <Box m="auto">
-                            <div>
-                              <Button type="submit" color="primary" variant="contained" onClick={this.handleSave}>
-                                Guardar
+                            <Box m="auto">
+
+                              <tr>
+                                <th>
+                                  <Button type="submit" color="primary" variant="contained" onClick={this.handleSave}>
+                                    Guardar
+                                  </Button>
+                                </th>
+                                <th>
+                                  <Button type="submit" color="secondary" variant="contained" onClick={this.cancel}>
+                                    Cancelar
                               </Button>
-                            </div>
-                            <br/>
-                            <div>
-                              <Button type="submit" color="primary" variant="contained" onClick={this.cancel}>
-                                Cancelar
-                              </Button>
-                            </div>
+                                </th>
+                              </tr>
+
+
+                            </Box>
                           </Box>
 
                         </Grid>
