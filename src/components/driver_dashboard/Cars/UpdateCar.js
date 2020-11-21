@@ -14,8 +14,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import Box from '@material-ui/core/Box';
-
 import axios from 'axios';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
