@@ -200,6 +200,15 @@ class DashBoardPasajero extends Component {
         this.setState({ mobileMoreAnchorEl: event.currentTarget, isMobileMenuOpen: true });
     };
 
+    handleViewCurrentTrip = () => { 
+        this.setState({
+            view1: false,
+            view2: true,
+            view3: false,
+            view4: false,
+        });
+    }
+
     handleListItemClick(index) {
         this.setState({ selectedIndex: index })
         if (index === 0) {
@@ -431,7 +440,7 @@ class DashBoardPasajero extends Component {
                                     <Typography variant="h3">
                                         Viajes Disponibles:
                                     </Typography>
-                                    <TripOfferedDriver />
+                                    <TripOfferedDriver redirectCurrentTrip={this.handleViewCurrentTrip}/>
                                 </div>}
                             <div>
                                 {this.state.view1 &&

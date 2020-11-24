@@ -10,6 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Swal from 'sweetalert2';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -46,9 +47,14 @@ class TripOfferedDriver extends Component {
 
     }
 
-    handleOfferTrips(response) {
-        console.log("response " + response);
-        this.setState({ trips: response });
+    handleOfferTrips(response,topic){
+        if(topic === '/uniwheels/drivers'){
+            this.setState({trips : response});
+        }
+        else{
+            //Revisar mensaje del conductor 
+            //Si acepta lo dirigimos al componente viaje actual
+        }
     }
 
     handleAll = (e) => {
@@ -74,20 +80,40 @@ class TripOfferedDriver extends Component {
         }
     }
 
+    sendRequestTrip = (trip) =>{
+        var userLocalestorage = JSON.parse(localStorage.getItem('user'));
+        try{
+            this.clientRef.sendMessage('/wss/passengerRequest.'+trip.username, JSON.stringify({usuario: userLocalestorage.username, direccion: trip.direccionInicio[2]}));
+            Swal.fire(
+                'Petición enviada!',
+                'Espera a que el conductor responda',
+                'success'
+            )
+            //Función que redirige al componente de viaje actual
+            this.props.redirectCurrentTrip();
+        }catch(error){
+            Swal.fire(
+                'Error',
+                'Error del servidor, no se pudo hacer la petición',
+                'warning'
+            )
+        }
+    }
+
     render() {
         const { classes } = this.props;
         return (
             <Grid container className={classes.gridContainer} spacing={2}>
                 <SockJsClient
                     url='https://uniwheels-backend.herokuapp.com/wss'
-                    topics={['/uniwheels/drivers']}
-                    autoReconnect={true}
+                    topics={['/uniwheels/drivers','/uniwheels/passengerRequest']}
                     onConnect={console.log("Connection established!")}
                     onDisconnect={console.log("Disconnected!")}
-                    onMessage={(response) => this.handleOfferTrips(response)}
-                    ref={(client) => { this.clientRef = client }}
+                    onMessage={(response,topic) => this.handleOfferTrips(response,topic)}
+                    ref={ (client) => { this.clientRef = client }}
                     debug={true}
                 />
+
                 <Grid item xs={12}>
                     <Box m="auto">
                         <div className={classes.Form_root}>
@@ -140,7 +166,7 @@ class TripOfferedDriver extends Component {
                                                         <br />
                                                         <strong>Precio:</strong> ${trip.precio}
                                                     </Typography>
-                                                    <Button className={classes.boton} variant="contained" size="small" >
+                                                    <Button className={classes.boton} variant="contained" size="small" onClick={this.sendRequestTrip.bind(this,trip)} >
                                                         Solicitar Ahora
                                             </Button>
 
