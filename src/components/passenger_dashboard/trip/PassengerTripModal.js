@@ -18,6 +18,9 @@ import ReactStars from "react-rating-stars-component";
 import MapRouting from "../MapRouting";
 import UsersInfo from "../../General/UsersInfo";
 
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
 class PassengerTripModal extends Component {
 
     constructor(props) {
@@ -25,6 +28,7 @@ class PassengerTripModal extends Component {
         this.state = {
             open: false,
             width: window.innerWidth,
+            currentTrip: [],
             shape: []
         }
     }
@@ -34,10 +38,39 @@ class PassengerTripModal extends Component {
         this.setState({ width: window.innerWidth });
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         // resize box
         window.addEventListener('resize', this.updateDimensions);
         window.onresize = this.updateDimensions;
+
+        // sacar info usuario localestorage
+        var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+        this.setState({ userInfo: userLocalestorage })
+        // sacar listas de carros
+        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/travel/passenger/` + userLocalestorage.username,
+            {
+                headers: {
+                    Authorization: userLocalestorage.token //the token is a variable which holds the token
+                }
+            }
+        )
+            .then(res => {
+                const currentTrip = res.data;
+                console.log("currentTrip: ",currentTrip)
+                this.setState({ currentTrip });
+            })
+            .catch(async function () {
+                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
+                await Swal.fire(
+                    'Sesion Finalizada',
+                    'Vuelva a loguearse',
+                    'error'
+                )
+                //clear local estorage
+                localStorage.clear();
+                // redireccionar a login
+                window.location.replace("/login")
+            });
     }
     // resize box
     componentWillUnmount() {

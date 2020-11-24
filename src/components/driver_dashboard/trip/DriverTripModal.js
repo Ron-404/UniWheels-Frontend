@@ -27,6 +27,9 @@ import UsersInfo from "../../General/UsersInfo";
 
 import { Box } from '@material-ui/core';
 
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
 class DriverTripModal extends Component {
 
     constructor(props) {
@@ -34,7 +37,7 @@ class DriverTripModal extends Component {
         this.state = {
             open: false,
             width: window.innerWidth,
-            shape: []
+            currentTrip: [],
         }
     }
     // resize box
@@ -42,10 +45,38 @@ class DriverTripModal extends Component {
         this.setState({ width: window.innerWidth });
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         // resize box
         window.addEventListener('resize', this.updateDimensions);
         window.onresize = this.updateDimensions;
+        // sacar info usuario localestorage
+        var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
+        this.setState({ userInfo: userLocalestorage })
+        // sacar listas de carros
+        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/travel/driver/` + userLocalestorage.username,
+            {
+                headers: {
+                    Authorization: userLocalestorage.token //the token is a variable which holds the token
+                }
+            }
+        )
+            .then(res => {
+                const currentTrip = [res.data];
+                console.log("currentTrip: ", currentTrip)
+                this.setState({ currentTrip });
+            })
+            .catch(async function () {
+                // aqui entra cuando el token es erroneo, toca pedirle que vuelva a loguearse
+                await Swal.fire(
+                    'Sesion Finalizada',
+                    'Vuelva a loguearse',
+                    'error'
+                )
+                //clear local estorage
+                localStorage.clear();
+                // redireccionar a login
+                window.location.replace("/login")
+            });
     }
     // resize box
     componentWillUnmount() {
@@ -72,99 +103,108 @@ class DriverTripModal extends Component {
 
                     <Grid item xs={12}>
                         <Grid container justify="center" spacing={2}>
+                            {
+                                (this.state.currentTrip[0]) ?
+                                <Grid item>
+                                    <Card style={{
+                                        width: this.state.width - 70,
+                                        height: "100%",
+                                        marginBottom: "50px",
+                                        backgroundColor: "#E0E3E5"
+                                    }}>
 
-                            <Grid item>
-                                <Card style={{
-                                    width: this.state.width - 70,
-                                    height: "100%",
-                                    marginBottom: "50px",
-                                    backgroundColor: "#E0E3E5"
-                                }}>
-
-                                    <CardHeader
-                                        action={this.renderModalInfoPersona}
-                                        title={
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                Conductor: <UsersInfo user={viaje.conductor} />
-                                                <br />
-                                            Estado: En curso
+                                        <CardHeader
+                                            action={this.renderModalInfoPersona}
+                                            title={
+                                                <Typography gutterBottom variant="h5" component="h2">
+                                                    <strong>Conductor:</strong> <UsersInfo user={viaje.conductor} />
+                                                    <br />
+                                                    <strong>Estado:</strong> {this.state.currentTrip[0].estado}
                                         </Typography>
-                                        }
-                                    />
+                                            }
+                                        />
 
-                                    <CardContent>
-                                        <div>
-                                            <TravelMap />
-                                        </div>
+                                        <CardContent>
 
-
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            inicio: {viaje.viajeCurso.inicio}
-                                            <br />
-                                                    destino: {viaje.viajeCurso.destino}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="span">
-                                            {viaje.dueDate}
-                                        </Typography>
-
-
-                                    </CardContent>
-
-                                    <CardActions className={classes.botonSolc}>
-                                        <Button className={classes.boton} variant="contained" size="small" >
-                                            Finalizar Viaje
-                                        </Button>
-                                    </CardActions>
-
-                                    <div className={classes.demo}>
-                                        <Typography variant="h5" color="textPrimary" component="span">
-                                            Pasajeros:
-                                    </Typography>
-                                        <List>
-                                            {viaje.pasajeros.map((pasajero, index) => {
-                                                return (
-                                                    <Box m="auto" key={index}>
-                                                        <Divider />
-                                                        <ListItem>
-                                                            <ListItemAvatar>
-                                                                <Avatar>
-                                                                    <AccountCircle />
-                                                                </Avatar>
-                                                            </ListItemAvatar>
-                                                            <ListItemText
-                                                                primary={pasajero.name}
-                                                                secondary={
-                                                                    <span>
-                                                                        <ReactStars
-                                                                            value={pasajero.rating}
-                                                                            size={24}
-                                                                            color="#AFAFAF"
-                                                                            activeColor="#ffd700"
-                                                                            edit={false}
-                                                                        />
-                                                                    </span>
-                                                                }
-
-                                                            />
-                                                            <ListItemSecondaryAction>
-                                                                <IconButton edge="end" aria-label="delete">
-                                                                    <Star />
-                                                                    <Typography variant="h5" color="textPrimary" component="span">
-                                                                        Calificar
+                                            <TravelMap ini={{ lat: this.state.currentTrip[0].direccionInicio[0], lng: this.state.currentTrip[0].direccionInicio[1] }} des={{ lat: this.state.currentTrip[0].direccionFin[0], lng: this.state.currentTrip[0].direccionFin[1] }} />
+                                                    <br />
+                                                    <Typography gutterBottom variant="subtitle1" component="h3">
+                                                        <strong>Inicio:</strong> {this.state.currentTrip[0].direccionInicio[3]} - {this.state.currentTrip[0].direccionInicio[2]}
+                                                        <br />
+                                                        <strong>Destino:</strong> {this.state.currentTrip[0].direccionFin[3]} - {this.state.currentTrip[0].direccionFin[2]}
+                                                        <br />
+                                                        <strong>Precio:</strong> ${this.state.currentTrip[0].precio}
                                             </Typography>
-                                                                </IconButton>
-                                                            </ListItemSecondaryAction>
 
-                                                        </ListItem>
-                                                        <Divider />
-                                                    </Box>
-                                                )
-                                            })}
-                                        </List>
 
-                                    </div>
-                                </Card>
-                            </Grid>
+                                        </CardContent>
+
+                                        <CardActions className={classes.botonSolc}>
+                                            <Button className={classes.boton} variant="contained" size="small" >
+                                                Finalizar Viaje
+                                        </Button>
+                                        </CardActions>
+
+                                        <div className={classes.demo}>
+                                            <Typography variant="h5" color="textPrimary" component="span">
+                                                Pasajeros:
+                                    </Typography>
+                                            <List>
+                                                {viaje.pasajeros.map((pasajero, index) => {
+                                                    return (
+                                                        <Box m="auto" key={index}>
+                                                            <Divider />
+                                                            <ListItem>
+                                                                <ListItemAvatar>
+                                                                    <Avatar>
+                                                                        <AccountCircle />
+                                                                    </Avatar>
+                                                                </ListItemAvatar>
+                                                                <ListItemText
+                                                                    primary={pasajero.name}
+                                                                    secondary={
+                                                                        <span>
+                                                                            <ReactStars
+                                                                                value={pasajero.rating}
+                                                                                size={24}
+                                                                                color="#AFAFAF"
+                                                                                activeColor="#ffd700"
+                                                                                edit={false}
+                                                                            />
+                                                                        </span>
+                                                                    }
+
+                                                                />
+                                                                <ListItemSecondaryAction>
+                                                                    <IconButton edge="end" aria-label="delete">
+                                                                        <Star />
+                                                                        <Typography variant="h5" color="textPrimary" component="span">
+                                                                            Calificar
+                                                                        </Typography>
+                                                                    </IconButton>
+                                                                </ListItemSecondaryAction>
+
+                                                            </ListItem>
+                                                            <Divider />
+                                                        </Box>
+                                                    )
+                                                })}
+                                            </List>
+
+                                        </div>
+                                    </Card>
+                                </Grid>
+
+                                :
+                                <React.Fragment>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        <br/>
+                                        Actualmente no tiene un viaje en proceso
+                                    </Typography>
+                                </React.Fragment>
+                            }
+
+
                         </Grid>
                     </Grid>
                 </Grid>
@@ -178,7 +218,7 @@ class DriverTripModal extends Component {
 var styles = theme => (
     {
         root: {
-            
+
             height: "100%",
             marginBottom: "50px",
             backgroundColor: "#E0E3E5"

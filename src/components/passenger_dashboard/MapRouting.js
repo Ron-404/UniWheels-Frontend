@@ -99,7 +99,8 @@ export default class MapRouting extends Component {
 
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
+    this.state.map.dispose();
     this.setState({ map: null });
     window.removeEventListener('resize', this.updateDimensions);
   }
