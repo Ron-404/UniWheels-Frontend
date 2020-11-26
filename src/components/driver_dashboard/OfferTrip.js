@@ -84,7 +84,19 @@ class OfferTrip extends React.Component {
                     const cars = res.data;
                     this.setState({ cars: cars });
                     if (cars.length === 0) {
-                        alert("Debes registrar un carro para iniciar un viaje");
+                        Swal.fire({
+                            title: 'Debes registrar un carro para iniciar un viaje',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: `ok`,
+                          }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                window.location.reload()
+                            } else if (result.isDismissed) {
+                                window.location.reload()
+                            }
+                          })
                     }
 
                 })
