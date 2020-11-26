@@ -159,9 +159,9 @@ class UpdateCar extends Component {
                     <Fade in={this.state.open}>
                         <div className={classes.paper}>
                             <FormControl variant="outlined">
-                                <h2 id="transition-modal-brand">brand: </h2>
+                                <h2 id="transition-modal-brand">marca: </h2>
                                 <TextField id="textfield-brand" label={this.state.brand} onChange={this.handleBrand} />
-                                <h2 id="transition-modal-model">model: </h2>
+                                <h2 id="transition-modal-model">modelo: </h2>
                                 <TextField id="textfield-model" label={this.state.model} onChange={this.handlemodel} />
                                 <h2 id="transition-modal-color">Color: </h2>
                                 <FormControl variant="filled" >
@@ -173,7 +173,7 @@ class UpdateCar extends Component {
                                         {this.state.colors.map((option) => <MenuItem key={option.color} value={option.color}>{option.color}</MenuItem>)}
                                     </Select>
                                 </FormControl>
-                                <h2 id="transition-modal-plate">plate: </h2>
+                                <h2 id="transition-modal-plate">placa: </h2>
                                 <TextField disabled id="textfield-plate" label={this.state.plate} onChange={this.handlePlate} />
 
                                 <br></br>

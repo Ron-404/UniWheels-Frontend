@@ -407,7 +407,7 @@ class DriverDashboard extends Component {
                         </ListItem>
                         <Collapse in={this.state.isTravelsOpen} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                {['Ofrecer Viaje', 'Solcitudes'].map((text, index) => (
+                                {['Ofrecer Viaje', 'Solicitudes'].map((text, index) => (
                                     <ListItem
                                         className={classes.nested}
                                         button key={text}

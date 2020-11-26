@@ -153,7 +153,7 @@ const SimpleTable=((props)=> {
   return (
     <TableContainer component={Paper}>
           <Typography variant="h3" id="tableTitle" component="div">
-            Solicitudes de passangers
+            Solicitudes de pasajeros
           </Typography>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
