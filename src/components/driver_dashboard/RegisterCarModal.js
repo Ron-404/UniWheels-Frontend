@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Car from "./CarImage"
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -135,8 +137,12 @@ class RegisterCarModal extends Component {
   render() {
 
     return (
-      < div >
-        <h1> Registra Tu Automovil </h1>
+      <Box m="auto">
+        <Box m="auto">
+          <Typography color='initial' variant="h2">
+            <strong>Registra Tu Automovil</strong>
+          </Typography>
+        </Box>
         <Grid>
           <Car color={this.state.color.id} />
         </Grid>
@@ -221,7 +227,7 @@ class RegisterCarModal extends Component {
         }
 
 
-      </div>)
+      </Box>)
   };
 
 
