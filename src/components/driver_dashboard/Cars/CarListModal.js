@@ -92,7 +92,7 @@ class CarListModal extends Component {
                 </Box>
                 <Grid item xs={12}>
                     {this.state.cargarListaCarros ?
-
+                        <Box m="auto">
                         <Grid container justify="center" spacing={2}>
                             {this.state.listaDeCarros.map((carro, index) => {
                                 return (
@@ -102,7 +102,7 @@ class CarListModal extends Component {
                                             <CardHeader
                                                 title={
                                                     <Typography gutterBottom variant="h5" component="h2">
-                                                        Placa: {carro.placa}
+                                                        <strong>Placa:</strong> {carro.placa}
                                                     </Typography>
                                                 }
                                             />
@@ -112,11 +112,11 @@ class CarListModal extends Component {
                                                 <Car color={this.selectIdColor(carro.color)} />
 
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    Marca: {carro.marca}
+                                                <strong>Marca:</strong> {carro.marca}
                                                     <br />
-                                                Modelo: {carro.modelo}
+                                                <strong>Modelo:</strong> {carro.modelo}
                                                     <br />
-                                                Color: {carro.color}
+                                                <strong>Color:</strong> {carro.color}
                                                 </Typography>
 
                                             </CardContent>
@@ -134,6 +134,7 @@ class CarListModal extends Component {
                             })}
                             {this.state.edit ? <UpdateCar car={this.state.listaDeCarros[this.state.selectedCar]} updateListCar={this.componentDidMount} /> : null}
                         </Grid>
+                        </Box>
                         :
                         <CircularProgress />
                     }
@@ -148,7 +149,6 @@ class CarListModal extends Component {
 const styles = theme => ({
     root: {
         width: 300,
-        height: 350,
         marginBottom: "50px",
         backgroundColor: "#FF5733"
     },
