@@ -90,7 +90,7 @@ class ProfileInfo extends Component {
       // sacar user token y username de localEstorage
       var userInfo = JSON.parse(localStorage.getItem('user'));
       // hacer el put
-      await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateUser/`,
+      await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/user/update`,
         {
           username: userInfo.username,
           nombreCompleto: this.state.name,

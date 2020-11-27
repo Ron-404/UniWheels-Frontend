@@ -88,7 +88,7 @@ class RegisterCarModal extends Component {
       // sacar user token y username de localEstorage
       var userInfo = JSON.parse(localStorage.getItem('user'));
       // hacer el post
-      await axios.post(`https://uniwheels-backend.herokuapp.com/uniwheels/addCarro/` + userInfo.username,
+      await axios.post(`https://uniwheels-backend.herokuapp.com/uniwheels/cars/add/` + userInfo.username,
         {
           placa: this.state.placa,
           marca: this.state.marca.brand,
