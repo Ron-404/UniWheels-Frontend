@@ -73,7 +73,7 @@ class OfferTrip extends React.Component {
         var user = this.state.userInfo;
         if (user !== "") {
             const username = user.username;
-            await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/` + username,
+            await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/cars/` + username,
                 {
                     headers: {
                         Authorization: userLocalestorage.token //the token is a variable which holds the token
