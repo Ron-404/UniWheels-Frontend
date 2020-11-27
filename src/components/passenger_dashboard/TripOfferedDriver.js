@@ -83,7 +83,7 @@ class TripOfferedDriver extends Component {
     sendRequestTrip = (trip) =>{
         var userLocalestorage = JSON.parse(localStorage.getItem('user'));
         try{
-            this.clientRef.sendMessage('/wss/passengerRequest.'+trip.username, JSON.stringify({usuario: userLocalestorage.username, direccion: trip.direccionInicio[2]}));
+            this.clientRef.sendMessage('/wss/passengerRequest.'+trip.username, JSON.stringify({pasajeroUsername: userLocalestorage.username, direccion: trip.direccionInicio[2]}));
             Swal.fire(
                 'Petición enviada!',
                 'Espera a que el conductor responda',
