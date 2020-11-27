@@ -79,7 +79,7 @@ class UpdateCar extends Component {
             // sacar user token y username de localEstorage
             var userInfo = JSON.parse(localStorage.getItem('user'));
             // hacer el put
-            await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/updateCarro/` + userInfo.username,
+            await axios.put(`https://uniwheels-backend.herokuapp.com/uniwheels/cars/update/` + userInfo.username,
                 {
                     placa: this.state.plate,
                     marca: this.state.brand,

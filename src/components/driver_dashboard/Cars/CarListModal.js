@@ -34,7 +34,7 @@ class CarListModal extends Component {
         var userLocalestorage = await JSON.parse(localStorage.getItem('user'));
         this.setState({ userInfo: userLocalestorage })
         // sacar listas de carros
-        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/getCarros/` + userLocalestorage.username,
+        await axios.get(`https://uniwheels-backend.herokuapp.com/uniwheels/cars/` + userLocalestorage.username,
             {
                 headers: {
                     Authorization: userLocalestorage.token //the token is a variable which holds the token
