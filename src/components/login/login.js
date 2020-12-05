@@ -1,6 +1,6 @@
 import React from 'react';
 import './login.css';
-import { withStyles, TextField, MenuItem, Button, Grid } from '@material-ui/core';
+import { withStyles, TextField, MenuItem, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import logo from '../../logo.png';
@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 import clsx from 'clsx';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
 
 const styles = theme => ({
     paper: {
@@ -24,14 +25,17 @@ const styles = theme => ({
         alignItems: 'center',
     },
     link: {
-        width: 20,
+        width: 10,
         color: '#3f51b5',
     },
     icon: {
-        marginRight: theme.spacing(0.5),
-        width: 45,
-        height: 45,
+        width: 40,
+        height: 40,
         color: '#3f51b5',
+    },
+    register: {
+        position: "static",
+        marginRight: "10%",
     },
     formControl: {
         width: '100%',
@@ -124,7 +128,7 @@ class Login extends React.Component {
                         'error'
                     )
                 });
-            
+
         } else {
             Swal.fire(
                 'Campos no validos',
@@ -139,8 +143,10 @@ class Login extends React.Component {
         const { classes } = this.props;
         document.body.classList.add('login');
         return (
+
             <div className="fondo login">
-                <div>
+                <Box m="auto">
+
                     <form className="form login" >
                         <br></br>
                         <div>
@@ -193,29 +199,36 @@ class Login extends React.Component {
                         <br></br>
                         <br></br>
                         <br></br>
-                        <Grid>
-                            <div>
-                                {this.state.loginConfirm ?
-                                    <Button color="primary" variant="contained" className="submit" onClick={this.handleSubmit}>
-                                        Entrar
+                        <Box m="auto">
+                            <center>
+                                <tr>
+
+                                    <div>
+                                        {this.state.loginConfirm ?
+                                            <Button color="primary" variant="contained" className="submit" onClick={this.handleSubmit}>
+                                                Entrar
                                     </Button>
-                                    :
-                                    <div><CircularProgress /></div>
-                                }
-                            </div>
-                            <div id="boton-registrar">
+                                            :
+                                            <div><CircularProgress /></div>
+                                        }
+                                    </div>
+
+                                </tr>
+                            </center>
+                        </Box>
+                        <div >
+                            <Link color="secondary" className={classes.link} aria-current="page"
+                                to={{ pathname: "/RegisterUser" }}>
                                 <HowToRegIcon className={classes.icon} />
-                                <Link color="secondary" className={classes.link} aria-current="page"
-                                    to={{ pathname: "/RegisterUser" }}>
-                                    Registrate
-                                </Link>
-                            </div>
-                        </Grid>
-                        <br></br>
-                        <br></br>
+                                <br /> Registrate
+                            </Link>
+                        </div>
+
                     </form>
-                </div>
+
+                </Box>
             </div>
+
 
         );
     }
