@@ -16,7 +16,6 @@ body.login{
     max-width: 400px;
     border-radius: 7%;
     background-color:rgb(253, 253, 253);
-    height: 560px;
 }
 
 .text.login{
@@ -26,7 +25,9 @@ body.login{
 }
 
 #boton-registrar{
-    margin-top: 3%;
+    position: static;
     margin-right: 10%;
+    margin-bottom: auto;
     float: right;
+    text-align: left;
 }

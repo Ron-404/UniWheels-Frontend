@@ -5,6 +5,7 @@ import './Register.css'
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
 
 class RegisterUser extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class RegisterUser extends Component {
     document.body.classList.add('registrar');
     return (
       <React.Fragment >
+        <Box m="auto">
         <CssBaseline />
         <div className="layout registrar">
           <Paper className="paper registrar">
@@ -55,6 +57,7 @@ class RegisterUser extends Component {
             </form>
           </Paper>
         </div>
+        </Box>
       </React.Fragment>
     );
   }
